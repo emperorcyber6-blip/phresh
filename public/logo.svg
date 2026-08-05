@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <!-- Transparent Background -->
+  <rect width="600" height="600" fill="none"/>
+  
+  <g transform="translate(50, 10)">
+    <!-- 1. Green Leaf behind top-right of laptop -->
+    <path d="M 320 200 C 320 100 390 50 460 30 C 460 110 430 210 365 260 Z" fill="#00A859"/>
+    <!-- Leaf Center Vein -->
+    <path d="M 335 190 C 385 120 435 70 452 40" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+    <!-- 2. Green Laptop Base / Stand right side -->
+    <path d="M 280 320 L 410 320 C 430 320 442 335 435 348 L 410 370 C 405 375 390 375 375 375 L 220 375 C 255 365 275 345 280 320 Z" fill="#00A859"/>
+
+    <!-- 3. Blue Laptop Screen Outline -->
+    <!-- Screen Frame outer border -->
+    <rect x="180" y="125" width="220" height="175" rx="18" fill="#FFFFFF" stroke="#0072CE" stroke-width="18"/>
+    
+    <!-- Laptop Hinge Base (Blue) -->
+    <path d="M 175 300 L 140 350 L 325 350 L 340 300 Z" fill="#0072CE"/>
+
+    <!-- 4. "PT" Text inside Monitor Screen -->
+    <text x="205" y="245" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="900" font-size="108" fill="#0072CE" letter-spacing="-4">PT</text>
+
+    <!-- 5. Green Orbit Swoosh Line -->
+    <!-- Swoosh starting left side, looping around front of laptop to right -->
+    <path d="M 160 280 C 95 370 105 460 215 460 C 320 460 390 350 430 250 C 420 280 370 420 225 420 C 145 420 125 360 185 300 Z" fill="#00A859"/>
+
+    <!-- 6. PHRESHTECH Text -->
+    <text x="250" y="525" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="900" font-size="52" text-anchor="middle">
+      <tspan fill="#0072CE">PHRESH</tspan><tspan fill="#E2231A">TECH</tspan>
+    </text>
+    
+    <!-- 7. MEDIA SERVICES Text -->
+    <text x="250" y="570" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="800" font-size="28" fill="#555555" text-anchor="middle" letter-spacing="8">MEDIA SERVICES</text>
+  </g>
+</svg>
