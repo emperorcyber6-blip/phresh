@@ -1,4 +1,10 @@
 import './index.css';
+import heroSoftwareImg from './assets/images/software_hero_noperson_1785948323126.jpg';
+import heroEduledgerImg from './assets/images/eduledger_hero_noperson_1785948337361.jpg';
+import heroPrintingImg from './assets/images/printing_hero_noperson_1785948352256.jpg';
+import heroBrandingImg from './assets/images/branding_hero_noperson_1785948366063.jpg';
+import heroWebHostingImg from './assets/images/web_hosting_hero_noperson_1785948380530.jpg';
+import receiptBooksImg from './assets/images/receipt_books_noperson_1785948394004.jpg';
 
 // Reusable Official WhatsApp Vector Icon SVG
 const WHATSAPP_ICON_SVG = `<svg class="w-4 h-4 fill-current shrink-0 text-white animate-whatsapp-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>`;
@@ -45,15 +51,6 @@ let homeCalcSelections = {
   graphicDesign: 1,  // UGX 15,000
   receipts: 2,       // UGX 25,000 x 2 = 50,000
   rankCoreOffline: 1 // UGX 350,000
-};
-
-// Estimator Page 3-Step Wizard Selected Quantities (Map of service.id -> qty)
-let estimatorQuantities = {
-  'rank-core-offline': 1,
-  'eduledger': 1,
-  'receipt-book': 4,
-  'graphic-designing': 2,
-  'domain-purchases': 1
 };
 
 // User Auth & Cart System State
@@ -317,7 +314,7 @@ window.checkoutCart = async function() {
 };
 
 // Valid Multi-Page Routes
-const VALID_PAGES = ['home', 'services', 'portfolio', 'estimator', 'about', 'contact'];
+const VALID_PAGES = ['home', 'services', 'portfolio', 'about', 'contact'];
 
 // Hero Showcase Slides
 const HERO_SLIDES = [
@@ -326,9 +323,9 @@ const HERO_SLIDES = [
     highlight: 'Software, Graphic Print Press & Web Hosting',
     subtitle: 'Kampala’s premier technology & media partner empowering schools, corporations, and enterprise brands across Uganda.',
     badge: 'Phresh Tech Media Services',
-    image: 'hero/software.jpg',
+    image: heroSoftwareImg,
     ctaText: 'Request Custom Quote',
-    ctaPage: 'estimator',
+    ctaPage: 'contact',
     stats: [
       { number: '50+', label: 'Partner Institutions' },
       { number: '5 Pillars', label: 'Tech & Media Solutions' },
@@ -340,7 +337,7 @@ const HERO_SLIDES = [
     highlight: 'Phresh EduLedger & Rank Core',
     subtitle: 'NCDC competence-based report cards, bursary fee collection ledgers, and 100% offline-ready desktop engines.',
     badge: 'Smart Educational Software',
-    image: 'hero/software.jpg',
+    image: heroEduledgerImg,
     ctaText: 'Explore System Engineering',
     ctaPage: 'services',
     stats: [
@@ -354,7 +351,7 @@ const HERO_SLIDES = [
     highlight: 'Waterproof PVC IDs, Receipt Books & Branding',
     subtitle: 'Ultra-sharp 3D vector logos, serialized financial receipt books, 300gsm laminated cards, and mega event banners.',
     badge: 'Commercial Print Press Studio',
-    image: 'hero/printing.jpg',
+    image: heroPrintingImg,
     ctaText: 'View Print Production',
     ctaPage: 'services',
     stats: [
@@ -368,9 +365,9 @@ const HERO_SLIDES = [
     highlight: 'Graphic Design, School Crests & Banners',
     subtitle: 'Distinctive visual identities, school crests, corporate brand manuals, and UI/UX asset kits engineered in Kampala.',
     badge: 'Graphic Design Studio',
-    image: 'hero/branding.jpg',
+    image: heroBrandingImg,
     ctaText: 'Start Branding Project',
-    ctaPage: 'estimator',
+    ctaPage: 'contact',
     stats: [
       { number: '3D Vector', label: 'Ultra High Definition' },
       { number: 'Full Brand', label: 'Identity Guidelines' },
@@ -382,7 +379,7 @@ const HERO_SLIDES = [
     highlight: 'High Speed SSD Web Design & SSL',
     subtitle: 'School web portals with online admission forms, cPanel SSD cloud hosting, free SSL certificates, and speed optimization.',
     badge: 'Web Design & Managed Hosting',
-    image: 'hero/web_hosting.jpg',
+    image: heroWebHostingImg,
     ctaText: 'Launch Your Portal',
     ctaPage: 'services',
     stats: [
@@ -501,7 +498,7 @@ function renderApp() {
         <!-- Site Branding -->
         <a href="#home" onclick="scrollToSection('hero-section', 'home')" class="flex items-center gap-3 group focus:outline-none">
           <div class="relative flex items-center justify-center">
-            <img src="logo.svg" alt="Phresh Tech Media Services" class="h-11 w-auto object-contain group-hover:scale-105 transition-transform" referrerPolicy="no-referrer" />
+            <img src="/logo.svg" alt="Phresh Tech Media Services" class="h-11 w-auto object-contain group-hover:scale-105 transition-transform" referrerPolicy="no-referrer" />
             <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full shadow-xs animate-pulse"></span>
           </div>
           <div class="hidden sm:block">
@@ -530,9 +527,6 @@ function renderApp() {
           <button onclick="scrollToSection('portfolio-section', 'portfolio')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'portfolio' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
             Portfolio
           </button>
-          <button onclick="scrollToSection('estimator-section', 'estimator')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'estimator' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
-            Estimator
-          </button>
           <button onclick="scrollToSection('about-section', 'about')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'about' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
             About
           </button>
@@ -547,7 +541,7 @@ function renderApp() {
             ${WHATSAPP_ICON_SVG}
             <span>WhatsApp</span>
           </a>
-          <button onclick="scrollToSection('estimator-section', 'estimator')" class="bg-[#8B0000] hover:bg-red-800 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-xs transition uppercase tracking-wider">
+          <button onclick="scrollToSection('contact-section', 'contact')" class="bg-[#8B0000] hover:bg-red-800 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-xs transition uppercase tracking-wider">
             Get Quote
           </button>
         </div>
@@ -580,10 +574,6 @@ function renderApp() {
             <span>Portfolio & Case Studies</span>
             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
           </button>
-          <button onclick="scrollToSection('estimator-section', 'estimator')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
-            <span>Quote Estimator</span>
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          </button>
           <button onclick="scrollToSection('about-section', 'about')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
             <span>About Us</span>
             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
@@ -612,7 +602,7 @@ function renderApp() {
           
           <div class="space-y-4">
             <div class="flex items-center gap-3">
-              <img src="logo.svg" alt="Phresh Tech Media Services" class="h-12 w-auto bg-white p-1 rounded-xl shadow-md" referrerPolicy="no-referrer" />
+              <img src="/logo.svg" alt="Phresh Tech Media Services" class="h-12 w-auto bg-white p-1 rounded-xl shadow-md" referrerPolicy="no-referrer" />
               <div>
                 <span class="font-black text-base text-white block leading-none">Phresh Tech Media</span>
                 <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Services Uganda</span>
@@ -675,7 +665,7 @@ function renderApp() {
         <div class="pt-8 border-t border-white/10 text-center text-xs text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© ${new Date().getFullYear()} Phresh Tech Media Services (phreshtechmedia.com). All Rights Reserved.</p>
           <div class="flex gap-4">
-            <button onclick="navigateTo('estimator')" class="hover:text-emerald-400">Quote Wizard</button>
+            <button onclick="navigateTo('services')" class="hover:text-emerald-400">Services Catalog</button>
             <button onclick="navigateTo('portfolio')" class="hover:text-emerald-400">Case Studies</button>
             <button onclick="navigateTo('contact')" class="hover:text-emerald-400">Contact Us</button>
           </div>
@@ -882,8 +872,6 @@ function renderActivePage() {
       return renderServicesPage();
     case 'portfolio':
       return renderPortfolioPage();
-    case 'estimator':
-      return renderEstimatorPage();
     case 'about':
       return renderAboutPage();
     case 'contact':
@@ -912,38 +900,38 @@ function renderFeaturedServicesThreeGrid() {
             Specialized Technology & Design Capabilities
           </h2>
           <p class="text-slate-300 text-sm leading-relaxed">
-            Engineered for high performance and visual impact across Custom PHP Development, MySQL Database Systems, and Professional Graphic Design.
+            Engineered for high performance and visual impact across Custom Web Application Development, Database Systems, and Professional Graphic Design.
           </p>
         </div>
 
         <!-- 3-Column Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
 
-          <!-- Card 1: Custom PHP Development -->
+          <!-- Card 1: Custom Web & Software Development -->
           <div class="bg-slate-950/80 border border-slate-800 hover:border-emerald-500/50 rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col justify-between space-y-6 transition-all group duration-300 hover:shadow-emerald-950/40">
             <div class="space-y-5">
               <div class="flex items-center justify-between">
                 <div class="w-12 h-12 bg-emerald-500/20 border border-emerald-400/30 text-emerald-400 rounded-2xl flex items-center justify-center font-mono font-black text-sm group-hover:scale-110 transition-transform">
-                  PHP
+                  APPS
                 </div>
                 <span class="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950 border border-emerald-800/50 px-2.5 py-1 rounded-full uppercase">
-                  Server Backend
+                  Full-Stack Architecture
                 </span>
               </div>
 
               <div>
                 <h3 class="text-xl font-black text-white group-hover:text-emerald-400 transition-colors">
-                  Custom PHP Development
+                  Custom Web & Software Development
                 </h3>
                 <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                  Tailored web applications, backend script architecture, custom admin portals, and automated email processing.
+                  Tailored web applications, cloud APIs, custom enterprise admin portals, and automated business workflows.
                 </p>
               </div>
 
               <div class="pt-2 border-t border-slate-800/80 space-y-2">
                 <div class="flex items-center gap-2 text-xs text-slate-300">
                   <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Full-Stack PHP & MVC Frameworks</span>
+                  <span>Full-Stack Web & Cloud Application Architecture</span>
                 </div>
                 <div class="flex items-center gap-2 text-xs text-slate-300">
                   <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -1218,83 +1206,8 @@ function renderHomePage() {
       </div>
     </section>
 
-    <!-- 3-Column Highlight Grid: Custom PHP, MySQL DB, Graphic Design -->
+    <!-- 3-Column Highlight Grid: Custom Web Apps, Database Systems, Graphic Design -->
     ${renderFeaturedServicesThreeGrid()}
-
-    <!-- Live Quote Calculator Preview Module -->
-    <section class="py-16 bg-white border-y border-slate-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-[#0B1B3D] to-[#08132B] text-white rounded-3xl p-8 sm:p-12 shadow-2xl space-y-8">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 pb-6">
-            <div>
-              <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Interactive Price Calculator</span>
-              <h3 class="text-2xl sm:text-3xl font-black text-white tracking-tight mt-1">Live Multi-Service Quote Calculator Preview</h3>
-              <p class="text-gray-300 text-xs sm:text-sm mt-1">
-                Adjust quantities below to get an instant real-time UGX budget estimate based on official Phresh Service pricing.
-              </p>
-            </div>
-            <button onclick="navigateTo('estimator')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-6 py-3.5 rounded-xl uppercase tracking-wider shadow transition">
-              Open Full 3-Step Estimator Wizard →
-            </button>
-          </div>
-
-          <div class="grid lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-7 space-y-4 text-xs font-medium">
-              
-              <!-- Row 1 -->
-              <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
-                <div>
-                  <span class="text-white font-bold block text-sm">Graphic Designing</span>
-                  <span class="text-gray-400">Phresh Service — UGX 15,000 per project</span>
-                </div>
-                <input type="number" value="${homeCalcSelections.graphicDesign}" min="0" onchange="updateHomeCalc('graphicDesign', this.value)" class="w-16 p-2 bg-slate-900 border border-white/20 rounded-xl text-center font-mono text-emerald-400 font-bold" />
-              </div>
-
-              <!-- Row 2 -->
-              <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
-                <div>
-                  <span class="text-white font-bold block text-sm">Receipt Book (100 Leaves)</span>
-                  <span class="text-gray-400">Phresh Service — UGX 25,000 per book</span>
-                </div>
-                <input type="number" value="${homeCalcSelections.receipts}" min="0" onchange="updateHomeCalc('receipts', this.value)" class="w-16 p-2 bg-slate-900 border border-white/20 rounded-xl text-center font-mono text-emerald-400 font-bold" />
-              </div>
-
-              <!-- Row 3 -->
-              <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
-                <div>
-                  <span class="text-white font-bold block text-sm">Phresh Rank Core (Offline)</span>
-                  <span class="text-gray-400">Phresh Service — UGX 350,000 one-time</span>
-                </div>
-                <input type="number" value="${homeCalcSelections.rankCoreOffline}" min="0" onchange="updateHomeCalc('rankCoreOffline', this.value)" class="w-16 p-2 bg-slate-900 border border-white/20 rounded-xl text-center font-mono text-emerald-400 font-bold" />
-              </div>
-
-            </div>
-
-            <div class="lg:col-span-5 bg-slate-950 p-6 rounded-2xl border border-white/10 flex flex-col justify-between space-y-6">
-              <div>
-                <span class="text-xs font-mono text-gray-400 uppercase tracking-widest block">Calculated Instant Total</span>
-                <span id="home-calc-total-ugx" class="text-3xl sm:text-4xl font-black font-mono text-emerald-400 block mt-2">
-                  UGX ${(homeCalcSelections.graphicDesign * 15000 + homeCalcSelections.receipts * 25000 + homeCalcSelections.rankCoreOffline * 350000).toLocaleString()}
-                </span>
-                <p class="text-[11px] text-gray-400 mt-2">
-                  * Official receipt issued with installation & warranty at Kasenge - Nakawuka Road office.
-                </p>
-              </div>
-
-              <div class="space-y-3">
-                <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media,%20I%20calculated%20a%20quote%20on%20your%20home%20page." target="_blank" class="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-3 rounded-xl text-center shadow transition">
-                  ${WHATSAPP_ICON_SVG}
-                  <span>Send Quote to WhatsApp (+256 757 848 094)</span>
-                </a>
-                <button onclick="navigateTo('estimator')" class="block w-full bg-white text-[#0B1B3D] font-black text-xs py-3 rounded-xl text-center uppercase tracking-wider hover:bg-emerald-50 transition">
-                  Proceed to Official Order Form
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Client Testimonials & Live Stats Counter -->
     <section class="py-16 bg-slate-50">
@@ -1412,8 +1325,22 @@ function renderHeroSlideContent() {
       </div>
 
       <div class="lg:col-span-5 relative">
-        <div class="bg-gradient-to-br from-[#1E7E34]/20 to-[#8B0000]/20 p-2 rounded-3xl border border-white/10 shadow-2xl">
-          <img src="${slide.image}" alt="${slide.title}" class="w-full h-80 sm:h-96 object-cover rounded-2xl shadow-inner" referrerPolicy="no-referrer" />
+        <div class="bg-gradient-to-br from-[#1E7E34]/20 to-[#8B0000]/20 p-2 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
+          <img src="${slide.image}" alt="${slide.title}" class="w-full h-80 sm:h-96 object-cover rounded-2xl shadow-inner relative z-10" referrerPolicy="no-referrer" onerror="this.onerror=null; this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');" />
+          <div class="hidden w-full h-80 sm:h-96 rounded-2xl bg-gradient-to-br from-[#0B1B3D] via-[#08132B] to-[#1E7E34]/40 p-6 flex flex-col justify-between border border-white/10">
+            <div class="flex items-center justify-between">
+              <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-400/30">${slide.badge}</span>
+              <img src="/logo.svg" alt="Phresh Logo" class="h-8 w-auto bg-white/10 p-1 rounded-lg" />
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-xl font-black text-white leading-tight">${slide.title}</h3>
+              <p class="text-xs text-emerald-300 font-bold">${slide.highlight}</p>
+            </div>
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-gray-300">
+              <span class="font-mono text-emerald-400 font-bold">PT MEDIA · KAMPALA</span>
+              <span class="bg-white/10 px-2 py-0.5 rounded text-[10px]">Verified Service</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1477,7 +1404,7 @@ function renderServicesPage() {
       </div>
     </section>
 
-    <!-- 3-Column Highlight Grid: Custom PHP, MySQL DB, Graphic Design -->
+    <!-- 3-Column Highlight Grid: Custom Web Apps, Database Systems, Graphic Design -->
     ${renderFeaturedServicesThreeGrid()}
   `;
 }
@@ -1504,8 +1431,8 @@ function renderTariffCatalog() {
           <h2 class="text-2xl font-black text-slate-900 mt-2">Phresh Services Official Master Price Directory</h2>
           <p class="text-xs text-slate-500 mt-1">Verified rates directly provided by Phresh Tech Media Services. All prices in Uganda Shillings (UGX).</p>
         </div>
-        <button onclick="navigateTo('estimator')" class="bg-[#0B1B3D] hover:bg-[#152e61] text-white font-bold text-xs px-5 py-3 rounded-xl shadow transition">
-          Build Custom Order in Estimator →
+        <button onclick="navigateTo('contact')" class="bg-[#0B1B3D] hover:bg-[#152e61] text-white font-bold text-xs px-5 py-3 rounded-xl shadow transition">
+          Contact Us for Order →
         </button>
       </div>
 
@@ -1549,8 +1476,8 @@ function renderTariffCatalog() {
                 </td>
                 <td class="p-3.5 text-slate-500">${item.note}</td>
                 <td class="p-3.5 text-right">
-                  <button onclick="addServiceToEstimator('${item.id}')" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-lg shadow-sm transition">
-                    + Add to Order
+                  <button onclick="addToCart('${item.id}')" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-lg shadow-sm transition">
+                    + Add to Cart
                   </button>
                 </td>
               </tr>
@@ -1570,11 +1497,6 @@ window.setTariffCategory = function(cat) {
 window.setTariffSearch = function(query) {
   tariffSearchQuery = query;
   renderApp();
-};
-
-window.addServiceToEstimator = function(serviceId) {
-  estimatorQuantities[serviceId] = (estimatorQuantities[serviceId] || 0) + 1;
-  navigateTo('estimator');
 };
 
 function renderPillarDetailContent() {
@@ -1854,8 +1776,8 @@ function renderPortfolioPage() {
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
               <div class="h-48 bg-slate-900 relative">
-                <img src="hero/software.jpg" alt="EduLedger" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full">Database Systems</span>
+                <img src="${heroEduledgerImg}" alt="EduLedger" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Database Systems</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
@@ -1865,15 +1787,15 @@ function renderPortfolioPage() {
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">100% Fee Accuracy</span>
-                  <button onclick="navigateTo('estimator')" class="text-[#8B0000] font-black">Request Quote →</button>
+                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
               <div class="h-48 bg-slate-900 relative">
-                <img src="hero/software.jpg" alt="Rank Core" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full">Educational Software</span>
+                <img src="${heroSoftwareImg}" alt="Rank Core" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Educational Software</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
@@ -1883,15 +1805,15 @@ function renderPortfolioPage() {
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">5,000+ Reports in 2Mins</span>
-                  <button onclick="navigateTo('estimator')" class="text-[#8B0000] font-black">Request Quote →</button>
+                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
               <div class="h-48 bg-slate-900 relative">
-                <img src="hero/printing.jpg" alt="PVC ID" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full">Commercial Printing</span>
+                <img src="${heroPrintingImg}" alt="PVC ID" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Commercial Printing</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
@@ -1901,15 +1823,15 @@ function renderPortfolioPage() {
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">12,000+ Badges Printed</span>
-                  <button onclick="navigateTo('estimator')" class="text-[#8B0000] font-black">Request Quote →</button>
+                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
               <div class="h-48 bg-slate-900 relative">
-                <img src="portfolio/receipt_books.jpg" alt="Receipt Books" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full">Financial Print Press</span>
+                <img src="${receiptBooksImg}" alt="Receipt Books" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Financial Print Press</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
@@ -1919,15 +1841,15 @@ function renderPortfolioPage() {
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">1,000+ Books Delivered</span>
-                  <button onclick="navigateTo('estimator')" class="text-[#8B0000] font-black">Request Quote →</button>
+                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
               <div class="h-48 bg-slate-900 relative">
-                <img src="hero/branding.jpg" alt="Brand Identity" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#1E7E34] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full">Graphic Design</span>
+                <img src="${heroBrandingImg}" alt="Brand Identity" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#1E7E34] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Graphic Design</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
@@ -1937,15 +1859,15 @@ function renderPortfolioPage() {
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">3D Vector Precision</span>
-                  <button onclick="navigateTo('estimator')" class="text-[#8B0000] font-black">Request Quote →</button>
+                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
               <div class="h-48 bg-slate-900 relative">
-                <img src="hero/web_hosting.jpg" alt="Web Portal" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-amber-700 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full">Web Hosting</span>
+                <img src="${heroWebHostingImg}" alt="Web Portal" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-amber-700 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Web Hosting</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
@@ -1955,7 +1877,7 @@ function renderPortfolioPage() {
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">99.9% Uptime Guarantee</span>
-                  <button onclick="navigateTo('estimator')" class="text-[#8B0000] font-black">Request Quote →</button>
+                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
@@ -1988,7 +1910,7 @@ function renderPortfolioPage() {
                 </div>
                 <div class="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl">
                   <h4 class="font-black text-[#1E7E34] uppercase tracking-wider mb-2">Our Engineering Solution</h4>
-                  <p class="text-slate-700">Engineered an offline-first PHP 8.2 report generator running SQLite/MySQL locally. Automated descriptor evaluation, grade points, and batch PDF generation.</p>
+                  <p class="text-slate-700">Engineered an offline-first high-speed desktop report engine running local SQLite/MySQL database systems. Automated descriptor evaluation, grade points, and batch PDF generation.</p>
                 </div>
               </div>
 
@@ -2021,212 +1943,6 @@ window.filterPortfolio = function(cat) {
 };
 
 // ==========================================
-// 4. INTERACTIVE MULTI-SERVICE ESTIMATOR
-// ==========================================
-function renderEstimatorPage() {
-  let totalUGX = 0;
-  const selectedItems = [];
-  OFFICIAL_PHRESH_SERVICES.forEach(svc => {
-    const qty = estimatorQuantities[svc.id] || 0;
-    if (qty > 0) {
-      const itemTotal = qty * svc.priceUGX;
-      totalUGX += itemTotal;
-      selectedItems.push({ ...svc, qty, itemTotal });
-    }
-  });
-
-  return `
-    <div id="estimator-section" class="bg-gradient-to-b from-[#0B1B3D] to-[#08132B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-      <div class="max-w-7xl mx-auto space-y-3">
-        <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Official Price Directory & Order Builder</span>
-        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Interactive Multi-Service Estimator Wizard</h1>
-        <p class="text-gray-300 text-sm max-w-2xl">
-          Build your custom order from all 21 official Phresh Services. Exact rates guaranteed in Uganda Shillings (UGX) with direct quote submission.
-        </p>
-      </div>
-    </div>
-
-    <section class="py-12 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-12 gap-8">
-          
-          <!-- Left 2-Step Wizard Form -->
-          <div class="lg:col-span-8 space-y-8">
-            
-            <!-- Step 1: Catalog Selector -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
-                <div class="flex items-center gap-3">
-                  <span class="w-8 h-8 rounded-xl bg-[#0B1B3D] text-white font-black text-xs flex items-center justify-center">1</span>
-                  <h3 class="text-lg font-black text-slate-900">Step 1: Select Phresh Services & Quantities</h3>
-                </div>
-                <span class="text-xs font-bold text-slate-500">21 Verified Services Available</span>
-              </div>
-
-              <!-- Service List -->
-              <div class="space-y-3">
-                ${OFFICIAL_PHRESH_SERVICES.map(svc => {
-                  const qty = estimatorQuantities[svc.id] || 0;
-                  const isSelected = qty > 0;
-                  return `
-                    <div class="p-4 rounded-2xl border transition ${isSelected ? 'border-emerald-500 bg-emerald-50/50 shadow-sm' : 'border-slate-200 bg-slate-50'} flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                          <span class="font-black text-slate-900 text-sm">${svc.name}</span>
-                          <span class="text-[9px] font-black uppercase bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md">${svc.category}</span>
-                        </div>
-                        <p class="text-xs text-slate-500">${svc.note}</p>
-                      </div>
-                      <div class="flex items-center gap-4 shrink-0">
-                        <span class="font-mono font-black text-emerald-700 text-sm">UGX ${svc.priceUGX.toLocaleString()}</span>
-                        <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl p-1">
-                          <button onclick="updateServiceQuantity('${svc.id}', ${Math.max(0, qty - 1)})" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center">-</button>
-                          <input type="number" min="0" value="${qty}" onchange="updateServiceQuantity('${svc.id}', this.value)" class="w-12 text-center font-mono font-bold text-xs focus:outline-none" />
-                          <button onclick="updateServiceQuantity('${svc.id}', ${qty + 1})" class="w-7 h-7 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center">+</button>
-                        </div>
-                      </div>
-                    </div>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-
-            <!-- Step 2: Contact Form -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-              <form onsubmit="submitQuoteWizard(event)" class="space-y-4">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
-                  <span class="w-8 h-8 rounded-xl bg-[#0B1B3D] text-white font-black text-xs flex items-center justify-center">2</span>
-                  <h3 class="text-lg font-black text-slate-900">Step 2: Enter Contact Details & Request Quote</h3>
-                </div>
-
-                <div class="grid sm:grid-cols-2 gap-4 text-xs">
-                  <div>
-                    <label class="block font-bold text-slate-700 mb-1">Your Full Name *</label>
-                    <input type="text" id="quote-client-name" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-600" placeholder="e.g. Director Ibrahim" />
-                  </div>
-                  <div>
-                    <label class="block font-bold text-slate-700 mb-1">Phone Number (MTN / Airtel) *</label>
-                    <input type="text" id="quote-client-phone" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-600" placeholder="e.g. +256 702 083515" />
-                  </div>
-                </div>
-
-                <div class="grid sm:grid-cols-2 gap-4 text-xs">
-                  <div>
-                    <label class="block font-bold text-slate-700 mb-1">Email Address</label>
-                    <input type="email" id="quote-client-email" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-600" placeholder="e.g. info@school.ug" />
-                  </div>
-                  <div>
-                    <label class="block font-bold text-slate-700 mb-1">School / Organization Name</label>
-                    <input type="text" id="quote-client-org" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-600" placeholder="e.g. Kasenge Secondary School" />
-                  </div>
-                </div>
-
-                <button type="submit" class="w-full bg-[#8B0000] hover:bg-red-800 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:shadow-red-900/30 transition">
-                  Submit Official Quote Request
-                </button>
-              </form>
-            </div>
-
-          </div>
-
-          <!-- Right Calculation Card -->
-          <div class="lg:col-span-4 space-y-6">
-            <div class="bg-[#0B1B3D] text-white rounded-3xl p-6 shadow-xl border border-white/10 sticky top-24 space-y-6">
-              <div>
-                <span class="text-emerald-400 text-[10px] font-black uppercase tracking-widest block">Step 3: Real-Time UGX Calculation</span>
-                <h3 class="text-xl font-black text-white mt-1">Order Summary</h3>
-              </div>
-
-              <!-- Itemized breakdown -->
-              <div class="space-y-2 border-t border-b border-white/10 py-4 text-xs font-mono max-h-64 overflow-y-auto">
-                ${selectedItems.length === 0 ? `
-                  <p class="text-slate-400 text-[11px] font-sans italic py-2">No items selected yet. Select services on the left to build your order total.</p>
-                ` : selectedItems.map(item => `
-                  <div class="flex justify-between items-start gap-2 text-[11px]">
-                    <span class="text-gray-300 font-sans truncate">${item.name} <span class="text-emerald-400 font-mono">(x${item.qty})</span></span>
-                    <span class="font-bold text-emerald-400 shrink-0">UGX ${item.itemTotal.toLocaleString()}</span>
-                  </div>
-                `).join('')}
-              </div>
-
-              <div>
-                <span class="text-xs text-gray-300 block">Total Official Rate:</span>
-                <span class="text-3xl font-black font-mono text-emerald-400 block mt-1">
-                  UGX ${totalUGX.toLocaleString()}
-                </span>
-              </div>
-
-              <a href="https://wa.me/256702083515?text=Hello%20Phresh%20Tech%20Media,%20I%20have%20built%20a%20quote%20order%20totaling%20UGX%20${totalUGX.toLocaleString()}" target="_blank" class="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-3.5 rounded-xl text-center shadow transition">
-                ${WHATSAPP_ICON_SVG}
-                <span>Discuss Order on WhatsApp</span>
-              </a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-window.updateServiceQuantity = function(serviceId, val) {
-  estimatorQuantities[serviceId] = Math.max(0, parseInt(val) || 0);
-  renderApp();
-};
-
-window.updateEstimatorPillar = function(key, val) {
-  estimatorPillars[key] = Math.max(0, parseInt(val) || 0);
-  renderApp();
-};
-
-window.submitQuoteWizard = async function(e) {
-  e.preventDefault();
-  const name = document.getElementById('quote-client-name')?.value;
-  const phone = document.getElementById('quote-client-phone')?.value;
-  const email = document.getElementById('quote-client-email')?.value;
-  const org = document.getElementById('quote-client-org')?.value;
-
-  let total = 0;
-  const itemsList = [];
-  OFFICIAL_PHRESH_SERVICES.forEach(svc => {
-    const qty = estimatorQuantities[svc.id] || 0;
-    if (qty > 0) {
-      const lineTotal = qty * svc.priceUGX;
-      total += lineTotal;
-      itemsList.push(`${svc.name} (x${qty}) - UGX ${lineTotal.toLocaleString()}`);
-    }
-  });
-
-  if (itemsList.length === 0) {
-    alert('Please select at least one service quantity to submit a quote request.');
-    return;
-  }
-
-  try {
-    const res = await fetch('/api/quote/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        clientName: name,
-        phone,
-        email,
-        organization: org,
-        items: itemsList,
-        totalPriceUGX: total
-      })
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert(`Quote Request #${data.quoteId} submitted successfully! Our sales team will call you at ${phone} or contact you via email.`);
-    } else {
-      alert(`Quote logged! Total: UGX ${total.toLocaleString()}`);
-    }
-  } catch (err) {
-    alert(`Quote logged! Total: UGX ${total.toLocaleString()}`);
-  }
-};
-
-// ==========================================
 // 5. COMPANY PROFILE / ABOUT US
 // ==========================================
 function renderAboutPage() {
@@ -2253,14 +1969,14 @@ function renderAboutPage() {
 
           <div class="grid md:grid-cols-2 gap-8">
             <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
-              <div class="w-24 h-24 bg-slate-900 rounded-2xl overflow-hidden shadow-md flex-shrink-0">
-                <img src="directors/ibrahim.jpg" alt="Mulindwa Ibrahim" class="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              <div class="w-24 h-24 bg-slate-900 rounded-2xl overflow-hidden shadow-md flex-shrink-0 flex items-center justify-center text-white font-black text-2xl">
+                <img src="/directors/ibrahim.png" alt="Mulindwa Ibrahim" class="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div class="space-y-2 text-xs">
                 <span class="text-emerald-700 font-bold uppercase tracking-wider text-[10px]">Software Engineering Director</span>
                 <h3 class="text-xl font-black text-slate-900">Mulindwa Ibrahim (Ibra)</h3>
                 <p class="text-slate-600 leading-relaxed">
-                  Leads software architecture, PHP/MySQL database engines, Phresh Rank Core NCDC marks systems, and EduLedger ERP development.
+                  Leads software architecture, enterprise cloud & database systems, Phresh Rank Core NCDC marks systems, and EduLedger ERP development.
                 </p>
                 <div class="pt-2 font-mono font-bold text-slate-900 flex flex-col gap-1">
                   <a href="tel:+256702083515" class="hover:text-emerald-700">+256 702 083515</a>
@@ -2271,8 +1987,8 @@ function renderAboutPage() {
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
-              <div class="w-24 h-24 bg-slate-900 rounded-2xl overflow-hidden shadow-md flex-shrink-0">
-                <img src="directors/steven.jpg" alt="Steven Bagalana" class="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              <div class="w-24 h-24 bg-slate-900 rounded-2xl overflow-hidden shadow-md flex-shrink-0 flex items-center justify-center text-white font-black text-2xl">
+                <img src="/directors/steve.png" alt="Steven Bagalana" class="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div class="space-y-2 text-xs">
                 <span class="text-[#8B0000] font-bold uppercase tracking-wider text-[10px]">Operations & Print Director</span>
