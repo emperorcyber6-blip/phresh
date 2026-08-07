@@ -1,7 +1,6 @@
 import './index.css';
 import heroSoftwareImg from './assets/images/software_hero_noperson_1785948323126.jpg';
 import heroEduledgerImg from './assets/images/eduledger_hero_noperson_1785948337361.jpg';
-import heroPrintingImg from './assets/images/printing_hero_noperson_1785948352256.jpg';
 import heroBrandingImg from './assets/images/branding_hero_noperson_1785948366063.jpg';
 import heroWebHostingImg from './assets/images/web_hosting_hero_noperson_1785948380530.jpg';
 import receiptBooksImg from './assets/images/receipt_books_noperson_1785948394004.jpg';
@@ -344,20 +343,6 @@ const HERO_SLIDES = [
       { number: '100k+', label: 'Reports Generated' },
       { number: '0%', label: 'Arithmetic Errors' },
       { number: 'Instant', label: 'PDF Report Cards' }
-    ]
-  },
-  {
-    title: 'High-Precision Commercial Print House',
-    highlight: 'Waterproof PVC IDs, Receipt Books & Branding',
-    subtitle: 'Ultra-sharp 3D vector logos, serialized financial receipt books, 300gsm laminated cards, and mega event banners.',
-    badge: 'Commercial Print Press Studio',
-    image: heroPrintingImg,
-    ctaText: 'View Print Production',
-    ctaPage: 'services',
-    stats: [
-      { number: '1200 DPI', label: 'High Definition Press' },
-      { number: 'Waterproof', label: 'PVC Identity Badges' },
-      { number: 'Carbonless', label: 'Duplicate Receipts' }
     ]
   },
   {
@@ -1823,8 +1808,8 @@ function renderPortfolioPage() {
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
               <div class="h-64 sm:h-72 bg-slate-900 relative">
-                <img src="${heroPrintingImg}" alt="PVC ID Badges" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Rank Core + Print Press</span>
+                <img src="${heroBrandingImg}" alt="Student Identity & Crests" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Rank Core + Student Identity</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
