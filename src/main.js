@@ -320,8 +320,8 @@ const VALID_PAGES = ['home', 'services', 'portfolio', 'about', 'contact'];
 const HERO_SLIDES = [
   {
     title: 'We Turn Your Ideas Into Reality',
-    highlight: 'Software, Graphic Print Press & Web Hosting',
-    subtitle: 'Kampala’s premier technology & media partner empowering schools, corporations, and enterprise brands across Uganda.',
+    highlight: 'Phresh Rank Core, Print Press & Web Hosting',
+    subtitle: 'Uganda’s premier technology partner empowering schools with Phresh Rank Core report card engines, commercial print press, and web hosting.',
     badge: 'Phresh Tech Media Services',
     image: heroSoftwareImg,
     ctaText: 'Request Custom Quote',
@@ -334,8 +334,8 @@ const HERO_SLIDES = [
   },
   {
     title: 'Automated Educational ERP & UNEB Grading',
-    highlight: 'Phresh EduLedger & Rank Core',
-    subtitle: 'NCDC competence-based report cards, bursary fee collection ledgers, and 100% offline-ready desktop engines.',
+    highlight: 'Phresh Rank Core Flagship Engine',
+    subtitle: 'The #1 NCDC competence-based report card software trusted by Global High School Madudu, Pride College Lungala, Mpigi Light College, and St. Andrews College Moyo.',
     badge: 'Smart Educational Software',
     image: heroEduledgerImg,
     ctaText: 'Explore System Engineering',
@@ -1240,14 +1240,14 @@ function renderHomePage() {
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Trusted Across Educational Institutions</h2>
           </div>
 
-          <div class="grid md:grid-cols-3 gap-6">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
               <div class="flex items-center gap-1 text-amber-400 text-sm">★★★★★</div>
               <p class="text-xs text-slate-700 italic leading-relaxed">
-                "Phresh Rank Core eliminated 3 weeks of manual grade entry for our 1,500+ students. Teachers entry marks smoothly, and parent report cards are generated cleanly in under 10 minutes."
+                "Phresh Rank Core eliminated weeks of manual grade calculation for our students. Teachers enter marks smoothly, and parent report cards are generated cleanly in under 10 minutes."
               </p>
               <div class="border-t border-slate-100 pt-3">
-                <span class="block font-black text-slate-900 text-xs">Mengo Senior School</span>
+                <span class="block font-black text-slate-900 text-xs">Global High School Madudu</span>
                 <span class="text-[10px] text-slate-500">Academic Registrar's Desk</span>
               </div>
             </div>
@@ -1255,22 +1255,33 @@ function renderHomePage() {
             <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
               <div class="flex items-center gap-1 text-amber-400 text-sm">★★★★★</div>
               <p class="text-xs text-slate-700 italic leading-relaxed">
-                "The commercial print press quality at Phresh Tech Media is exceptional. Our PVC identity cards were delivered with crisp student photos, clear barcode printing, and custom lanyards."
+                "Our academic department relies on Phresh Rank Core daily for student marksheets, NCDC competence descriptors, and instant parent PDF report card batch printing."
               </p>
               <div class="border-t border-slate-100 pt-3">
-                <span class="block font-black text-slate-900 text-xs">Lubiri Secondary School</span>
-                <span class="text-[10px] text-slate-500">Student Welfare Department</span>
+                <span class="block font-black text-slate-900 text-xs">Pride College Lungala</span>
+                <span class="text-[10px] text-slate-500">Director of Studies (DOS)</span>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
               <div class="flex items-center gap-1 text-amber-400 text-sm">★★★★★</div>
               <p class="text-xs text-slate-700 italic leading-relaxed">
-                "EduLedger gives us daily fee collection statements and bursary receipts instantly. Director Mulindwa and Director Steven provide top-notch technical support."
+                "Phresh Rank Core coupled with EduLedger gives our school total control over student academic rankings, marksheets, fee ledgers, and official report cards."
               </p>
               <div class="border-t border-slate-100 pt-3">
-                <span class="block font-black text-slate-900 text-xs">St. Lawrence High Schools</span>
-                <span class="text-[10px] text-slate-500">Bursary & Finance Office</span>
+                <span class="block font-black text-slate-900 text-xs">Mpigi Light College</span>
+                <span class="text-[10px] text-slate-500">Bursary & DOS Office</span>
+              </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+              <div class="flex items-center gap-1 text-amber-400 text-sm">★★★★★</div>
+              <p class="text-xs text-slate-700 italic leading-relaxed">
+                "Phresh Rank Core's 100% offline desktop engine guarantees zero downtime during end-of-term report card generation. It is the most reliable school marks system in Uganda."
+              </p>
+              <div class="border-t border-slate-100 pt-3">
+                <span class="block font-black text-slate-900 text-xs">St. Andrews College Moyo</span>
+                <span class="text-[10px] text-slate-500">Headteacher's Desk</span>
               </div>
             </div>
           </div>
@@ -1326,8 +1337,8 @@ function renderHeroSlideContent() {
 
       <div class="lg:col-span-5 relative">
         <div class="bg-gradient-to-br from-[#1E7E34]/20 to-[#8B0000]/20 p-2 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
-          <img src="${slide.image}" alt="${slide.title}" class="w-full h-80 sm:h-96 object-cover rounded-2xl shadow-inner relative z-10" referrerPolicy="no-referrer" onerror="this.onerror=null; this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');" />
-          <div class="hidden w-full h-80 sm:h-96 rounded-2xl bg-gradient-to-br from-[#0B1B3D] via-[#08132B] to-[#1E7E34]/40 p-6 flex flex-col justify-between border border-white/10">
+          <img src="${slide.image}" alt="${slide.title}" class="w-full h-[420px] sm:h-[500px] lg:h-[560px] object-cover rounded-2xl shadow-inner relative z-10" referrerPolicy="no-referrer" onerror="this.onerror=null; this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');" />
+          <div class="hidden w-full h-[420px] sm:h-[500px] lg:h-[560px] rounded-2xl bg-gradient-to-br from-[#0B1B3D] via-[#08132B] to-[#1E7E34]/40 p-6 flex flex-col justify-between border border-white/10">
             <div class="flex items-center justify-between">
               <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-400/30">${slide.badge}</span>
               <img src="/logo.svg" alt="Phresh Logo" class="h-8 w-auto bg-white/10 p-1 rounded-lg" />
@@ -1773,110 +1784,74 @@ function renderPortfolioPage() {
 
         ${activePortfolioCategory !== 'engineering' ? `
           <!-- Media Showcase Grid -->
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-48 bg-slate-900 relative">
-                <img src="${heroEduledgerImg}" alt="EduLedger" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Database Systems</span>
+              <div class="h-64 sm:h-72 bg-slate-900 relative">
+                <img src="${heroSoftwareImg}" alt="Phresh Rank Core" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Flagship Core Engine</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">Mengo Senior School</span>
-                  <h3 class="font-black text-slate-900 text-base">EduLedger Fee Collection & Ledger ERP</h3>
-                  <p class="text-xs text-slate-600 mt-1">Real-time student fee statement receipts, partial payments, and bursary auditing.</p>
+                  <span class="text-[11px] font-bold text-emerald-700 block">Global High School Madudu</span>
+                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core NCDC Marks Engine & EduLedger</h3>
+                  <p class="text-xs text-slate-600 mt-1">Full NCDC competence-based marksheets, batch parent PDF reports, and fee ledger tracking.</p>
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">100% Fee Accuracy</span>
+                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded text-[10px]">Phresh Rank Core Active</span>
                   <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-48 bg-slate-900 relative">
-                <img src="${heroSoftwareImg}" alt="Rank Core" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Educational Software</span>
+              <div class="h-64 sm:h-72 bg-slate-900 relative">
+                <img src="${heroEduledgerImg}" alt="Phresh Rank Core" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Flagship Core Engine</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">Lubiri Secondary School</span>
-                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core Report Card Generator</h3>
-                  <p class="text-xs text-slate-600 mt-1">NCDC & UNEB marksheet system with instant parent PDF report cards.</p>
+                  <span class="text-[11px] font-bold text-emerald-700 block">Pride College Lungala</span>
+                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core Marksheet & Grading System</h3>
+                  <p class="text-xs text-slate-600 mt-1">Offline-ready desktop marks entry, UNEB grade tabulations, class rankings, and parent report dispatch.</p>
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">5,000+ Reports in 2Mins</span>
+                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded text-[10px]">Phresh Rank Core Active</span>
                   <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-48 bg-slate-900 relative">
-                <img src="${heroPrintingImg}" alt="PVC ID" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Commercial Printing</span>
+              <div class="h-64 sm:h-72 bg-slate-900 relative">
+                <img src="${heroPrintingImg}" alt="PVC ID Badges" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Rank Core + Print Press</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">St. Lawrence Schools</span>
-                  <h3 class="font-black text-slate-900 text-base">Water-Resistant PVC Student Identity Badges</h3>
-                  <p class="text-xs text-slate-600 mt-1">300gsm laminated PVC badges with barcode encoding and custom lanyards.</p>
+                  <span class="text-[11px] font-bold text-emerald-700 block">Mpigi Light College</span>
+                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core Marks & Waterproof PVC Badges</h3>
+                  <p class="text-xs text-slate-600 mt-1">Unified academic grading powered by Phresh Rank Core, with barcode-encoded student PVC badges.</p>
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">12,000+ Badges Printed</span>
+                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded text-[10px]">Phresh Rank Core Active</span>
                   <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
             </div>
 
             <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-48 bg-slate-900 relative">
-                <img src="${receiptBooksImg}" alt="Receipt Books" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Financial Print Press</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">Kampala Commercial Brands</span>
-                  <h3 class="font-black text-slate-900 text-base">Serialized Carbonless Duplicate Receipt Books</h3>
-                  <p class="text-xs text-slate-600 mt-1">Official audit books with consecutive numbering, hard covers, and custom branding.</p>
-                </div>
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">1,000+ Books Delivered</span>
-                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-48 bg-slate-900 relative">
-                <img src="${heroBrandingImg}" alt="Brand Identity" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#1E7E34] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Graphic Design</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">Wakiso Corporate Institutions</span>
-                  <h3 class="font-black text-slate-900 text-base">3D Vector School Crests & Corporate Identity</h3>
-                  <p class="text-xs text-slate-600 mt-1">Full brand manuals, high-definition emblem vectors, letterheads, and banners.</p>
-                </div>
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">3D Vector Precision</span>
-                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-48 bg-slate-900 relative">
+              <div class="h-64 sm:h-72 bg-slate-900 relative">
                 <img src="${heroWebHostingImg}" alt="Web Portal" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-amber-700 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Web Hosting</span>
+                <span class="absolute top-3 left-3 bg-amber-700 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Rank Core + Web Portal</span>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">Institutional School Web Portals</span>
-                  <h3 class="font-black text-slate-900 text-base">Managed Web Design & cPanel Cloud Hosting</h3>
-                  <p class="text-xs text-slate-600 mt-1">Online admission portals, staff directories, speed optimized cPanel SSD storage, and SSL.</p>
+                  <span class="text-[11px] font-bold text-emerald-700 block">St. Andrews College Moyo</span>
+                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core Engine & Web Portal Hosting</h3>
+                  <p class="text-xs text-slate-600 mt-1">100% offline Phresh Rank Core report card engine integrated with online school portal and cloud backups.</p>
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-slate-100 font-bold px-2 py-1 rounded text-[10px]">99.9% Uptime Guarantee</span>
+                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded text-[10px]">Phresh Rank Core Active</span>
                   <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
                 </div>
               </div>
@@ -1968,11 +1943,11 @@ function renderAboutPage() {
           </div>
 
           <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
-              <div class="w-24 h-24 bg-slate-900 rounded-2xl overflow-hidden shadow-md flex-shrink-0 flex items-center justify-center text-white font-black text-2xl">
-                <img src="/directors/ibrahim.png" alt="Mulindwa Ibrahim" class="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <div class="w-36 h-36 sm:w-48 sm:h-48 bg-slate-900 rounded-3xl overflow-hidden shadow-lg flex-shrink-0 flex items-center justify-center text-white font-black text-2xl border-2 border-slate-100">
+                <img src="/directors/ibrahim.png" alt="Mulindwa Ibrahim" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
               </div>
-              <div class="space-y-2 text-xs">
+              <div class="space-y-2 text-xs text-center sm:text-left flex-1">
                 <span class="text-emerald-700 font-bold uppercase tracking-wider text-[10px]">Software Engineering Director</span>
                 <h3 class="text-xl font-black text-slate-900">Mulindwa Ibrahim (Ibra)</h3>
                 <p class="text-slate-600 leading-relaxed">
@@ -1986,11 +1961,11 @@ function renderAboutPage() {
               </div>
             </div>
 
-            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
-              <div class="w-24 h-24 bg-slate-900 rounded-2xl overflow-hidden shadow-md flex-shrink-0 flex items-center justify-center text-white font-black text-2xl">
-                <img src="/directors/steve.png" alt="Steven Bagalana" class="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <div class="w-36 h-36 sm:w-48 sm:h-48 bg-slate-900 rounded-3xl overflow-hidden shadow-lg flex-shrink-0 flex items-center justify-center text-white font-black text-2xl border-2 border-slate-100">
+                <img src="/directors/steve.png" alt="Steven Bagalana" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
               </div>
-              <div class="space-y-2 text-xs">
+              <div class="space-y-2 text-xs text-center sm:text-left flex-1">
                 <span class="text-[#8B0000] font-bold uppercase tracking-wider text-[10px]">Operations & Print Director</span>
                 <h3 class="text-xl font-black text-slate-900">Steven Bagalana (Steve)</h3>
                 <p class="text-slate-600 leading-relaxed">
