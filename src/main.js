@@ -1,36 +1,203 @@
 import './index.css';
-import heroSoftwareImg from './assets/images/software_hero_noperson_1785948323126.jpg';
-import heroEduledgerImg from './assets/images/eduledger_hero_noperson_1785948337361.jpg';
-import heroBrandingImg from './assets/images/branding_hero_noperson_1785948366063.jpg';
-import heroWebHostingImg from './assets/images/web_hosting_hero_noperson_1785948380530.jpg';
-import receiptBooksImg from './assets/images/receipt_books_noperson_1785948394004.jpg';
+
+// Primary Product Showcase Images (Using Uploaded Official Phresh Assets)
+const heroSoftwareImg = '/images/phresh rank core.png';
+const heroEduledgerImg = '/images/phresh eduleager finance managment sysment.png';
+const heroBrandingImg = '/images/school banners.png';
+const heroWebHostingImg = '/images/database systems offered.jpg';
+const receiptBooksImg = '/images/receipt_books.jpg';
+
+// Official Product Showcase Gallery Array
+const PRODUCT_SHOWCASE_GALLERY = [
+  {
+    id: 'rank-core',
+    title: 'Phresh Rank Core Report Card Engine',
+    subtitle: 'NCDC competence-based marksheets, UNEB grading, offline desktop marks entry, and batch parent PDF report dispatch.',
+    category: 'software',
+    badge: 'Flagship Core Engine',
+    badgeBg: 'bg-emerald-700',
+    img: '/images/phresh rank core.png',
+    client: 'Global High School Madudu & Pride College'
+  },
+  {
+    id: 'eduledger',
+    title: 'Phresh EduLedger Finance Management System',
+    subtitle: 'Complete school fees ledger, bursary management, student financial balances, and automated cash receipting.',
+    category: 'software',
+    badge: 'School Fee ERP',
+    badgeBg: 'bg-[#0B1B3D]',
+    img: '/images/phresh eduleager finance managment sysment.png',
+    client: 'Educational Institutions'
+  },
+  {
+    id: 'rent-ledger',
+    title: 'Phresh Rent Ledger Property Management System',
+    subtitle: 'Landlord & estate manager system for tracking tenant rentals, lease terms, rent receipts, and occupancy ledgers.',
+    category: 'software',
+    badge: 'Property ERP',
+    badgeBg: 'bg-indigo-700',
+    img: '/images/phresh rent ledger property management sysment.png',
+    client: 'Real Estate & Landlords'
+  },
+  {
+    id: 'biztrack',
+    title: 'Phresh BizTrack Business Management System',
+    subtitle: 'Retail Point of Sale, inventory tracking, wholesale supplier orders, profit/loss tracking, and cashier daily audit.',
+    category: 'software',
+    badge: 'Retail & POS System',
+    badgeBg: 'bg-blue-700',
+    img: '/images/phresh biztrack bussiness managment system.png',
+    client: 'Commercial Retailers'
+  },
+  {
+    id: 'church-mgr',
+    title: 'Church Management System',
+    subtitle: 'Tithe recording, congregational membership directory, ministry pledges, event calendar, and financial tracking.',
+    category: 'software',
+    badge: 'Church ERP',
+    badgeBg: 'bg-purple-700',
+    img: '/images/church manager.png',
+    client: 'Churches & Religious Orgs'
+  },
+  {
+    id: 'income-expense',
+    title: 'Income & Expense Major Module',
+    subtitle: 'Comprehensive financial reporting module for categorizing departmental expenses, major income streams, and audit logs.',
+    category: 'software',
+    badge: 'Financial Ledger',
+    badgeBg: 'bg-emerald-800',
+    img: '/images/expense income major.png',
+    client: 'Enterprise Accounting'
+  },
+  {
+    id: 'db-offered',
+    title: 'Phresh Custom Database Systems Suite',
+    subtitle: 'Full lineup of custom database systems tailored for Ugandan schools, real estate, churches, POS, and businesses.',
+    category: 'software',
+    badge: 'Database Architecture',
+    badgeBg: 'bg-slate-800',
+    img: '/images/database systems offered.jpg',
+    client: 'Ugandan Enterprises'
+  },
+  {
+    id: 'eduledger-desc',
+    title: 'EduLedger Specifications & Features Overview',
+    subtitle: 'Detailed breakdown of EduLedger modules including fee structures, student ledgers, receipt history, and reports.',
+    category: 'software',
+    badge: 'ERP Specification',
+    badgeBg: 'bg-amber-700',
+    img: '/images/edu ledger description.jpg',
+    client: 'School Administrators'
+  },
+  {
+    id: 'graphics-services',
+    title: '3D Graphic Design & Branding Suite',
+    subtitle: 'Vector logos, corporate brand manuals, school crests, marketing collateral, and UI asset kits created in Kampala.',
+    category: 'design',
+    badge: 'Graphic Design Studio',
+    badgeBg: 'bg-[#1E7E34]',
+    img: '/images/graphics services.jpg',
+    client: 'Institutional Branding'
+  },
+  {
+    id: 'school-banners-1',
+    title: 'Institutional School Banners & Signage',
+    subtitle: 'High-resolution outdoor vinyl banners, graduation backdrops, sports day banners, and custom school signage.',
+    category: 'design',
+    badge: 'School Signage Press',
+    badgeBg: 'bg-[#8B0000]',
+    img: '/images/school banners.png',
+    client: 'Mpigi Light & Partner Colleges'
+  },
+  {
+    id: 'school-banners-2',
+    title: 'Custom Event & Educational Banners',
+    subtitle: 'Heavy-duty 300gsm laminated banners and custom print promotional materials for events and school admissions.',
+    category: 'design',
+    badge: 'Banner Press House',
+    badgeBg: 'bg-red-700',
+    img: '/images/schiool banners 1.png',
+    client: 'Event Organizers & Schools'
+  },
+  {
+    id: 'receipt-books',
+    title: 'Serialized Duplicate Carbonless Receipt Books',
+    subtitle: 'Official 100-leaf carbonless duplicate receipt books for schools, churches, hardware stores, and general businesses.',
+    category: 'print',
+    badge: 'Commercial Print Press',
+    badgeBg: 'bg-[#8B0000]',
+    img: '/images/receipt_books.jpg',
+    client: 'Commercial Accounts'
+  },
+  {
+    id: 'steve-printing',
+    title: 'Phresh Commercial Print Press Machinery',
+    subtitle: 'State-of-the-art commercial print press equipment operated by Director Steven Bagalana in Kasenge, Kampala.',
+    category: 'print',
+    badge: 'Press House Operations',
+    badgeBg: 'bg-slate-900',
+    img: '/images/steve printing.png',
+    client: 'Phresh Press Studio'
+  },
+  {
+    id: 'phresh-services-banner',
+    title: 'Phresh Tech Media Services Official Banner',
+    subtitle: 'Complete overview of Phresh software engineering, printing press, web development, and branding capabilities.',
+    category: 'general',
+    badge: 'Official Master Banner',
+    badgeBg: 'bg-emerald-900',
+    img: '/images/phresh service banner.png',
+    client: 'Phresh Media HQ'
+  },
+  {
+    id: 'phresh-services-showcase',
+    title: 'Phresh Services Master Catalog',
+    subtitle: 'Visual catalog showcasing all 21 official technology and printing services provided across Uganda.',
+    category: 'general',
+    badge: 'Services Showcase',
+    badgeBg: 'bg-[#0B1B3D]',
+    img: '/images/phresh services.jpg',
+    client: 'Phresh Client Network'
+  }
+];
+
+// Modal State
+let activeImagePreviewModal = null;
+window.openImageModal = function(img, title, subtitle, badge) {
+  activeImagePreviewModal = { img, title, subtitle, badge };
+  renderApp();
+};
+window.closeImageModal = function() {
+  activeImagePreviewModal = null;
+  renderApp();
+};
 
 // Reusable Official WhatsApp Vector Icon SVG
 const WHATSAPP_ICON_SVG = `<svg class="w-4 h-4 fill-current shrink-0 text-white animate-whatsapp-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>`;
 
 // Official Phresh Services Master Pricing Catalog
 const OFFICIAL_PHRESH_SERVICES = [
-  { id: 'rank-core-new', name: 'Phresh Rank Core (New Customer) & Termly Subscription', priceUGX: 400000, category: 'software', note: 'Includes 100k termly subscription' },
-  { id: 'rank-core-offline', name: 'Phresh Rank Core (Offline)', priceUGX: 350000, category: 'software', note: 'One-time payment' },
-  { id: 'rank-core-dual', name: 'Phresh Rank Core (Dual Online/Offline)', priceUGX: 300000, category: 'software', note: 'Initial deposit' },
-  { id: 'church-mgmt', name: 'Church Management System', priceUGX: 400000, category: 'software', note: 'One-time payment' },
-  { id: 'pos-offline', name: 'Point of Sale (Offline)', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'pos-online-annual', name: 'Point of Sale (Online)', priceUGX: 400000, category: 'software', note: 'Includes annual payment of 120,000' },
-  { id: 'pos-online-onetime', name: 'Phresh Point of Sale (Online)', priceUGX: 800000, category: 'software', note: 'One-time payment' },
-  { id: 'domain-purchases', name: 'Domain Purchases', priceUGX: 25000, category: 'web', note: 'Phresh Service' },
+  { id: 'rank-core-new', name: 'Phresh Rank core(New Customer) and termly subscription of 100k', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
+  { id: 'rank-core-offline', name: 'Phresh Rank Core (Offline) one time payment', priceUGX: 350000, category: 'software', note: 'Phresh Service' },
+  { id: 'church-mgmt', name: 'Church Management System(One time)', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
+  { id: 'pos-offline', name: 'Point of sale (offline)', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
+  { id: 'pos-online-annual', name: 'Point of sale (Online includes annual payment of 120,000)', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
+  { id: 'domain-purchases', name: 'Domain purchases', priceUGX: 25000, category: 'web', note: 'Phresh Service' },
   { id: 'eduledger', name: 'Phresh Eduledger', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'rent-ledger', name: 'Phresh Rent Ledger', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'elesson-manager', name: 'Phresh E-lesson Manager', priceUGX: 600000, category: 'software', note: 'Phresh Service' },
+  { id: 'rent-ledger', name: 'Phresh Rent ledger', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
+  { id: 'pos-online-onetime', name: 'Phresh Point of Sale(online) one time payment', priceUGX: 800000, category: 'software', note: 'Phresh Service' },
+  { id: 'elesson-manager', name: 'Phresh E-lesson manager', priceUGX: 600000, category: 'software', note: 'Phresh Service' },
   { id: 'graphic-designing', name: 'Graphic Designing', priceUGX: 15000, category: 'design', note: 'Phresh Service' },
   { id: 'phresh-branding', name: 'Phresh Branding', priceUGX: 10000, category: 'design', note: 'Phresh Service' },
-  { id: 'minor-branding', name: 'Minor Branding', priceUGX: 5000, category: 'design', note: 'Phresh Service' },
-  { id: 'medium-branding', name: 'Medium Branding', priceUGX: 15000, category: 'design', note: 'Phresh Service' },
-  { id: 'mega-branding', name: 'Mega Branding', priceUGX: 25000, category: 'design', note: 'Phresh Service' },
   { id: 'phresh-nexus', name: 'Phresh-Nexus', priceUGX: 850000, category: 'software', note: 'Phresh Service' },
-  { id: 'system-renewal', name: 'System Renewal', priceUGX: 100000, category: 'software', note: 'Phresh Service' },
-  { id: 'system-wholesale', name: 'System Wholesale', priceUGX: 1500000, category: 'software', note: 'Phresh Service' },
-  { id: 'receipt-book', name: 'Receipt Book (100 Leaves)', priceUGX: 25000, category: 'print', note: 'Phresh Service' },
-  { id: 'banner-sticker', name: 'Banner / Sticker Printing (Per sq m)', priceUGX: 25000, category: 'print', note: 'Phresh Service' }
+  { id: 'system-renewal', name: 'System renewal', priceUGX: 100000, category: 'software', note: 'Phresh Service' },
+  { id: 'system-wholesale', name: 'System whole sale', priceUGX: 1500000, category: 'software', note: 'Phresh Service' },
+  { id: 'minor-branding', name: 'Minor branding', priceUGX: 5000, category: 'design', note: 'Phresh Service' },
+  { id: 'medium-branding', name: 'Medium branding', priceUGX: 15000, category: 'design', note: 'Phresh Service' },
+  { id: 'mega-branding', name: 'Mega branding', priceUGX: 25000, category: 'design', note: 'Phresh Service' },
+  { id: 'receipt-book', name: 'Receipt book (100)', priceUGX: 25000, category: 'print', note: 'Phresh Service' },
+  { id: 'banner-sticker', name: 'Banner/ sticker printing(Per square metre)', priceUGX: 25000, category: 'print', note: 'Phresh Service' },
+  { id: 'rank-core-dual', name: 'Phresh rank core (dual online/ offline) initial deposit', priceUGX: 300000, category: 'software', note: 'Phresh Service' }
 ];
 
 // System State
@@ -55,9 +222,51 @@ let homeCalcSelections = {
 // User Auth & Cart System State
 let currentUser = JSON.parse(localStorage.getItem('phresh_user') || 'null');
 let cartItems = JSON.parse(localStorage.getItem('phresh_cart') || '[]');
+let cartSpecificDetails = localStorage.getItem('phresh_cart_details') || '';
 let isCartDrawerOpen = false;
 let isAuthModalOpen = false;
 let toastMessage = null;
+
+window.updateCartSpecificDetails = function(val) {
+  cartSpecificDetails = val;
+  localStorage.setItem('phresh_cart_details', val);
+};
+
+window.checkoutViaWhatsApp = function() {
+  if (cartItems.length === 0) return;
+  const totalUGX = cartItems.reduce((acc, i) => acc + (i.priceUGX * i.qty), 0);
+  const itemsText = cartItems.map(i => `• ${i.name} (x${i.qty}) - UGX ${(i.priceUGX * i.qty).toLocaleString()}`).join('\n');
+  
+  let msg = `Hello Phresh Tech Media Services,\nI would like to place an order for the following services:\n\n${itemsText}\n\n*Total Estimate: UGX ${totalUGX.toLocaleString()}*`;
+  if (cartSpecificDetails.trim()) {
+    msg += `\n\n*Specific details (e.g. Colors, Sizes, Due Date):*\n${cartSpecificDetails.trim()}`;
+  }
+  if (currentUser) {
+    msg += `\n\n*Client Details:*\nName: ${currentUser.name}\nEmail: ${currentUser.email}${currentUser.phone ? `\nPhone: ${currentUser.phone}` : ''}${currentUser.organization ? `\nOrg: ${currentUser.organization}` : ''}`;
+  }
+  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(msg)}`, '_blank');
+};
+
+// Sticky Floating WhatsApp Chat Widget State & Handlers
+let isWhatsAppWidgetOpen = false;
+
+window.toggleWhatsAppWidget = function() {
+  isWhatsAppWidgetOpen = !isWhatsAppWidgetOpen;
+  renderApp();
+};
+
+window.sendWhatsAppInquiry = function(presetText) {
+  const text = presetText || 'Hello Phresh Tech Media Services, I would like to inquire about your services.';
+  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(text)}`, '_blank');
+};
+
+window.sendCustomWhatsAppMsg = function(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById('whatsapp-floating-input');
+  const msg = input ? input.value.trim() : '';
+  const text = msg || 'Hello Phresh Tech Media Services, I would like to inquire about your services.';
+  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(text)}`, '_blank');
+};
 
 // Secure Contact Form State
 let contactFormState = {
@@ -293,6 +502,7 @@ window.checkoutCart = async function() {
       body: JSON.stringify({
         user: currentUser,
         cartItems: cartItems.map(i => ({ id: i.id, name: i.name, price: i.priceUGX, qty: i.qty })),
+        specificDetails: cartSpecificDetails,
         totalUGX: totalUGX
       })
     });
@@ -658,19 +868,12 @@ function renderApp() {
       </div>
     </footer>
 
-    <!-- Floating Action Bar for Mobile & Quick Cart -->
-    <div class="fixed bottom-6 right-6 z-40 flex items-center gap-3">
-      <button onclick="toggleCartDrawer()" class="bg-[#0B1B3D] hover:bg-slate-900 text-white p-3.5 rounded-full shadow-2xl border border-slate-700 flex items-center gap-2 transition hover:scale-105">
-        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-        <span class="text-xs font-bold hidden sm:inline">Phresh Cart</span>
-        <span class="bg-[#1E7E34] text-white text-[11px] font-black px-2 py-0.5 rounded-full">${cartItems.reduce((a,b)=>a+b.qty,0)}</span>
-      </button>
-    </div>
-
-    <!-- Modals, Drawers & Toast -->
+    <!-- Sticky Floating Action Bar & Modals -->
+    ${renderFloatingWhatsAppWidget()}
     ${renderToastNotification()}
     ${renderCartDrawer()}
     ${renderAuthModal()}
+    ${renderImagePreviewModal()}
   `;
 
   // Render sub-slide content if on home page
@@ -680,8 +883,175 @@ function renderApp() {
 }
 
 // ==========================================
-// EMAIL & CART MODAL COMPONENT RENDERERS
+// IMAGE PREVIEW LIGHTBOX MODAL
 // ==========================================
+function renderImagePreviewModal() {
+  if (!activeImagePreviewModal) return '';
+  return `
+    <div class="fixed inset-0 z-[110] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fade-in" onclick="closeImageModal()">
+      <div class="relative max-w-5xl w-full bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden shadow-2xl space-y-4 p-4 sm:p-6" onclick="event.stopPropagation()">
+        
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-3">
+            <span class="${activeImagePreviewModal.badgeBg || 'bg-emerald-600'} text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-white/20">
+              ${activeImagePreviewModal.badge || 'Official System Screenshot'}
+            </span>
+            <h3 class="text-base sm:text-xl font-black text-white">${activeImagePreviewModal.title}</h3>
+          </div>
+          <button onclick="closeImageModal()" class="w-10 h-10 bg-slate-800 hover:bg-slate-700 text-white rounded-full flex items-center justify-center text-lg font-bold transition">
+            ✕
+          </button>
+        </div>
+
+        <div class="relative bg-black rounded-2xl overflow-hidden max-h-[75vh] flex items-center justify-center">
+          <img src="${activeImagePreviewModal.img}" alt="${activeImagePreviewModal.title}" class="max-h-[72vh] w-auto max-w-full object-contain mx-auto" referrerPolicy="no-referrer" />
+        </div>
+
+        ${activeImagePreviewModal.subtitle ? `
+          <div class="pt-2 text-xs text-slate-300 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p class="leading-relaxed">${activeImagePreviewModal.subtitle}</p>
+            <button onclick="closeImageModal(); navigateTo('contact');" class="bg-[#1E7E34] hover:bg-emerald-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex-shrink-0">
+              Inquire About This System →
+            </button>
+          </div>
+        ` : ''}
+
+      </div>
+    </div>
+  `;
+}
+
+// ==========================================
+// STICKY FLOATING WHATSAPP CHAT WIDGET RENDERER
+// ==========================================
+function renderFloatingWhatsAppWidget() {
+  return `
+    <div class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end gap-3 pointer-events-none">
+      
+      ${isWhatsAppWidgetOpen ? `
+        <!-- Floating Interactive WhatsApp Chat Box Card -->
+        <div class="pointer-events-auto w-80 sm:w-96 bg-slate-900 border border-emerald-500/40 rounded-3xl shadow-2xl overflow-hidden animate-fade-in text-white mb-1 space-y-0">
+          
+          <!-- Card Header -->
+          <div class="bg-gradient-to-r from-[#1E7E34] via-[#155d26] to-[#0B1B3D] p-4 flex items-center justify-between border-b border-white/10">
+            <div class="flex items-center gap-3">
+              <div class="relative w-10 h-10 rounded-full bg-emerald-700 border-2 border-white/40 flex items-center justify-center overflow-hidden shrink-0">
+                <span class="text-white text-base font-black">P</span>
+                <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <h4 class="font-extrabold text-sm text-white">Phresh Tech Media Support</h4>
+                  <span class="bg-emerald-400/20 text-emerald-300 text-[9px] font-black uppercase px-2 py-0.5 rounded-full border border-emerald-400/30">Online</span>
+                </div>
+                <p class="text-[11px] text-emerald-100/90 font-medium">Direct Line • +256 757 848 094</p>
+              </div>
+            </div>
+            <button onclick="toggleWhatsAppWidget()" class="w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center text-sm font-bold transition">
+              ✕
+            </button>
+          </div>
+
+          <!-- Chat Content Body -->
+          <div class="p-4 bg-slate-950/90 space-y-3 text-xs">
+            
+            <!-- Welcome Bubble -->
+            <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-xs p-3.5 space-y-1 text-slate-200">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Director Ibrahim & Steven</span>
+                <span class="text-[9px] text-slate-400">Kampala, UG</span>
+              </div>
+              <p class="leading-relaxed">
+                Hello! 👋 Welcome to Phresh Tech Media. How can we help your school, business, or project today?
+              </p>
+            </div>
+
+            <!-- Quick Inquiry Buttons -->
+            <div class="space-y-1.5 pt-1">
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">Select Quick Inquiry Topic:</p>
+              
+              <div class="grid grid-cols-1 gap-1.5">
+                <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I need an inquiry/quote for Phresh Rank Core School Report Card Engine.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
+                  <span class="font-medium text-xs">🎓 Phresh Rank Core Report Cards</span>
+                  <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
+                </button>
+
+                <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I would like to inquire about EduLedger School Fees ERP System.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
+                  <span class="font-medium text-xs">💳 EduLedger Fee Management ERP</span>
+                  <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
+                </button>
+
+                <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I would like to order Duplicate Carbonless Receipt Books or School Banners.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
+                  <span class="font-medium text-xs">🖨️ Receipt Books, Banners & Press</span>
+                  <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
+                </button>
+
+                <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I need a custom database system / website build.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
+                  <span class="font-medium text-xs">💻 Custom Software & Web Systems</span>
+                  <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Custom Message Form -->
+            <form onsubmit="sendCustomWhatsAppMsg(event)" class="pt-2 border-t border-slate-800 space-y-2">
+              <label for="whatsapp-floating-input" class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block px-1">Or Type Custom Message:</label>
+              <div class="flex items-center gap-2">
+                <input id="whatsapp-floating-input" type="text" placeholder="e.g. I need 5 receipt books delivered in Kampala..." class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition" />
+                <button type="submit" class="bg-[#1E7E34] hover:bg-emerald-600 text-white font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1 shrink-0 transition shadow-sm">
+                  <span>Send</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </form>
+
+            <!-- Direct Link Button -->
+            <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media,%20I%20have%20an%20inquiry%20about%20your%20services." target="_blank" class="block w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 rounded-xl shadow transition text-xs mt-2">
+              ⚡ Open Direct Chat (+256 757 848094)
+            </a>
+
+          </div>
+
+        </div>
+      ` : ''}
+
+      <!-- Sticky Floating Button Launcher Group -->
+      <div class="pointer-events-auto flex items-center gap-3">
+        
+        <!-- Quick Cart Launcher Button -->
+        <button onclick="toggleCartDrawer()" title="View Cart" class="bg-[#0B1B3D] hover:bg-slate-900 text-white p-3.5 rounded-full shadow-2xl border border-slate-700 flex items-center gap-2 transition hover:scale-105 active:scale-95">
+          <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+          <span class="text-xs font-bold hidden sm:inline">Phresh Cart</span>
+          <span class="bg-[#1E7E34] text-white text-[11px] font-black px-2 py-0.5 rounded-full">${cartItems.reduce((a,b)=>a+b.qty,0)}</span>
+        </button>
+
+        <!-- Sticky Floating WhatsApp Button -->
+        <button onclick="toggleWhatsAppWidget()" title="Contact Phresh Tech Media on WhatsApp" class="relative group bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-full shadow-2xl border border-emerald-400/50 flex items-center gap-2.5 transition-all duration-300 transform hover:scale-105 active:scale-95 ring-4 ring-emerald-500/20">
+          
+          <!-- Pulsing Status Ring Indicator -->
+          <span class="absolute -top-1 -right-1 flex h-4 w-4">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-slate-900"></span>
+          </span>
+
+          ${WHATSAPP_ICON_SVG}
+
+          <span class="text-xs sm:text-sm font-extrabold tracking-tight text-white whitespace-nowrap">
+            ${isWhatsAppWidgetOpen ? 'Close Chat' : 'WhatsApp Chat'}
+          </span>
+
+          <!-- Tooltip Hint on hover for desktop -->
+          <span class="absolute right-0 -top-10 bg-slate-900 text-white text-[10px] font-extrabold px-3 py-1.5 rounded-lg shadow-lg border border-slate-700 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none hidden sm:block">
+            Online • Tap to Chat (+256 757 848 094)
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
 function renderToastNotification() {
   if (!toastMessage) return '';
   return `
@@ -757,17 +1127,17 @@ function renderCartDrawer() {
 
   return `
     <div class="fixed inset-0 z-[90] bg-slate-900/60 backdrop-blur-xs flex justify-end animate-fade-in">
-      <div class="bg-white w-full max-w-md h-full shadow-2xl border-l border-slate-200 flex flex-col justify-between">
+      <div class="bg-white w-full max-w-md h-full shadow-2xl border-l border-slate-200 flex flex-col justify-between overflow-hidden">
         
         <!-- Cart Header -->
-        <div class="bg-[#0B1B3D] text-white p-5 flex items-center justify-between border-b border-white/10">
+        <div class="bg-[#0B1B3D] text-white p-5 flex items-center justify-between border-b border-white/10 shrink-0">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400">
               🛒
             </div>
             <div>
               <h3 class="font-black text-base">Phresh Service Cart</h3>
-              <p class="text-xs text-emerald-400">${cartItems.length} items selected</p>
+              <p class="text-xs text-emerald-400">${cartItems.length} service item(s) selected</p>
             </div>
           </div>
           <button onclick="toggleCartDrawer()" class="text-slate-300 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
@@ -775,18 +1145,32 @@ function renderCartDrawer() {
           </button>
         </div>
 
+        <!-- Quick Pick Service Dropdown -->
+        <div class="p-4 bg-slate-100 border-b border-slate-200 shrink-0">
+          <label class="block text-[11px] font-black uppercase text-slate-700 mb-1.5 flex items-center justify-between">
+            <span>⚡ Pick Services to Add</span>
+            <span class="text-emerald-700 font-mono text-[10px]">21 Services Available</span>
+          </label>
+          <select onchange="if(this.value){ addToCart(this.value); this.value=''; }" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-emerald-600 shadow-xs">
+            <option value="">+ Search or Pick Service to Add to Cart...</option>
+            ${OFFICIAL_PHRESH_SERVICES.map(s => `
+              <option value="${s.id}">${s.name} — UGX ${s.priceUGX.toLocaleString()}</option>
+            `).join('')}
+          </select>
+        </div>
+
         <!-- User Email Notice in Cart -->
-        <div class="bg-slate-50 px-5 py-3 border-b border-slate-200 flex items-center justify-between">
+        <div class="bg-slate-50 px-5 py-2.5 border-b border-slate-200 flex items-center justify-between shrink-0">
           ${currentUser && currentUser.email ? `
             <div class="flex items-center gap-2 text-xs">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span class="text-slate-600">Receiving email to: <strong class="text-slate-900">${currentUser.email}</strong></span>
+              <span class="text-slate-600">Client: <strong class="text-slate-900">${currentUser.email}</strong></span>
             </div>
             <button onclick="openAuthModal()" class="text-[11px] text-emerald-700 font-bold hover:underline">Change</button>
           ` : `
             <div class="flex items-center gap-2 text-xs text-amber-800">
               <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-              <span>Email login required for follow-up</span>
+              <span>Email required for order confirmation</span>
             </div>
             <button onclick="openAuthModal()" class="text-[11px] bg-amber-100 text-amber-900 font-bold px-2.5 py-1 rounded-lg hover:bg-amber-200">Sign In</button>
           `}
@@ -795,52 +1179,70 @@ function renderCartDrawer() {
         <!-- Cart Items List -->
         <div class="p-5 flex-1 overflow-y-auto space-y-3">
           ${cartItems.length === 0 ? `
-            <div class="text-center py-12 space-y-3">
+            <div class="text-center py-10 space-y-3">
               <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center text-2xl">
                 🛒
               </div>
-              <p class="text-slate-500 font-bold text-sm">Your service cart is empty</p>
-              <button onclick="navigateTo('services')" class="text-xs bg-emerald-50 text-emerald-700 font-extrabold px-4 py-2 rounded-xl border border-emerald-200">
-                Browse Master Pricing Catalog
-              </button>
+              <p class="text-slate-600 font-extrabold text-sm">Your Phresh service cart is empty</p>
+              <p class="text-xs text-slate-400 max-w-xs mx-auto">Use the quick dropdown above or browse the Tariff Catalog to pick services.</p>
             </div>
           ` : cartItems.map(item => `
-            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2 hover:border-slate-300 transition">
               <div class="flex items-start justify-between gap-2">
                 <div>
-                  <h4 class="font-bold text-xs text-slate-900">${item.name}</h4>
-                  <span class="text-[10px] font-mono text-emerald-700 uppercase">${item.category}</span>
+                  <h4 class="font-bold text-xs text-slate-900 leading-snug">${item.name}</h4>
+                  <span class="text-[10px] font-mono text-emerald-700 uppercase font-semibold">Phresh Service</span>
                 </div>
-                <button onclick="removeFromCart('${item.id}')" class="text-slate-400 hover:text-red-600 text-xs p-1">
+                <button onclick="removeFromCart('${item.id}')" class="text-slate-400 hover:text-red-600 text-xs p-1" title="Remove Item">
                   ✕
                 </button>
               </div>
               <div class="flex items-center justify-between pt-2 border-t border-slate-200/80">
                 <div class="flex items-center border border-slate-300 rounded-lg bg-white overflow-hidden text-xs">
-                  <button onclick="updateCartQty('${item.id}', ${item.qty - 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold">-</button>
+                  <button onclick="updateCartQty('${item.id}', ${item.qty - 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">-</button>
                   <span class="px-3 font-mono font-bold text-slate-800">${item.qty}</span>
-                  <button onclick="updateCartQty('${item.id}', ${item.qty + 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold">+</button>
+                  <button onclick="updateCartQty('${item.id}', ${item.qty + 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">+</button>
                 </div>
                 <div class="text-right">
-                  <span class="text-xs font-black text-[#0B1B3D]">UGX ${(item.priceUGX * item.qty).toLocaleString()}</span>
-                  <span class="block text-[10px] text-slate-400">UGX ${item.priceUGX.toLocaleString()} ea</span>
+                  <span class="text-xs font-black text-[#0B1B3D] font-mono">UGX ${(item.priceUGX * item.qty).toLocaleString()}</span>
+                  <span class="block text-[10px] text-slate-400 font-mono">UGX ${item.priceUGX.toLocaleString()} ea</span>
                 </div>
               </div>
             </div>
           `).join('')}
         </div>
 
-        <!-- Cart Footer -->
-        <div class="p-5 bg-slate-50 border-t border-slate-200 space-y-3">
-          <div class="flex items-center justify-between text-sm">
-            <span class="font-bold text-slate-600">Total Estimate:</span>
-            <span class="font-black text-lg text-[#0B1B3D] font-mono">UGX ${totalUGX.toLocaleString()}</span>
+        <!-- Order Summary & Specific Details Footer -->
+        <div class="p-5 bg-slate-50 border-t border-slate-200 space-y-3.5 shrink-0">
+          
+          <div class="space-y-2">
+            <h4 class="font-black text-xs uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 flex items-center justify-between">
+              <span>Order Summary</span>
+              <span class="text-[10px] text-slate-500 font-mono font-normal">${cartItems.length} Item(s)</span>
+            </h4>
+
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Specific details (e.g. Colors, Sizes, Due Date)</label>
+              <textarea oninput="updateCartSpecificDetails(this.value)" placeholder="Specific details (e.g. Colors, Sizes, Due Date, School Name)..." class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 font-normal leading-relaxed resize-none h-16 shadow-xs">${cartSpecificDetails}</textarea>
+            </div>
+
+            <div class="flex items-center justify-between text-sm font-bold text-slate-800 pt-1">
+              <span>Total</span>
+              <span class="font-black text-lg text-[#0B1B3D] font-mono">UGX ${totalUGX.toLocaleString()}</span>
+            </div>
           </div>
 
-          <button onclick="checkoutCart()" ${cartItems.length === 0 ? 'disabled' : ''} class="w-full bg-[#8B0000] hover:bg-red-800 disabled:opacity-50 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider shadow-lg transition flex items-center justify-center gap-2">
-            <span>Place Cart Order & Receive Email</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-          </button>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="checkoutViaWhatsApp()" ${cartItems.length === 0 ? 'disabled' : ''} class="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-extrabold py-3.5 rounded-xl text-[11px] shadow transition flex items-center justify-center gap-1.5">
+              ${WHATSAPP_ICON_SVG}
+              <span>WhatsApp Order</span>
+            </button>
+
+            <button onclick="checkoutCart()" ${cartItems.length === 0 ? 'disabled' : ''} class="bg-[#8B0000] hover:bg-red-800 disabled:opacity-50 text-white font-black py-3.5 rounded-xl text-[11px] uppercase tracking-wider shadow transition flex items-center justify-center gap-1.5">
+              <span>Email Order →</span>
+            </button>
+          </div>
+
         </div>
 
       </div>
@@ -1062,21 +1464,41 @@ function renderFeaturedServicesThreeGrid() {
 // ==========================================
 function renderHomePage() {
   return `
-    <!-- Split Dynamic Hero Banner -->
-    <div id="hero-section" class="bg-gradient-to-b from-[#0B1B3D] via-[#08132B] to-[#0D214A] text-white relative overflow-hidden py-16 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-      <div id="hero-slide-content" class="max-w-7xl mx-auto min-h-[420px] flex items-center">
+    <!-- Full-Bleed Background Hero Section with Slide Show -->
+    <div id="hero-section" class="relative text-white overflow-hidden py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10 min-h-[620px] flex flex-col justify-between">
+      
+      <!-- Background Slideshow Layer -->
+      <div id="hero-bg-slides" class="absolute inset-0 z-0">
+        ${HERO_SLIDES.map((s, idx) => `
+          <div class="hero-bg-slide absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentHeroSlide === idx ? 'opacity-100' : 'opacity-0 pointer-events-none'}">
+            <img src="${s.image}" alt="${s.title}" class="w-full h-full object-cover object-center transform scale-105" referrerPolicy="no-referrer" />
+          </div>
+        `).join('')}
+        <!-- Dark Gradient Overlays for High Text Legibility -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#061024]/95 via-[#0B1B3D]/85 to-[#08132B]/75 backdrop-blur-[1px]"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#061024] via-transparent to-[#061024]/70"></div>
+      </div>
+
+      <!-- Hero Slide Text Content -->
+      <div id="hero-slide-content" class="max-w-7xl mx-auto w-full relative z-10 my-auto py-6">
         <!-- Rendered dynamically via renderHeroSlideContent() -->
       </div>
 
-      <!-- Slide Indicator Controls -->
-      <div class="max-w-7xl mx-auto mt-8 flex items-center justify-between border-t border-white/10 pt-4">
-        <div class="flex items-center gap-2">
-          ${HERO_SLIDES.map((_, idx) => `
-            <button onclick="setHeroSlide(${idx})" class="h-2.5 rounded-full transition-all ${currentHeroSlide === idx ? 'w-8 bg-emerald-400' : 'w-2.5 bg-white/30 hover:bg-white/60'}"></button>
+      <!-- Slide Indicator Controls & Bottom Bar -->
+      <div class="max-w-7xl mx-auto w-full relative z-10 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/15 pt-4">
+        <div id="hero-slide-indicators" class="flex items-center gap-2">
+          ${HERO_SLIDES.map((s, idx) => `
+            <button onclick="setHeroSlide(${idx})" class="h-3 rounded-full transition-all flex items-center gap-2 px-1 ${currentHeroSlide === idx ? 'w-12 bg-emerald-400 text-slate-900 font-black text-[10px]' : 'w-3 bg-white/30 hover:bg-white/60'}" title="${s.badge}">
+              ${currentHeroSlide === idx ? `<span class="truncate pl-1">0${idx+1}</span>` : ''}
+            </button>
           `).join('')}
         </div>
-        <span class="text-xs font-mono text-gray-400">Kasenge - Nakawuka Road Headquarters</span>
+        <div class="flex items-center gap-3 text-xs font-mono text-gray-300">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Kasenge - Nakawuka Road Headquarters, Kampala</span>
+        </div>
       </div>
+
     </div>
 
     <!-- 5-Pillar Service Grid -->
@@ -1194,6 +1616,9 @@ function renderHomePage() {
     <!-- 3-Column Highlight Grid: Custom Web Apps, Database Systems, Graphic Design -->
     ${renderFeaturedServicesThreeGrid()}
 
+    <!-- Authentic Product Systems & Press Gallery Showcase -->
+    ${renderHomeProductShowcase()}
+
     <!-- Client Testimonials & Live Stats Counter -->
     <section class="py-16 bg-slate-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -1277,70 +1702,119 @@ function renderHomePage() {
   `;
 }
 
-// Render Split Hero Banner Content
+// Render Hero Banner Content Over Background Slideshow
 function renderHeroSlideContent() {
   const container = document.getElementById('hero-slide-content');
-  if (!container) return;
-
   const slide = HERO_SLIDES[currentHeroSlide];
 
-  container.innerHTML = `
-    <div class="grid lg:grid-cols-12 gap-8 items-center w-full">
-      <div class="lg:col-span-7 space-y-6">
-        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-emerald-400 text-xs font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full">
-          <span>${slide.badge}</span>
-        </div>
-        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none text-white">
-          ${slide.title} <br />
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300">
-            ${slide.highlight}
-          </span>
-        </h1>
-        <p class="text-gray-300 text-sm sm:text-base max-w-xl leading-relaxed font-normal">
-          ${slide.subtitle}
-        </p>
+  if (container && slide) {
+    container.innerHTML = `
+      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full">
+        <!-- Main Hero Typography & Call-To-Action Column -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-sm backdrop-blur-md">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>${slide.badge}</span>
+          </div>
 
-        <div class="flex flex-wrap items-center gap-4 pt-2">
-          <button onclick="navigateTo('${slide.ctaPage}')" class="bg-[#8B0000] hover:bg-red-800 text-white font-extrabold px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:shadow-red-900/40 transition">
-            ${slide.ctaText} →
-          </button>
-          <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3.5 rounded-xl text-xs transition flex items-center gap-2">
-            ${WHATSAPP_ICON_SVG}
-            <span>WhatsApp Us</span>
-          </a>
-        </div>
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white drop-shadow-md">
+            ${slide.title} <br />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300">
+              ${slide.highlight}
+            </span>
+          </h1>
 
-        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/10 text-xs">
-          ${slide.stats.map(st => `
-            <div>
-              <span class="block text-lg font-black text-emerald-400">${st.number}</span>
-              <span class="text-gray-400 text-[11px] font-medium">${st.label}</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
+          <p class="text-gray-200 text-sm sm:text-base max-w-2xl leading-relaxed font-normal drop-shadow-xs">
+            ${slide.subtitle}
+          </p>
 
-      <div class="lg:col-span-5 relative">
-        <div class="bg-gradient-to-br from-[#1E7E34]/20 to-[#8B0000]/20 p-2 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
-          <img src="${slide.image}" alt="${slide.title}" class="w-full h-[420px] sm:h-[500px] lg:h-[560px] object-cover rounded-2xl shadow-inner relative z-10" referrerPolicy="no-referrer" onerror="this.onerror=null; this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');" />
-          <div class="hidden w-full h-[420px] sm:h-[500px] lg:h-[560px] rounded-2xl bg-gradient-to-br from-[#0B1B3D] via-[#08132B] to-[#1E7E34]/40 p-6 flex flex-col justify-between border border-white/10">
-            <div class="flex items-center justify-between">
-              <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-400/30">${slide.badge}</span>
-              <img src="/logo.svg" alt="Phresh Logo" class="h-8 w-auto bg-white/10 p-1 rounded-lg" />
-            </div>
-            <div class="space-y-2">
-              <h3 class="text-xl font-black text-white leading-tight">${slide.title}</h3>
-              <p class="text-xs text-emerald-300 font-bold">${slide.highlight}</p>
-            </div>
-            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-gray-300">
-              <span class="font-mono text-emerald-400 font-bold">PT MEDIA · KAMPALA</span>
-              <span class="bg-white/10 px-2 py-0.5 rounded text-[10px]">Verified Service</span>
-            </div>
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <button onclick="navigateTo('${slide.ctaPage}')" class="bg-[#8B0000] hover:bg-red-800 text-white font-extrabold px-7 py-4 rounded-xl text-xs uppercase tracking-wider shadow-2xl hover:shadow-red-900/50 transition transform hover:-translate-y-0.5">
+              ${slide.ctaText} →
+            </button>
+            <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-4 rounded-xl text-xs transition flex items-center gap-2 shadow-xl hover:shadow-emerald-900/50 transform hover:-translate-y-0.5">
+              ${WHATSAPP_ICON_SVG}
+              <span>WhatsApp Us Direct</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-white/15 text-xs">
+            ${slide.stats.map(st => `
+              <div class="bg-slate-900/60 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 shadow-sm">
+                <span class="block text-xl font-black text-emerald-400 font-mono">${st.number}</span>
+                <span class="text-gray-300 text-[11px] font-medium leading-tight block mt-0.5">${st.label}</span>
+              </div>
+            `).join('')}
           </div>
         </div>
+
+        <!-- Right Glassmorphic Spotlight Card Over Background -->
+        <div class="lg:col-span-5 hidden lg:block">
+          <div class="bg-slate-900/75 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-white/20 shadow-2xl space-y-6 relative overflow-hidden group">
+            <div class="absolute -top-10 -right-10 w-36 h-36 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold">
+                  PT
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-sm text-white">${slide.badge}</h4>
+                  <span class="text-[10px] text-emerald-400 font-mono">Verified Solution</span>
+                </div>
+              </div>
+              <span class="bg-white/10 text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase border border-white/10">
+                Slide 0${currentHeroSlide + 1}/0${HERO_SLIDES.length}
+              </span>
+            </div>
+
+            <div class="space-y-3">
+              <span class="text-xs font-mono text-emerald-300 uppercase tracking-wider block font-bold">FEATURED CAPABILITY</span>
+              <h3 class="text-lg font-black text-white leading-snug">${slide.title}</h3>
+              <p class="text-xs text-gray-300 leading-relaxed">${slide.subtitle}</p>
+            </div>
+
+            <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs">
+              <button onclick="navigateTo('contact')" class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1.5 transition">
+                <span>Inquire About This Service</span>
+                <span>→</span>
+              </button>
+              <button onclick="openImageModal('${slide.image}', '${slide.title.replace(/'/g, "\\'")}', '${slide.subtitle.replace(/'/g, "\\'")}', '${slide.badge}')" class="text-xs text-gray-300 hover:text-white font-bold flex items-center gap-1 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/10 transition">
+                🔍 Enlarge Screen
+              </button>
+            </div>
+
+          </div>
+        </div>
+
       </div>
-    </div>
-  `;
+    `;
+  }
+
+  // Update background slide visibility
+  const bgContainer = document.getElementById('hero-bg-slides');
+  if (bgContainer) {
+    const slideDivs = bgContainer.querySelectorAll('.hero-bg-slide');
+    slideDivs.forEach((div, idx) => {
+      if (idx === currentHeroSlide) {
+        div.classList.remove('opacity-0', 'pointer-events-none');
+        div.classList.add('opacity-100');
+      } else {
+        div.classList.remove('opacity-100');
+        div.classList.add('opacity-0', 'pointer-events-none');
+      }
+    });
+  }
+
+  // Update slide indicators active state
+  const indicatorContainer = document.getElementById('hero-slide-indicators');
+  if (indicatorContainer) {
+    indicatorContainer.innerHTML = HERO_SLIDES.map((s, idx) => `
+      <button onclick="setHeroSlide(${idx})" class="h-3 rounded-full transition-all flex items-center gap-2 px-1 ${currentHeroSlide === idx ? 'w-12 bg-emerald-400 text-slate-900 font-black text-[10px]' : 'w-3 bg-white/30 hover:bg-white/60'}" title="${s.badge}">
+        ${currentHeroSlide === idx ? `<span class="truncate pl-1">0${idx+1}</span>` : ''}
+      </button>
+    `).join('');
+  }
 }
 
 window.updateHomeCalc = function(key, value) {
@@ -1730,17 +2204,82 @@ function renderPillarDetailContent() {
 }
 
 // ==========================================
+// HOME PAGE PRODUCT SHOWCASE GALLERY
+// ==========================================
+function renderHomeProductShowcase() {
+  return `
+    <section class="py-16 bg-white border-y border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <span class="text-xs font-black uppercase tracking-widest text-[#1E7E34]">Official Systems & Media Gallery</span>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight mt-1">Live Systems, Systems Suites & Press Gallery</h2>
+            <p class="text-slate-600 text-xs sm:text-sm max-w-2xl mt-1">
+              Explore authentic screenshots from Phresh Rank Core, EduLedger, Rent Ledger, BizTrack POS, Church Systems, and Commercial Printing Press in Kampala.
+            </p>
+          </div>
+          <button onclick="navigateTo('portfolio')" class="bg-[#0B1B3D] hover:bg-slate-800 text-white font-bold text-xs px-5 py-3 rounded-xl transition flex items-center gap-2 self-start md:self-auto shrink-0 shadow-sm">
+            <span>Explore Full 15-Item Portfolio</span>
+            <span>→</span>
+          </button>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          ${PRODUCT_SHOWCASE_GALLERY.slice(0, 8).map(item => `
+            <div class="bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all flex flex-col group">
+              <div class="h-56 bg-slate-900 relative overflow-hidden cursor-pointer" onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')">
+                <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-95" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 ${item.badgeBg || 'bg-[#0B1B3D]'} text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full z-10 shadow-sm">
+                  ${item.badge}
+                </span>
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-2">
+                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                  <span>Click to Enlarge</span>
+                </div>
+              </div>
+              <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                <div class="space-y-1">
+                  <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wide block">${item.client}</span>
+                  <h3 class="font-black text-slate-900 text-sm leading-snug group-hover:text-[#1E7E34] transition-colors">${item.title}</h3>
+                  <p class="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">${item.subtitle}</p>
+                </div>
+                <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                  <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-[11px] flex items-center gap-1">
+                    🔍 View Screenshot
+                  </button>
+                  <button onclick="navigateTo('contact')" class="text-[#8B0000] hover:text-red-800 font-black text-[11px]">
+                    Order System →
+                  </button>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+      </div>
+    </section>
+  `;
+}
+
+// ==========================================
 // 3. INTERACTIVE PORTFOLIO & CASE STUDIES
 // ==========================================
 function renderPortfolioPage() {
+  const filteredGallery = activePortfolioCategory === 'all' 
+    ? PRODUCT_SHOWCASE_GALLERY 
+    : activePortfolioCategory === 'media' 
+      ? PRODUCT_SHOWCASE_GALLERY.filter(item => item.category === 'design' || item.category === 'print' || item.category === 'general')
+      : PRODUCT_SHOWCASE_GALLERY.filter(item => item.category === 'software');
+
   return `
     <div id="portfolio-section" class="bg-gradient-to-b from-[#0B1B3D] to-[#08132B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-white/10">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Proven Track Record</span>
-          <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mt-1">Portfolio & Engineering Case Studies</h1>
+          <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mt-1">Portfolio & Systems Showcase</h1>
           <p class="text-gray-300 text-sm max-w-2xl mt-2">
-            Explore media productions, commercial print press showcases, and custom database engineering projects across Uganda.
+            Explore authentic screenshots, commercial print press showcases, and custom database engineering projects across Uganda.
           </p>
         </div>
         <div>
@@ -1755,142 +2294,96 @@ function renderPortfolioPage() {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         <!-- Category Filter Buttons -->
-        <div class="flex items-center gap-2 border-b border-slate-200 pb-4 text-xs font-bold">
-          <button onclick="filterPortfolio('all')" class="px-4 py-2 rounded-xl transition ${activePortfolioCategory === 'all' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            All Work Showcase
+        <div class="flex items-center gap-2 border-b border-slate-200 pb-4 text-xs font-bold overflow-x-auto">
+          <button onclick="filterPortfolio('all')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'all' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
+            All Work Showcase (${PRODUCT_SHOWCASE_GALLERY.length})
           </button>
-          <button onclick="filterPortfolio('media')" class="px-4 py-2 rounded-xl transition ${activePortfolioCategory === 'media' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Media & Visual Showcase
+          <button onclick="filterPortfolio('engineering')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'engineering' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
+            Software & Database Systems (${PRODUCT_SHOWCASE_GALLERY.filter(i=>i.category==='software').length})
           </button>
-          <button onclick="filterPortfolio('engineering')" class="px-4 py-2 rounded-xl transition ${activePortfolioCategory === 'engineering' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Database Case Studies
+          <button onclick="filterPortfolio('media')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'media' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
+            Graphics, Banners & Print Press (${PRODUCT_SHOWCASE_GALLERY.filter(i=>i.category!=='software').length})
           </button>
         </div>
 
-        ${activePortfolioCategory !== 'engineering' ? `
-          <!-- Media Showcase Grid -->
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-64 sm:h-72 bg-slate-900 relative">
-                <img src="${heroSoftwareImg}" alt="Phresh Rank Core" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Flagship Core Engine</span>
+        <!-- Media & Systems Showcase Grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          ${filteredGallery.map(item => `
+            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all flex flex-col group">
+              <div class="h-60 bg-slate-900 relative overflow-hidden cursor-pointer" onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')">
+                <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-95" referrerPolicy="no-referrer" />
+                <span class="absolute top-3 left-3 ${item.badgeBg || 'bg-[#0B1B3D]'} text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full z-10 shadow-sm">
+                  ${item.badge}
+                </span>
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-2">
+                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                  <span>Click to Enlarge</span>
+                </div>
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">Global High School Madudu</span>
-                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core NCDC Marks Engine & EduLedger</h3>
-                  <p class="text-xs text-slate-600 mt-1">Full NCDC competence-based marksheets, batch parent PDF reports, and fee ledger tracking.</p>
+                <div class="space-y-1">
+                  <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wide block">${item.client}</span>
+                  <h3 class="font-black text-slate-900 text-sm leading-snug group-hover:text-[#1E7E34] transition-colors">${item.title}</h3>
+                  <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${item.subtitle}</p>
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded text-[10px]">Phresh Rank Core Active</span>
-                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
+                  <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-xs flex items-center gap-1">
+                    🔍 View Full Res
+                  </button>
+                  <button onclick="navigateTo('contact')" class="text-[#8B0000] hover:text-red-800 font-black text-xs">
+                    Inquire Now →
+                  </button>
                 </div>
               </div>
             </div>
+          `).join('')}
+        </div>
 
-            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-64 sm:h-72 bg-slate-900 relative">
-                <img src="${heroEduledgerImg}" alt="Phresh Rank Core" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#0B1B3D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Flagship Core Engine</span>
+        <!-- Case Studies Module -->
+        <div class="space-y-6 pt-6">
+          <div class="border-b border-slate-200 pb-3">
+            <span class="text-xs font-black uppercase tracking-widest text-[#1E7E34]">Problem - Solution - Metrics</span>
+            <h2 class="text-2xl font-black text-slate-900 mt-1">Engineering Case Studies</h2>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+              <div>
+                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-3 py-1 rounded-full">Phresh Rank Core Engine</span>
+                <h3 class="text-xl font-black text-slate-900 mt-2">Automating Competency-Based NCDC Marks & Report Cards</h3>
               </div>
-              <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">Pride College Lungala</span>
-                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core Marksheet & Grading System</h3>
-                  <p class="text-xs text-slate-600 mt-1">Offline-ready desktop marks entry, UNEB grade tabulations, class rankings, and parent report dispatch.</p>
-                </div>
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded text-[10px]">Phresh Rank Core Active</span>
-                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
-                </div>
+              <button onclick="navigateTo('contact')" class="bg-[#0B1B3D] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition">
+                Request Technical Brief
+              </button>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 text-xs leading-relaxed">
+              <div class="p-4 bg-red-50/50 border border-red-100 rounded-2xl">
+                <h4 class="font-black text-[#8B0000] uppercase tracking-wider mb-2">The Operational Challenge</h4>
+                <p class="text-slate-700">Schools spent 3+ weeks manually tabulating UNEB grades, average scores, and class ranks for thousands of students, causing reporting delays and calculation errors.</p>
+              </div>
+              <div class="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl">
+                <h4 class="font-black text-[#1E7E34] uppercase tracking-wider mb-2">Our Engineering Solution</h4>
+                <p class="text-slate-700">Engineered an offline-first high-speed desktop report engine running local SQLite/MySQL database systems. Automated descriptor evaluation, grade points, and batch PDF generation.</p>
               </div>
             </div>
 
-            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-64 sm:h-72 bg-slate-900 relative">
-                <img src="${heroBrandingImg}" alt="Student Identity & Crests" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-[#8B0000] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Rank Core + Student Identity</span>
+            <div class="grid sm:grid-cols-3 gap-4 pt-2 text-center text-xs">
+              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                <span class="block text-slate-400 font-bold uppercase text-[10px]">Time Saved</span>
+                <span class="text-base font-black text-slate-900 mt-0.5 block">95% Faster Processing</span>
               </div>
-              <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">Mpigi Light College</span>
-                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core Marks & Waterproof PVC Badges</h3>
-                  <p class="text-xs text-slate-600 mt-1">Unified academic grading powered by Phresh Rank Core, with barcode-encoded student PVC badges.</p>
-                </div>
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded text-[10px]">Phresh Rank Core Active</span>
-                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
-                </div>
+              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                <span class="block text-slate-400 font-bold uppercase text-[10px]">Error Rate</span>
+                <span class="text-base font-black text-slate-900 mt-0.5 block">0% Arithmetic Errors</span>
               </div>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex flex-col hover:shadow-xl transition">
-              <div class="h-64 sm:h-72 bg-slate-900 relative">
-                <img src="${heroWebHostingImg}" alt="Web Portal" class="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 bg-amber-700 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10">Rank Core + Web Portal</span>
-              </div>
-              <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                <div>
-                  <span class="text-[11px] font-bold text-emerald-700 block">St. Andrews College Moyo</span>
-                  <h3 class="font-black text-slate-900 text-base">Phresh Rank Core Engine & Web Portal Hosting</h3>
-                  <p class="text-xs text-slate-600 mt-1">100% offline Phresh Rank Core report card engine integrated with online school portal and cloud backups.</p>
-                </div>
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded text-[10px]">Phresh Rank Core Active</span>
-                  <button onclick="navigateTo('contact')" class="text-[#8B0000] font-black">Inquire Now →</button>
-                </div>
+              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                <span class="block text-slate-400 font-bold uppercase text-[10px]">Deployments</span>
+                <span class="text-base font-black text-slate-900 mt-0.5 block">50+ Secondary Schools</span>
               </div>
             </div>
           </div>
-        ` : ''}
-
-        ${activePortfolioCategory !== 'media' ? `
-          <!-- Engineering Case Studies Module -->
-          <div class="space-y-6 pt-4">
-            <div class="border-b border-slate-200 pb-3">
-              <span class="text-xs font-black uppercase tracking-widest text-[#1E7E34]">Problem - Solution - Metrics</span>
-              <h2 class="text-2xl font-black text-slate-900 mt-1">Engineering Case Studies</h2>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-6">
-              <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                <div>
-                  <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-3 py-1 rounded-full">Phresh Rank Core Engine</span>
-                  <h3 class="text-xl font-black text-slate-900 mt-2">Automating Competency-Based NCDC Marks & Report Cards</h3>
-                </div>
-                <button onclick="navigateTo('contact')" class="bg-[#0B1B3D] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition">
-                  Request Technical Brief
-                </button>
-              </div>
-
-              <div class="grid md:grid-cols-2 gap-6 text-xs leading-relaxed">
-                <div class="p-4 bg-red-50/50 border border-red-100 rounded-2xl">
-                  <h4 class="font-black text-[#8B0000] uppercase tracking-wider mb-2">The Operational Challenge</h4>
-                  <p class="text-slate-700">Schools spent 3+ weeks manually tabulating UNEB grades, average scores, and class ranks for thousands of students, causing reporting delays and calculation errors.</p>
-                </div>
-                <div class="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl">
-                  <h4 class="font-black text-[#1E7E34] uppercase tracking-wider mb-2">Our Engineering Solution</h4>
-                  <p class="text-slate-700">Engineered an offline-first high-speed desktop report engine running local SQLite/MySQL database systems. Automated descriptor evaluation, grade points, and batch PDF generation.</p>
-                </div>
-              </div>
-
-              <div class="grid sm:grid-cols-3 gap-4 pt-2 text-center text-xs">
-                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                  <span class="block text-slate-400 font-bold uppercase text-[10px]">Time Saved</span>
-                  <span class="text-base font-black text-slate-900 mt-0.5 block">95% Faster Processing</span>
-                </div>
-                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                  <span class="block text-slate-400 font-bold uppercase text-[10px]">Error Rate</span>
-                  <span class="text-base font-black text-slate-900 mt-0.5 block">0% Arithmetic Errors</span>
-                </div>
-                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                  <span class="block text-slate-400 font-bold uppercase text-[10px]">Deployments</span>
-                  <span class="text-base font-black text-slate-900 mt-0.5 block">50+ Secondary Schools</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ` : ''}
+        </div>
 
       </div>
     </section>

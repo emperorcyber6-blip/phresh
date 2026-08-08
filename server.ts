@@ -228,7 +228,7 @@ app.post("/api/orders/place", async (req, res) => {
     ordersDB.unshift(newOrder);
 
     const subject = `Inquiry Received - Phresh Tech Media Services`;
-    const textBody = `Hello ${user.name},\n\nThank you for reaching out to Phresh Tech Media Services. We have received your inquiry regarding ${itemsSummary}.\n\nOrder Reference: ${orderId}\nEstimated Total: UGX ${Number(totalUGX).toLocaleString()}\n\nOur team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.\n\nStay Phresh!\nPhresh Tech Team`;
+    const textBody = `Hello ${user.name},\n\nThank you for reaching out to Phresh Tech Media Services. We have received your inquiry regarding ${itemsSummary}.\n\nOrder Reference: ${orderId}\nEstimated Total: UGX ${Number(totalUGX).toLocaleString()}\n${specificDetails ? `Specific Details: ${specificDetails}\n\n` : ''}Our team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.\n\nStay Phresh!\nPhresh Tech Team`;
 
     const htmlBody = `
       <div style="font-family: Arial, sans-serif; color: #1e293b; max-width: 600px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; margin: 0 auto;">
@@ -238,6 +238,7 @@ app.post("/api/orders/place", async (req, res) => {
         <div style="background-color: #f8fafc; padding: 14px; border-radius: 8px; margin: 16px 0; border: 1px solid #cbd5e1;">
           <p style="margin: 0; font-size: 14px;"><strong>Order ID:</strong> ${orderId}</p>
           <p style="margin: 4px 0 0 0; font-size: 14px;"><strong>Estimated Total:</strong> UGX ${Number(totalUGX).toLocaleString()}</p>
+          ${specificDetails ? `<p style="margin: 8px 0 0 0; font-size: 13px; color: #334155;"><strong>Specific Details:</strong> ${specificDetails}</p>` : ''}
         </div>
         <p>Our team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.</p>
         <br/>
@@ -249,7 +250,7 @@ app.post("/api/orders/place", async (req, res) => {
 
     // Also dispatch Admin Notification Email with Reply-To set to customer's email
     const adminSubject = `New Order #${orderId} - ${user.name} (${user.organization || 'Client'})`;
-    const adminText = `New Order Received!\n\nOrder ID: ${orderId}\nCustomer: ${user.name}\nEmail: ${user.email}\nPhone: ${user.phone}\nItems: ${itemsSummary}\nTotal: UGX ${Number(totalUGX).toLocaleString()}\n\nClick Reply to respond directly to ${user.email}.`;
+    const adminText = `New Order Received!\n\nOrder ID: ${orderId}\nCustomer: ${user.name}\nEmail: ${user.email}\nPhone: ${user.phone}\nItems: ${itemsSummary}\nTotal: UGX ${Number(totalUGX).toLocaleString()}\nSpecific Details: ${specificDetails || 'None'}\n\nClick Reply to respond directly to ${user.email}.`;
     const adminHtml = `
       <div style="font-family: Arial, sans-serif; color: #0B1B3D; max-width: 600px; padding: 20px; border: 1px solid #cbd5e1; border-radius: 10px;">
         <h3 style="color: #0B1B3D; margin-top: 0;">📦 New Order Alert #${orderId}</h3>
@@ -257,6 +258,7 @@ app.post("/api/orders/place", async (req, res) => {
         <p><strong>Phone:</strong> ${user.phone || 'N/A'} | <strong>Org:</strong> ${user.organization || 'General'}</p>
         <p><strong>Items Ordered:</strong> ${itemsSummary}</p>
         <p><strong>Total UGX:</strong> UGX ${Number(totalUGX).toLocaleString()}</p>
+        ${specificDetails ? `<p style="background:#f1f5f9; padding:10px; border-radius:6px;"><strong>Specific Details:</strong> ${specificDetails}</p>` : ''}
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
         <p style="font-size: 12px; color: #64748b;">Replying to this message will send directly to <strong>${user.email}</strong>.</p>
       </div>
