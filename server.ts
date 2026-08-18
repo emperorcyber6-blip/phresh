@@ -3,6 +3,14 @@ import path from "path";
 import fs from "fs";
 import nodemailer from "nodemailer";
 import { createServer as createViteServer } from "vite";
+import {
+  generateOrderReceiptHtml,
+  generateAdminOrderAlertHtml,
+  generateInquiryReceiptHtml,
+  generateAdminInquiryAlertHtml,
+  generateQuoteReceiptHtml,
+  generateWelcomeEmailHtml
+} from "./emailTemplates";
 
 const app = express();
 const PORT = 3000;
@@ -12,7 +20,8 @@ app.use(express.json());
 // Transporter Helper for Live / Simulated Email Dispatch
 async function sendPhreshEmail(to: string, subject: string, textBody: string, htmlBody: string, replyTo?: string) {
   const senderEmail = process.env.GMAIL_USER || "phreshtechmediaservices@gmail.com";
-  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+  const rawPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || "";
+  const gmailPass = rawPass.replace(/\s+/g, "");
 
   console.log(`[EMAIL DISPATCH] Target: ${to} | Subject: "${subject}" | From: ${senderEmail} | ReplyTo: ${replyTo || senderEmail}`);
 
@@ -35,11 +44,11 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
         html: htmlBody
       });
 
-      console.log(`[LIVE GMAIL SUCCESS] Message ID: ${info.messageId}`);
+      console.log(`[LIVE GMAIL SUCCESS] Message ID: ${info.messageId} to ${to}`);
       return { success: true, mode: "live_gmail", messageId: info.messageId, from: senderEmail };
     } catch (err: any) {
       console.error(`[GMAIL ERROR] ${err.message}`);
-      return { success: true, mode: "simulated_fallback", error: err.message, from: senderEmail };
+      return { success: false, mode: "error", error: err.message, from: senderEmail };
     }
   }
 
@@ -167,18 +176,14 @@ app.post("/api/auth/login", async (req, res) => {
   }
 
   const subject = "Welcome to Phresh Tech Media Services";
-  const textBody = `Hello ${name},\n\nThank you for reaching out to Phresh Tech Media Services. We have received your inquiry regarding our Educational Software, Commercial Printing, Graphic Design, and Managed Hosting services.\n\nOur team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.\n\nStay Phresh!\nPhresh Tech Team`;
+  const textBody = `Hello ${name},\n\nThank you for connecting with Phresh Tech Media Services. We have received your inquiry regarding our Educational Software, Commercial Printing, Graphic Design, and Managed Hosting services.\n\nOur team is currently reviewing your profile, and we will get back to you shortly.\n\nStay Phresh!\nPhresh Tech Team\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
 
-  const htmlBody = `
-    <div style="font-family: Arial, sans-serif; color: #1e293b; max-width: 600px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; margin: 0 auto;">
-      <h2 style="color: #0B1B3D; margin-top: 0;">Welcome to Phresh Tech Media Services</h2>
-      <p>Hello <strong>${name}</strong>,</p>
-      <p>Thank you for reaching out to Phresh Tech Media Services. We have received your inquiry regarding our Educational Software, Commercial Printing Press, Graphic Design, and Managed Hosting services.</p>
-      <p>Our team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.</p>
-      <br/>
-      <p><strong>Stay Phresh!</strong><br/>Phresh Tech Team<br/><span style="color: #64748b; font-size: 12px;">phreshtechmediaservices@gmail.com | Kampala, Uganda</span></p>
-    </div>
-  `;
+  const htmlBody = generateWelcomeEmailHtml({
+    name,
+    email,
+    phone: phone || "+256 700 000000",
+    organization: organization || "General Client"
+  });
 
   const mailResult = await sendPhreshEmail(email, subject, textBody, htmlBody);
 
@@ -193,6 +198,7 @@ app.post("/api/auth/login", async (req, res) => {
     emailDispatchedFrom: mailResult.from,
     emailSubject: subject,
     emailBody: textBody,
+    renderedHtml: htmlBody,
     message: `Welcome ${name}! Signed in successfully. Official welcome email dispatched from ${mailResult.from} to ${email}.`
   });
 });
@@ -227,42 +233,37 @@ app.post("/api/orders/place", async (req, res) => {
 
     ordersDB.unshift(newOrder);
 
-    const subject = `Inquiry Received - Phresh Tech Media Services`;
-    const textBody = `Hello ${user.name},\n\nThank you for reaching out to Phresh Tech Media Services. We have received your inquiry regarding ${itemsSummary}.\n\nOrder Reference: ${orderId}\nEstimated Total: UGX ${Number(totalUGX).toLocaleString()}\n${specificDetails ? `Specific Details: ${specificDetails}\n\n` : ''}Our team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.\n\nStay Phresh!\nPhresh Tech Team`;
+    const subject = `Official Order Receipt & Inquiry Confirmation #${orderId} - Phresh Tech Media`;
+    const textBody = `Hello ${user.name},\n\nThank you for placing your order with Phresh Tech Media Services.\n\nOrder Reference: ${orderId}\nItems: ${itemsSummary}\nEstimated Total: UGX ${Number(totalUGX).toLocaleString()}\n${specificDetails ? `Specific Details: ${specificDetails}\n\n` : ''}Our engineering and print press directors are reviewing your order specifications and will contact you shortly.\n\nStay Phresh!\nPhresh Tech Team\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
 
-    const htmlBody = `
-      <div style="font-family: Arial, sans-serif; color: #1e293b; max-width: 600px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; margin: 0 auto;">
-        <h2 style="color: #0B1B3D; margin-top: 0;">Inquiry Received - Phresh Tech Media Services</h2>
-        <p>Hello <strong>${user.name}</strong>,</p>
-        <p>Thank you for reaching out to Phresh Tech Media Services. We have received your inquiry regarding <strong>${itemsSummary}</strong>.</p>
-        <div style="background-color: #f8fafc; padding: 14px; border-radius: 8px; margin: 16px 0; border: 1px solid #cbd5e1;">
-          <p style="margin: 0; font-size: 14px;"><strong>Order ID:</strong> ${orderId}</p>
-          <p style="margin: 4px 0 0 0; font-size: 14px;"><strong>Estimated Total:</strong> UGX ${Number(totalUGX).toLocaleString()}</p>
-          ${specificDetails ? `<p style="margin: 8px 0 0 0; font-size: 13px; color: #334155;"><strong>Specific Details:</strong> ${specificDetails}</p>` : ''}
-        </div>
-        <p>Our team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.</p>
-        <br/>
-        <p><strong>Stay Phresh!</strong><br/>Phresh Tech Team<br/><span style="color: #64748b; font-size: 12px;">phreshtechmediaservices@gmail.com | Kampala, Uganda</span></p>
-      </div>
-    `;
+    const htmlBody = generateOrderReceiptHtml({
+      orderId,
+      customerName: user.name,
+      customerEmail: user.email,
+      customerPhone: user.phone || "",
+      organization: user.organization || "",
+      items: cartItems.map(i => ({ id: i.id, name: i.name, price: Number(i.price || 0), qty: Number(i.qty || 1) })),
+      specificDetails: specificDetails || "",
+      totalUGX: totalUGX || 0
+    });
 
     const mailResult = await sendPhreshEmail(user.email, subject, textBody, htmlBody);
 
     // Also dispatch Admin Notification Email with Reply-To set to customer's email
-    const adminSubject = `New Order #${orderId} - ${user.name} (${user.organization || 'Client'})`;
-    const adminText = `New Order Received!\n\nOrder ID: ${orderId}\nCustomer: ${user.name}\nEmail: ${user.email}\nPhone: ${user.phone}\nItems: ${itemsSummary}\nTotal: UGX ${Number(totalUGX).toLocaleString()}\nSpecific Details: ${specificDetails || 'None'}\n\nClick Reply to respond directly to ${user.email}.`;
-    const adminHtml = `
-      <div style="font-family: Arial, sans-serif; color: #0B1B3D; max-width: 600px; padding: 20px; border: 1px solid #cbd5e1; border-radius: 10px;">
-        <h3 style="color: #0B1B3D; margin-top: 0;">📦 New Order Alert #${orderId}</h3>
-        <p><strong>Customer:</strong> ${user.name} (&lt;${user.email}&gt;)</p>
-        <p><strong>Phone:</strong> ${user.phone || 'N/A'} | <strong>Org:</strong> ${user.organization || 'General'}</p>
-        <p><strong>Items Ordered:</strong> ${itemsSummary}</p>
-        <p><strong>Total UGX:</strong> UGX ${Number(totalUGX).toLocaleString()}</p>
-        ${specificDetails ? `<p style="background:#f1f5f9; padding:10px; border-radius:6px;"><strong>Specific Details:</strong> ${specificDetails}</p>` : ''}
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
-        <p style="font-size: 12px; color: #64748b;">Replying to this message will send directly to <strong>${user.email}</strong>.</p>
-      </div>
-    `;
+    const adminSubject = `📦 New Order Alert #${orderId} - ${user.name} (${user.organization || 'Client'})`;
+    const adminText = `New Order Received!\n\nOrder ID: ${orderId}\nCustomer: ${user.name}\nEmail: ${user.email}\nPhone: ${user.phone || 'N/A'}\nOrganization: ${user.organization || 'Client'}\nItems: ${itemsSummary}\nTotal: UGX ${Number(totalUGX).toLocaleString()}\nSpecific Details: ${specificDetails || 'None'}\n\nClick Reply to respond directly to ${user.email}.`;
+    
+    const adminHtml = generateAdminOrderAlertHtml({
+      orderId,
+      customerName: user.name,
+      customerEmail: user.email,
+      customerPhone: user.phone || "",
+      organization: user.organization || "",
+      items: cartItems.map(i => ({ id: i.id, name: i.name, price: Number(i.price || 0), qty: Number(i.qty || 1) })),
+      specificDetails: specificDetails || "",
+      totalUGX: totalUGX || 0
+    });
+
     sendPhreshEmail("phreshtechmediaservices@gmail.com", adminSubject, adminText, adminHtml, user.email).catch(e => console.error(e));
 
     res.json({
@@ -272,7 +273,8 @@ app.post("/api/orders/place", async (req, res) => {
       officialEmail: mailResult.from,
       emailSubject: subject,
       emailBody: textBody,
-      message: `Order #${orderId} received! An inquiry confirmation email has been dispatched from ${mailResult.from} to ${user.email}.`
+      renderedReceiptHtml: htmlBody,
+      message: `Order #${orderId} confirmed! Official itemized receipt email dispatched from ${mailResult.from} to ${user.email}.`
     });
   } catch (err: any) {
     res.status(500).json({ success: false, error: err.message });
@@ -394,7 +396,7 @@ app.post("/api/eduledger/pay", (req, res) => {
 // API 6: Submit Quote Request & Dispatch Email
 app.post("/api/quote/submit", async (req, res) => {
   try {
-    const { clientName, email, organization, phone, items, totalPriceUGX } = req.body;
+    const { clientName, email, organization, phone, items, totalPriceUGX, selectedPillars, specificRequirements } = req.body;
     const quoteId = `PTM-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const servicesSummary = Array.isArray(items) ? items.join(", ") : "Custom Service Order";
 
@@ -411,23 +413,20 @@ app.post("/api/quote/submit", async (req, res) => {
     quotesDB.unshift(newQuote);
 
     const recipientEmail = email || "client@domain.com";
-    const subject = `Inquiry Received - Phresh Tech Media Services`;
-    const textBody = `Hello ${clientName || "Valued Client"},\n\nThank you for reaching out to Phresh Tech Media Services. We have received your inquiry regarding ${servicesSummary}.\n\nQuote Reference: ${quoteId}\nEstimated Budget: UGX ${Number(totalPriceUGX || 0).toLocaleString()}\n\nOur team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.\n\nStay Phresh!\nPhresh Tech Team`;
+    const subject = `Official Project Quote & Estimate #${quoteId} - Phresh Tech Media`;
+    const textBody = `Hello ${clientName || "Valued Client"},\n\nThank you for requesting an estimate proposal from Phresh Tech Media Services.\n\nQuote Reference: #${quoteId}\nScope of Services: ${servicesSummary}\nEstimated Budget: UGX ${Number(totalPriceUGX || 0).toLocaleString()}\n${specificRequirements ? `Specific Requirements: ${specificRequirements}\n\n` : ''}Our technical directors will follow up with you to finalize your project specifications.\n\nStay Phresh!\nPhresh Tech Team\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
 
-    const htmlBody = `
-      <div style="font-family: Arial, sans-serif; color: #1e293b; max-width: 600px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; margin: 0 auto;">
-        <h2 style="color: #0B1B3D; margin-top: 0;">Inquiry Received - Phresh Tech Media Services</h2>
-        <p>Hello <strong>${clientName || "Valued Client"}</strong>,</p>
-        <p>Thank you for reaching out to Phresh Tech Media Services. We have received your inquiry regarding <strong>${servicesSummary}</strong>.</p>
-        <div style="background-color: #f8fafc; padding: 14px; border-radius: 8px; margin: 16px 0; border: 1px solid #cbd5e1;">
-          <p style="margin: 0; font-size: 14px;"><strong>Quote Reference:</strong> ${quoteId}</p>
-          <p style="margin: 4px 0 0 0; font-size: 14px;"><strong>Estimated Budget:</strong> UGX ${Number(totalPriceUGX || 0).toLocaleString()}</p>
-        </div>
-        <p>Our team is currently reviewing your request, and we will get back to you shortly. Please wait for our formal review.</p>
-        <br/>
-        <p><strong>Stay Phresh!</strong><br/>Phresh Tech Team<br/><span style="color: #64748b; font-size: 12px;">phreshtechmediaservices@gmail.com | Kampala, Uganda</span></p>
-      </div>
-    `;
+    const htmlBody = generateQuoteReceiptHtml({
+      quoteId,
+      clientName: clientName || "Valued Client",
+      email: recipientEmail,
+      phone: phone || "",
+      organization: organization || "Valued Client",
+      servicesSummary,
+      selectedPillars: Array.isArray(selectedPillars) ? selectedPillars : [],
+      totalPriceUGX: Number(totalPriceUGX || 0),
+      specificRequirements: specificRequirements || ""
+    });
 
     const mailResult = await sendPhreshEmail(recipientEmail, subject, textBody, htmlBody);
 
@@ -437,7 +436,8 @@ app.post("/api/quote/submit", async (req, res) => {
       quote: newQuote,
       officialEmail: mailResult.from,
       emailSubject: subject,
-      emailBody: textBody
+      emailBody: textBody,
+      renderedQuoteHtml: htmlBody
     });
   } catch (err: any) {
     res.status(500).json({ success: false, error: err.message });
@@ -448,64 +448,136 @@ app.post("/api/quote/submit", async (req, res) => {
 app.post("/api/contact/submit", async (req, res) => {
   const { name, email, contact, subject: clientSubject, message } = req.body;
   const userContact = email || contact || "";
-  const messageSubject = clientSubject ? `Inquiry: ${clientSubject} - Phresh Tech Media Services` : `Inquiry Received - Phresh Tech Media Services`;
+  const inquiryId = `PTM-INQ-${Math.floor(10000 + Math.random() * 90000)}`;
+  const messageSubject = clientSubject ? `Inquiry Received: ${clientSubject} - Phresh Tech Media` : `Inquiry Received #${inquiryId} - Phresh Tech Media`;
 
   contactMessages.push({ name, email: userContact, contact: userContact, subject: clientSubject || "General Inquiry", message, timestamp: new Date() });
 
   const isEmail = userContact && userContact.includes("@");
   const recipientEmail = isEmail ? userContact : "phreshtechmediaservices@gmail.com";
-  const textBody = `Hello ${name || "Valued Client"},\n\nThank you for reaching out to Phresh Tech Media Services.\n\nSubject: ${clientSubject || "General Inquiry"}\nMessage Details:\n${message}\n\nOur team is currently reviewing your request, and we will get back to you shortly.\n\nStay Phresh!\nPhresh Tech Team`;
+  const textBody = `Hello ${name || "Valued Client"},\n\nThank you for reaching out to Phresh Tech Media Services.\n\nInquiry Ref: #${inquiryId}\nSubject: ${clientSubject || "General Consultation"}\nMessage Details:\n${message}\n\nOur engineering and design directors will review your inquiry and respond within 24 hours.\n\nStay Phresh!\nPhresh Tech Team\nphreshtechmediaservices@gmail.com | Kasenge - Nakawuka Road, Kampala, Uganda`;
 
-  const htmlBody = `
-    <div style="font-family: Arial, sans-serif; color: #1e293b; max-width: 600px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; margin: 0 auto;">
-      <div style="background-color: #0B1B3D; padding: 16px; border-radius: 8px 8px 0 0; text-align: center;">
-        <h2 style="color: #ffffff; margin: 0; font-size: 18px;">Phresh Tech Media Services</h2>
-        <span style="color: #34d399; font-size: 11px; font-weight: bold; uppercase;">Inquiry Confirmation</span>
-      </div>
-      <div style="padding: 20px; background-color: #ffffff;">
-        <p>Hello <strong>${name || "Valued Client"}</strong>,</p>
-        <p>Thank you for reaching out to <strong>Phresh Tech Media Services</strong>. We have received your inquiry.</p>
-        <div style="background-color: #f8fafc; padding: 12px 16px; border-left: 4px solid #1E7E34; margin: 16px 0; border-radius: 4px;">
-          <p style="margin: 0; font-weight: bold; color: #0B1B3D;">Subject: ${clientSubject || "General Inquiry"}</p>
-          <p style="margin: 8px 0 0 0; color: #334155; font-size: 13px;">${message || "No message content provided."}</p>
-        </div>
-        <p>Our engineering and design team is reviewing your request and will respond within 24 hours.</p>
-        <br/>
-        <p><strong>Stay Phresh!</strong><br/>Phresh Tech Team<br/><span style="color: #64748b; font-size: 12px;">phreshtechmediaservices@gmail.com | Kasenge, Kampala, Uganda</span></p>
-      </div>
-    </div>
-  `;
+  const htmlBody = generateInquiryReceiptHtml({
+    inquiryId,
+    name: name || "Valued Client",
+    email: recipientEmail,
+    phone: isEmail ? "" : userContact,
+    organization: "General Client",
+    subject: clientSubject || "General Consultation & Inquiries",
+    message: message || "No message content provided."
+  });
 
   const mailResult = await sendPhreshEmail(recipientEmail, messageSubject, textBody, htmlBody);
 
   // Dispatch Admin Notification to phreshtechmediaservices@gmail.com
   if (isEmail) {
-    const adminSub = `New Contact Form Submission: ${clientSubject || name || 'Client'}`;
-    const adminTxt = `New Inquiry Received!\n\nName: ${name}\nEmail: ${userContact}\nSubject: ${clientSubject || 'General'}\nMessage:\n${message}\n\nClick Reply to email ${userContact} directly.`;
-    const adminHtml = `
-      <div style="font-family: Arial, sans-serif; color: #0B1B3D; max-width: 600px; padding: 20px; border: 1px solid #cbd5e1; border-radius: 10px;">
-        <h3 style="color: #0B1B3D; margin-top: 0;">📩 New Website Inquiry</h3>
-        <p><strong>Name:</strong> ${name || 'Valued Client'}</p>
-        <p><strong>Email:</strong> ${userContact}</p>
-        <p><strong>Subject:</strong> ${clientSubject || 'General Inquiry'}</p>
-        <p><strong>Message:</strong></p>
-        <blockquote style="background: #f8fafc; padding: 12px; border-left: 4px solid #1E7E34; margin: 0; border-radius: 4px;">
-          ${message || 'General Inquiry'}
-        </blockquote>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
-        <p style="font-size: 12px; color: #64748b;">Replying to this message will send directly to <strong>${userContact}</strong>.</p>
-      </div>
-    `;
+    const adminSub = `📩 New Inquiry Alert #${inquiryId}: ${clientSubject || name || 'Client'}`;
+    const adminTxt = `New Inquiry Received!\n\nInquiry ID: #${inquiryId}\nName: ${name}\nEmail: ${userContact}\nSubject: ${clientSubject || 'General'}\nMessage:\n${message}\n\nClick Reply to email ${userContact} directly.`;
+    const adminHtml = generateAdminInquiryAlertHtml({
+      inquiryId,
+      name: name || "Valued Client",
+      email: userContact,
+      phone: contact || "",
+      organization: "Website Inquiry",
+      subject: clientSubject || "General Consultation",
+      message: message || "No message provided."
+    });
     sendPhreshEmail("phreshtechmediaservices@gmail.com", adminSub, adminTxt, adminHtml, userContact).catch(e => console.error(e));
   }
 
   res.json({
     success: true,
+    inquiryId,
     emailDispatchedFrom: mailResult.from,
     emailSubject: messageSubject,
     emailBody: textBody,
-    message: `Thank you ${name}. Your message has been safely logged and an official confirmation email was dispatched.`
+    renderedInquiryHtml: htmlBody,
+    message: `Thank you ${name}. Your message has been safely logged and an official confirmation receipt was dispatched.`
   });
+});
+
+// API: Email Templates Live Preview Endpoint
+app.get("/api/email/templates/preview", (req, res) => {
+  const { type = "order_receipt" } = req.query;
+
+  if (type === "order_receipt") {
+    const html = generateOrderReceiptHtml({
+      orderId: "PTM-ORD-84920",
+      customerName: "Rev. Sister Mary Goretti",
+      customerEmail: "principal@stclareschools.ug",
+      customerPhone: "+256 702 112233",
+      organization: "St. Clare Girls Secondary School",
+      items: [
+        { id: "soft_1", name: "Phresh Rank Core Marks System (Single Campus License)", price: 450000, qty: 1 },
+        { id: "print_1", name: "Duplicate Carbonless Student Receipt Books (Pack of 10 Books)", price: 280000, qty: 2 },
+        { id: "gfx_1", name: "3D Vector School Crest & Crest Embroidery Master File", price: 150000, qty: 1 }
+      ],
+      specificDetails: "Please configure the report cards for NCDC O-Level 2024 CBC grading with custom school motto and headteacher digital signature placeholder.",
+      totalUGX: 1160000
+    });
+    res.setHeader("Content-Type", "text/html");
+    return res.send(html);
+  }
+
+  if (type === "admin_order_alert") {
+    const html = generateAdminOrderAlertHtml({
+      orderId: "PTM-ORD-84920",
+      customerName: "Rev. Sister Mary Goretti",
+      customerEmail: "principal@stclareschools.ug",
+      customerPhone: "+256 702 112233",
+      organization: "St. Clare Girls Secondary School",
+      items: [
+        { id: "soft_1", name: "Phresh Rank Core Marks System", price: 450000, qty: 1 },
+        { id: "print_1", name: "Duplicate Carbonless Receipt Books", price: 280000, qty: 2 }
+      ],
+      totalUGX: 1010000,
+      specificDetails: "Urgent delivery needed before beginning of Term 2."
+    });
+    res.setHeader("Content-Type", "text/html");
+    return res.send(html);
+  }
+
+  if (type === "inquiry_receipt") {
+    const html = generateInquiryReceiptHtml({
+      inquiryId: "PTM-INQ-49210",
+      name: "Mr. Kato Francis",
+      email: "kato.francis@brightfuture.ac.ug",
+      phone: "+256 777 998877",
+      organization: "Bright Future Academy",
+      subject: "Custom Student ID Card Printing & Portal Setup",
+      message: "We need 650 PVC barcode cards for our secondary students and a synchronized parent SMS notification portal. Please advise on lead time and bulk pricing."
+    });
+    res.setHeader("Content-Type", "text/html");
+    return res.send(html);
+  }
+
+  if (type === "quote_receipt") {
+    const html = generateQuoteReceiptHtml({
+      quoteId: "PTM-QTE-38291",
+      clientName: "Madam Nabawanuka Sarah",
+      email: "bursar@hillviewhigh.ug",
+      phone: "+256 752 443322",
+      organization: "Hillview High School",
+      servicesSummary: "Phresh Rank Core System + 15 Receipt Books + 3D School Logo Redesign",
+      selectedPillars: ["Software Suite", "Print Press", "Graphic Design"],
+      totalPriceUGX: 1450000,
+      specificRequirements: "Requires multi-user local LAN deployment across Bursar and DOS computers."
+    });
+    res.setHeader("Content-Type", "text/html");
+    return res.send(html);
+  }
+
+  if (type === "welcome_email") {
+    const html = generateWelcomeEmailHtml({
+      name: "Eng. Ronald Ssemwogerere",
+      email: "ronald@techsolutions.ug",
+      organization: "Apex Junior School"
+    });
+    res.setHeader("Content-Type", "text/html");
+    return res.send(html);
+  }
+
+  res.status(404).send("Template type not found. Supported types: order_receipt, admin_order_alert, inquiry_receipt, quote_receipt, welcome_email");
 });
 
 // API 8: Read PHP Project Files
