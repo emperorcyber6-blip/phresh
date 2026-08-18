@@ -67,7 +67,7 @@
                     </li>
                     <li class="flex items-center gap-2">
                         <span class="text-emerald-400">✉️</span>
-                        <span>phreshtechmedia@gmail.com</span>
+                        <span>phreshtechmediaservices@gmail.com</span>
                     </li>
                     <li class="flex items-center gap-2">
                         <span class="text-emerald-400">⏰</span>

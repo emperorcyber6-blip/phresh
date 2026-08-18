@@ -59,7 +59,7 @@ include 'header.php';
             </div>
             <h2 class="text-2xl font-black">Quote Request Received!</h2>
             <p class="text-emerald-100 text-sm max-w-lg mx-auto">
-                Thank you <strong><?php echo htmlspecialchars($submittedQuote['name']); ?></strong>. Your estimated project quote of <strong>UGX <?php echo number_format($submittedQuote['total']); ?></strong> has been sent to our sales team. We will call you at <strong><?php echo htmlspecialchars($submittedQuote['phone']); ?></strong> or email phreshtechmedia@gmail.com shortly.
+                Thank you <strong><?php echo htmlspecialchars($submittedQuote['name']); ?></strong>. Your estimated project quote of <strong>UGX <?php echo number_format($submittedQuote['total']); ?></strong> has been sent to our sales team. We will call you at <strong><?php echo htmlspecialchars($submittedQuote['phone']); ?></strong> or email phreshtechmediaservices@gmail.com shortly.
             </p>
             <a href="estimator.php" class="inline-block bg-white text-emerald-950 font-black text-xs px-6 py-3 rounded-xl uppercase tracking-wider hover:bg-emerald-100 transition">
                 Create Another Quote

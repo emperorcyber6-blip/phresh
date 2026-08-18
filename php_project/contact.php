@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Ignore DB write error for demo
             }
         }
-        $successMessage = "Thank you, {$name}! Your order and request have been recorded. Our team will contact you at {$phone} or email phreshtechmedia@gmail.com shortly.";
+        $successMessage = "Thank you, {$name}! Your order and request have been recorded. Our team will contact you at {$phone} or email phreshtechmediaservices@gmail.com shortly.";
     }
 }
 
@@ -76,7 +76,7 @@ include 'header.php';
                         Open Monday to Saturday, 8:00 AM - 6:00 PM.
                     </p>
                     <p class="text-slate-600 font-medium">
-                        ✉️ Email: <a href="mailto:phreshtechmedia@gmail.com" class="text-emerald-700 underline font-bold">phreshtechmedia@gmail.com</a>
+                        ✉️ Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="text-emerald-700 underline font-bold">phreshtechmediaservices@gmail.com</a>
                     </p>
                 </div>
             </div>

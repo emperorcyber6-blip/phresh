@@ -54,7 +54,7 @@ if (!isset($currentNav)) {
         <div class="flex items-center gap-4 font-semibold text-gray-200">
             <a href="tel:+256701432832" class="hover:text-emerald-400 transition">📞 +256 701 432832</a>
             <a href="tel:+256787912832" class="hover:text-emerald-400 transition">📞 +256 787 912832</a>
-            <a href="mailto:phreshtechmedia@gmail.com" class="hover:text-emerald-400 transition hidden sm:inline">✉️ phreshtechmedia@gmail.com</a>
+            <a href="mailto:phreshtechmediaservices@gmail.com" class="hover:text-emerald-400 transition hidden sm:inline">✉️ phreshtechmediaservices@gmail.com</a>
         </div>
     </div>
 </div>

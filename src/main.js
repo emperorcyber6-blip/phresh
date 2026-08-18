@@ -219,30 +219,61 @@ let homeCalcSelections = {
   rankCoreOffline: 1 // UGX 350,000
 };
 
-// User Auth & Cart System State
+// User Auth & Order Summary / Cart System State
 let currentUser = JSON.parse(localStorage.getItem('phresh_user') || 'null');
 let cartItems = JSON.parse(localStorage.getItem('phresh_cart') || '[]');
-let cartSpecificDetails = localStorage.getItem('phresh_cart_details') || '';
+let orderProjectDetails = localStorage.getItem('phresh_order_project_details') || localStorage.getItem('phresh_cart_details') || '';
+let orderColorsSpecs = localStorage.getItem('phresh_order_colors_specs') || '';
+let orderDueDate = localStorage.getItem('phresh_order_due_date') || '';
+
 let isCartDrawerOpen = false;
 let isAuthModalOpen = false;
 let toastMessage = null;
 
-window.updateCartSpecificDetails = function(val) {
-  cartSpecificDetails = val;
+window.updateOrderProjectDetails = function(val) {
+  orderProjectDetails = val;
+  localStorage.setItem('phresh_order_project_details', val);
   localStorage.setItem('phresh_cart_details', val);
 };
+
+window.updateOrderColorsSpecs = function(val) {
+  orderColorsSpecs = val;
+  localStorage.setItem('phresh_order_colors_specs', val);
+};
+
+window.updateOrderDueDate = function(val) {
+  orderDueDate = val;
+  localStorage.setItem('phresh_order_due_date', val);
+};
+
+function getFormattedSpecificDetails() {
+  const parts = [];
+  if (orderProjectDetails.trim()) {
+    parts.push(`Project Details & Scope: ${orderProjectDetails.trim()}`);
+  }
+  if (orderColorsSpecs.trim()) {
+    parts.push(`Colors & Specifications: ${orderColorsSpecs.trim()}`);
+  }
+  if (orderDueDate.trim()) {
+    parts.push(`Target Due Date: ${orderDueDate.trim()}`);
+  }
+  return parts.join(' | ');
+}
 
 window.checkoutViaWhatsApp = function() {
   if (cartItems.length === 0) return;
   const totalUGX = cartItems.reduce((acc, i) => acc + (i.priceUGX * i.qty), 0);
   const itemsText = cartItems.map(i => `• ${i.name} (x${i.qty}) - UGX ${(i.priceUGX * i.qty).toLocaleString()}`).join('\n');
   
-  let msg = `Hello Phresh Tech Media Services,\nI would like to place an order for the following services:\n\n${itemsText}\n\n*Total Estimate: UGX ${totalUGX.toLocaleString()}*`;
-  if (cartSpecificDetails.trim()) {
-    msg += `\n\n*Specific details (e.g. Colors, Sizes, Due Date):*\n${cartSpecificDetails.trim()}`;
+  const detailsFormatted = getFormattedSpecificDetails();
+  
+  let msg = `Hello Phresh Tech Media Services,\nI would like to place an order for the following services:\n\n*ORDER ITEMS:*\n${itemsText}\n\n*ESTIMATED TOTAL: UGX ${totalUGX.toLocaleString()}*`;
+  
+  if (detailsFormatted) {
+    msg += `\n\n*PROJECT SPECIFICATIONS:*\n${detailsFormatted}`;
   }
   if (currentUser) {
-    msg += `\n\n*Client Details:*\nName: ${currentUser.name}\nEmail: ${currentUser.email}${currentUser.phone ? `\nPhone: ${currentUser.phone}` : ''}${currentUser.organization ? `\nOrg: ${currentUser.organization}` : ''}`;
+    msg += `\n\n*CLIENT DETAILS:*\nName: ${currentUser.name}\nEmail: ${currentUser.email}${currentUser.phone ? `\nPhone: ${currentUser.phone}` : ''}${currentUser.organization ? `\nOrg: ${currentUser.organization}` : ''}`;
   }
   window.open(`https://wa.me/256757848094?text=${encodeURIComponent(msg)}`, '_blank');
 };
@@ -439,6 +470,9 @@ window.handleClientAuthSubmit = async function(e) {
 
 window.toggleCartDrawer = function() {
   isCartDrawerOpen = !isCartDrawerOpen;
+  if (isCartDrawerOpen) {
+    isWhatsAppWidgetOpen = false;
+  }
   renderApp();
 };
 
@@ -460,6 +494,7 @@ window.addToCart = function(serviceId, qty = 1) {
   }
   localStorage.setItem('phresh_cart', JSON.stringify(cartItems));
   isCartDrawerOpen = true;
+  isWhatsAppWidgetOpen = false;
   renderApp();
 };
 
@@ -502,7 +537,7 @@ window.checkoutCart = async function() {
       body: JSON.stringify({
         user: currentUser,
         cartItems: cartItems.map(i => ({ id: i.id, name: i.name, price: i.priceUGX, qty: i.qty })),
-        specificDetails: cartSpecificDetails,
+        specificDetails: getFormattedSpecificDetails(),
         totalUGX: totalUGX
       })
     });
@@ -851,7 +886,7 @@ function renderApp() {
               <span>WhatsApp +256 757 848 094</span>
             </a>
             <p class="text-gray-400 text-[11px]">
-              Email: <a href="mailto:phreshtechmedia@gmail.com" class="text-emerald-400 underline">phreshtechmedia@gmail.com</a>
+              Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="text-emerald-400 underline">phreshtechmediaservices@gmail.com</a>
             </p>
           </div>
 
@@ -925,6 +960,8 @@ function renderImagePreviewModal() {
 // STICKY FLOATING WHATSAPP CHAT WIDGET RENDERER
 // ==========================================
 function renderFloatingWhatsAppWidget() {
+  if (isCartDrawerOpen) return '';
+
   return `
     <div class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end gap-3 pointer-events-none">
       
@@ -1129,117 +1166,158 @@ function renderCartDrawer() {
     <div class="fixed inset-0 z-[90] bg-slate-900/60 backdrop-blur-xs flex justify-end animate-fade-in">
       <div class="bg-white w-full max-w-md h-full shadow-2xl border-l border-slate-200 flex flex-col justify-between overflow-hidden">
         
-        <!-- Cart Header -->
+        <!-- Order Summary Header -->
         <div class="bg-[#0B1B3D] text-white p-5 flex items-center justify-between border-b border-white/10 shrink-0">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400">
-              🛒
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold">
+              📋
             </div>
             <div>
-              <h3 class="font-black text-base">Phresh Service Cart</h3>
-              <p class="text-xs text-emerald-400">${cartItems.length} service item(s) selected</p>
+              <h3 class="font-black text-base tracking-tight">Order Summary & Specifications</h3>
+              <p class="text-xs text-emerald-400 font-mono">${cartItems.reduce((a,b)=>a+b.qty,0)} Item(s) Selected • Phresh Tech</p>
             </div>
           </div>
-          <button onclick="toggleCartDrawer()" class="text-slate-300 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+          <button onclick="toggleCartDrawer()" class="text-slate-300 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition" title="Close Sidebar">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
 
         <!-- Quick Pick Service Dropdown -->
-        <div class="p-4 bg-slate-100 border-b border-slate-200 shrink-0">
-          <label class="block text-[11px] font-black uppercase text-slate-700 mb-1.5 flex items-center justify-between">
-            <span>⚡ Pick Services to Add</span>
-            <span class="text-emerald-700 font-mono text-[10px]">21 Services Available</span>
+        <div class="p-3.5 bg-slate-100 border-b border-slate-200 shrink-0">
+          <label class="block text-[10px] font-black uppercase text-slate-700 mb-1 flex items-center justify-between">
+            <span>⚡ Pick & Add Phresh Services</span>
+            <span class="text-emerald-700 font-mono">21 Catalog Items</span>
           </label>
-          <select onchange="if(this.value){ addToCart(this.value); this.value=''; }" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-emerald-600 shadow-xs">
-            <option value="">+ Search or Pick Service to Add to Cart...</option>
+          <select onchange="if(this.value){ addToCart(this.value); this.value=''; }" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:border-emerald-600 shadow-xs">
+            <option value="">+ Add Service to Order...</option>
             ${OFFICIAL_PHRESH_SERVICES.map(s => `
               <option value="${s.id}">${s.name} — UGX ${s.priceUGX.toLocaleString()}</option>
             `).join('')}
           </select>
         </div>
 
-        <!-- User Email Notice in Cart -->
-        <div class="bg-slate-50 px-5 py-2.5 border-b border-slate-200 flex items-center justify-between shrink-0">
+        <!-- Client Identity Bar -->
+        <div class="bg-slate-50 px-4 py-2 border-b border-slate-200 flex items-center justify-between shrink-0 text-xs">
           ${currentUser && currentUser.email ? `
-            <div class="flex items-center gap-2 text-xs">
+            <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span class="text-slate-600">Client: <strong class="text-slate-900">${currentUser.email}</strong></span>
+              <span class="text-slate-600">Client: <strong class="text-slate-900">${currentUser.name || currentUser.email}</strong></span>
             </div>
             <button onclick="openAuthModal()" class="text-[11px] text-emerald-700 font-bold hover:underline">Change</button>
           ` : `
-            <div class="flex items-center gap-2 text-xs text-amber-800">
-              <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-              <span>Email required for order confirmation</span>
+            <div class="flex items-center gap-2 text-amber-800">
+              <span class="text-amber-600 font-bold">⚠️</span>
+              <span>Client account details required</span>
             </div>
             <button onclick="openAuthModal()" class="text-[11px] bg-amber-100 text-amber-900 font-bold px-2.5 py-1 rounded-lg hover:bg-amber-200">Sign In</button>
           `}
         </div>
 
-        <!-- Cart Items List -->
-        <div class="p-5 flex-1 overflow-y-auto space-y-3">
-          ${cartItems.length === 0 ? `
-            <div class="text-center py-10 space-y-3">
-              <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center text-2xl">
-                🛒
-              </div>
-              <p class="text-slate-600 font-extrabold text-sm">Your Phresh service cart is empty</p>
-              <p class="text-xs text-slate-400 max-w-xs mx-auto">Use the quick dropdown above or browse the Tariff Catalog to pick services.</p>
+        <!-- Main Scrollable Body: Selected Items + Order Details Form -->
+        <div class="p-4 flex-1 overflow-y-auto space-y-4">
+          
+          <!-- Selected Items Breakdown -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-1">
+              <span class="text-[11px] font-black uppercase tracking-wider text-slate-800">1. Selected Services (${cartItems.length})</span>
+              ${cartItems.length > 0 ? `<button onclick="cartItems=[]; localStorage.setItem('phresh_cart', '[]'); renderApp();" class="text-[10px] text-red-600 hover:underline">Clear All</button>` : ''}
             </div>
-          ` : cartItems.map(item => `
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2 hover:border-slate-300 transition">
-              <div class="flex items-start justify-between gap-2">
-                <div>
-                  <h4 class="font-bold text-xs text-slate-900 leading-snug">${item.name}</h4>
-                  <span class="text-[10px] font-mono text-emerald-700 uppercase font-semibold">Phresh Service</span>
+
+            ${cartItems.length === 0 ? `
+              <div class="text-center py-8 space-y-2 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+                <div class="w-12 h-12 rounded-full bg-slate-200 text-slate-500 mx-auto flex items-center justify-center text-xl">
+                  🛒
                 </div>
-                <button onclick="removeFromCart('${item.id}')" class="text-slate-400 hover:text-red-600 text-xs p-1" title="Remove Item">
-                  ✕
-                </button>
+                <p class="text-slate-700 font-extrabold text-xs">No services selected yet</p>
+                <p class="text-[11px] text-slate-400 max-w-xs mx-auto">Pick a service from the quick dropdown above or from our Tariff Catalog to build your order summary.</p>
               </div>
-              <div class="flex items-center justify-between pt-2 border-t border-slate-200/80">
-                <div class="flex items-center border border-slate-300 rounded-lg bg-white overflow-hidden text-xs">
-                  <button onclick="updateCartQty('${item.id}', ${item.qty - 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">-</button>
-                  <span class="px-3 font-mono font-bold text-slate-800">${item.qty}</span>
-                  <button onclick="updateCartQty('${item.id}', ${item.qty + 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">+</button>
+            ` : cartItems.map(item => `
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 hover:border-slate-300 transition">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <h4 class="font-bold text-xs text-slate-900 leading-tight">${item.name}</h4>
+                    <span class="text-[10px] font-mono text-emerald-700 uppercase font-semibold">Phresh Service</span>
+                  </div>
+                  <button onclick="removeFromCart('${item.id}')" class="text-slate-400 hover:text-red-600 text-xs p-1" title="Remove Item">
+                    ✕
+                  </button>
                 </div>
-                <div class="text-right">
-                  <span class="text-xs font-black text-[#0B1B3D] font-mono">UGX ${(item.priceUGX * item.qty).toLocaleString()}</span>
-                  <span class="block text-[10px] text-slate-400 font-mono">UGX ${item.priceUGX.toLocaleString()} ea</span>
+                <div class="flex items-center justify-between pt-2 border-t border-slate-200/80">
+                  <div class="flex items-center border border-slate-300 rounded-lg bg-white overflow-hidden text-xs">
+                    <button onclick="updateCartQty('${item.id}', ${item.qty - 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">-</button>
+                    <span class="px-3 font-mono font-bold text-slate-800">${item.qty}</span>
+                    <button onclick="updateCartQty('${item.id}', ${item.qty + 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">+</button>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-black text-[#0B1B3D] font-mono">UGX ${(item.priceUGX * item.qty).toLocaleString()}</span>
+                    <span class="block text-[10px] text-slate-400 font-mono">UGX ${item.priceUGX.toLocaleString()} ea</span>
+                  </div>
                 </div>
               </div>
+            `).join('')}
+          </div>
+
+          <!-- Project Inputs Section (Details, Colors, Due Date) -->
+          <div class="space-y-3 pt-2 border-t border-slate-200">
+            <span class="text-[11px] font-black uppercase tracking-wider text-slate-800 block">2. Project Customization Details</span>
+            
+            <!-- Project Details & Scope Field -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center justify-between">
+                <span>📝 Project Details & Requirements</span>
+                <span class="text-[10px] text-slate-400 font-normal">School/Org Name & Scope</span>
+              </label>
+              <textarea oninput="updateOrderProjectDetails(this.value)" placeholder="e.g. School Report Card System for 500 pupils, term 2 exam sheets, or custom software specifications..." class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 font-normal leading-relaxed resize-none h-16 shadow-xs">${orderProjectDetails}</textarea>
             </div>
-          `).join('')}
+
+            <!-- Colors & Branding Specifications -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center justify-between">
+                <span>🎨 Colors & Design Specifications</span>
+                <span class="text-[10px] text-slate-400 font-normal">Brand colors / Print finish</span>
+              </label>
+              <input type="text" oninput="updateOrderColorsSpecs(this.value)" value="${orderColorsSpecs}" placeholder="e.g. Navy Blue & Gold, CMYK, A4 Glossy Paper, Waterproof Vinyl..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 shadow-xs" />
+            </div>
+
+            <!-- Target Due Date -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center justify-between">
+                <span>📅 Target Due Date / Deadline</span>
+                <span class="text-[10px] text-slate-400 font-normal">Expected delivery</span>
+              </label>
+              <input type="date" oninput="updateOrderDueDate(this.value)" value="${orderDueDate}" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 shadow-xs font-mono" />
+            </div>
+
+          </div>
+
         </div>
 
-        <!-- Order Summary & Specific Details Footer -->
-        <div class="p-5 bg-slate-50 border-t border-slate-200 space-y-3.5 shrink-0">
+        <!-- Sticky Order Summary Footer & Finalize Buttons -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-3 shrink-0 shadow-lg">
           
-          <div class="space-y-2">
-            <h4 class="font-black text-xs uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1 flex items-center justify-between">
-              <span>Order Summary</span>
-              <span class="text-[10px] text-slate-500 font-mono font-normal">${cartItems.length} Item(s)</span>
-            </h4>
-
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 mb-1">Specific details (e.g. Colors, Sizes, Due Date)</label>
-              <textarea oninput="updateCartSpecificDetails(this.value)" placeholder="Specific details (e.g. Colors, Sizes, Due Date, School Name)..." class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 font-normal leading-relaxed resize-none h-16 shadow-xs">${cartSpecificDetails}</textarea>
+          <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs">
+            <div class="flex items-center justify-between text-slate-600">
+              <span>Subtotal:</span>
+              <span class="font-mono font-bold text-slate-800">UGX ${totalUGX.toLocaleString()}</span>
             </div>
-
-            <div class="flex items-center justify-between text-sm font-bold text-slate-800 pt-1">
-              <span>Total</span>
-              <span class="font-black text-lg text-[#0B1B3D] font-mono">UGX ${totalUGX.toLocaleString()}</span>
+            <div class="flex items-center justify-between text-slate-600">
+              <span>Estimated VAT / Administrative:</span>
+              <span class="font-mono font-bold text-emerald-700">Included</span>
+            </div>
+            <div class="flex items-center justify-between text-sm font-black text-slate-900 pt-1.5 border-t border-slate-100">
+              <span>Total Estimated Quote:</span>
+              <span class="font-mono text-base text-[#0B1B3D]">UGX ${totalUGX.toLocaleString()}</span>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <button onclick="checkoutViaWhatsApp()" ${cartItems.length === 0 ? 'disabled' : ''} class="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-extrabold py-3.5 rounded-xl text-[11px] shadow transition flex items-center justify-center gap-1.5">
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="checkoutViaWhatsApp()" ${cartItems.length === 0 ? 'disabled' : ''} class="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-extrabold py-3.5 rounded-xl text-[11px] shadow-md transition flex items-center justify-center gap-1.5">
               ${WHATSAPP_ICON_SVG}
               <span>WhatsApp Order</span>
             </button>
 
-            <button onclick="checkoutCart()" ${cartItems.length === 0 ? 'disabled' : ''} class="bg-[#8B0000] hover:bg-red-800 disabled:opacity-50 text-white font-black py-3.5 rounded-xl text-[11px] uppercase tracking-wider shadow transition flex items-center justify-center gap-1.5">
-              <span>Email Order →</span>
+            <button onclick="checkoutCart()" ${cartItems.length === 0 ? 'disabled' : ''} class="bg-[#8B0000] hover:bg-red-800 disabled:opacity-50 text-white font-black py-3.5 rounded-xl text-[11px] uppercase tracking-wider shadow-md transition flex items-center justify-center gap-1.5">
+              <span>Make Order →</span>
             </button>
           </div>
 
@@ -2434,7 +2512,7 @@ function renderAboutPage() {
                 <div class="pt-2 font-mono font-bold text-slate-900 flex flex-col gap-1">
                   <a href="tel:+256702083515" class="hover:text-emerald-700">+256 702 083515</a>
                   <a href="tel:+256747311209" class="hover:text-emerald-700">+256 747 311209</a>
-                  <span class="text-slate-500 font-sans text-[11px]">Email: phreshtechmedia@gmail.com</span>
+                  <span class="text-slate-500 font-sans text-[11px]">Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="hover:underline text-slate-700">phreshtechmediaservices@gmail.com</a></span>
                 </div>
               </div>
             </div>
@@ -2452,7 +2530,7 @@ function renderAboutPage() {
                 <div class="pt-2 font-mono font-bold text-slate-900 flex flex-col gap-1">
                   <a href="tel:+256777139918" class="hover:text-[#8B0000]">+256 777 139918</a>
                   <a href="tel:+256757848094" class="hover:text-[#8B0000]">+256 757 848094</a>
-                  <span class="text-slate-500 font-sans text-[11px]">Email: phreshtechmedia@gmail.com</span>
+                  <span class="text-slate-500 font-sans text-[11px]">Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="hover:underline text-slate-700">phreshtechmediaservices@gmail.com</a></span>
                 </div>
               </div>
             </div>
@@ -2751,7 +2829,7 @@ function renderContactPage() {
 
               <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
                 <strong class="text-slate-900 block font-bold">Official Email & Location</strong>
-                <p class="text-slate-600">Email: phreshtechmedia@gmail.com</p>
+                <p class="text-slate-600">Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="text-emerald-700 underline font-medium">phreshtechmediaservices@gmail.com</a></p>
                 <p class="text-slate-600">Location: Kasenge - Nakawuka Road, Kampala, Uganda</p>
               </div>
             </div>
