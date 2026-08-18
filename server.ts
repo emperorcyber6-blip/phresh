@@ -4,13 +4,13 @@ import fs from "fs";
 import nodemailer from "nodemailer";
 import { createServer as createViteServer } from "vite";
 import {
-  generateOrderReceiptHtml,
-  generateAdminOrderAlertHtml,
-  generateInquiryReceiptHtml,
-  generateAdminInquiryAlertHtml,
-  generateQuoteReceiptHtml,
-  generateWelcomeEmailHtml
-} from "./emailTemplates";
+  renderOrderReceiptTemplate as generateOrderReceiptHtml,
+  renderAdminOrderAlertTemplate as generateAdminOrderAlertHtml,
+  renderInquiryReceiptTemplate as generateInquiryReceiptHtml,
+  renderAdminInquiryAlertTemplate as generateAdminInquiryAlertHtml,
+  renderQuoteReceiptTemplate as generateQuoteReceiptHtml,
+  renderWelcomeTemplate as generateWelcomeEmailHtml
+} from "./src/templates";
 
 const app = express();
 const PORT = 3000;
