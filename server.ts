@@ -23,22 +23,27 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
   const rawPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || "";
   const gmailPass = rawPass.replace(/\s+/g, "");
 
-  console.log(`[EMAIL DISPATCH] Target: ${to} | Subject: "${subject}" | From: ${senderEmail} | ReplyTo: ${replyTo || senderEmail}`);
+  console.log(`[EMAIL DISPATCH ATTEMPT] Target: ${to} | Subject: "${subject}" | Sender: ${senderEmail} | HasPass: ${Boolean(gmailPass)}`);
 
   if (gmailPass) {
     try {
       const transporter = nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
         auth: {
-          user: senderEmail,
+          user: senderEmail.trim(),
           pass: gmailPass
+        },
+        tls: {
+          rejectUnauthorized: false
         }
       });
 
       const info = await transporter.sendMail({
-        from: `"Phresh Tech Media Services" <${senderEmail}>`,
+        from: `"Phresh Tech Media Services" <${senderEmail.trim()}>`,
         to,
-        replyTo: replyTo || senderEmail,
+        replyTo: replyTo || senderEmail.trim(),
         subject,
         text: textBody,
         html: htmlBody
@@ -52,7 +57,8 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
     }
   }
 
-  return { success: true, mode: "simulated", from: senderEmail };
+  console.warn(`[GMAIL SKIPPED] GMAIL_APP_PASSWORD / GMAIL_PASS is not set in environment.`);
+  return { success: true, mode: "simulated", from: senderEmail, note: "Set GMAIL_APP_PASSWORD in project settings to enable live delivery." };
 }
 
 // In-Memory Relational Database Engine simulating MySQL 8.x
@@ -578,6 +584,49 @@ app.get("/api/email/templates/preview", (req, res) => {
   }
 
   res.status(404).send("Template type not found. Supported types: order_receipt, admin_order_alert, inquiry_receipt, quote_receipt, welcome_email");
+});
+
+// API: Diagnostic Email Test Endpoint
+app.get("/api/email/diagnostics", (req, res) => {
+  const senderEmail = process.env.GMAIL_USER || "phreshtechmediaservices@gmail.com";
+  const rawPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || "";
+  const hasPass = Boolean(rawPass && rawPass.trim().length > 0);
+  const passLength = rawPass.replace(/\s+/g, "").length;
+
+  res.json({
+    status: "ok",
+    senderEmail,
+    hasAppPasswordConfigured: hasPass,
+    appPasswordCharacterCount: passLength,
+    isProper16CharLength: passLength === 16,
+    liveModeActive: hasPass && passLength >= 16,
+    instructions: hasPass
+      ? "Credentials are detected. Use POST /api/email/test-send to send a live test email."
+      : "No App Password detected. Please add GMAIL_APP_PASSWORD in project settings."
+  });
+});
+
+// API: Send Live Test Email
+app.post("/api/email/test-send", async (req, res) => {
+  const { to = "ibrixraxy@gmail.com" } = req.body;
+  const testSubject = `🧪 Test Email from Phresh Tech Media - ${new Date().toLocaleTimeString()}`;
+  const testText = `Hello! This is a test email sent from Phresh Tech Media Services to verify live email delivery.`;
+  const testHtml = generateWelcomeEmailHtml({
+    name: "System Administrator",
+    email: to,
+    organization: "Phresh Tech Media Services"
+  });
+
+  const result = await sendPhreshEmail(to, testSubject, testText, testHtml);
+  res.json({
+    success: result.success,
+    mode: result.mode,
+    sentTo: to,
+    from: result.from,
+    messageId: (result as any).messageId,
+    error: (result as any).error,
+    note: (result as any).note
+  });
 });
 
 // API 8: Read PHP Project Files
