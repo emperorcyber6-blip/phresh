@@ -1112,20 +1112,16 @@ function renderAuthModal() {
           </button>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold">
-              ✉️
+              👤
             </div>
             <div>
-              <h3 class="font-black text-lg text-white">Provide Client Email</h3>
-              <p class="text-xs text-emerald-400">Receive instant welcome & inquiry email updates</p>
+              <h3 class="font-black text-lg text-white">Sign In to Your Account</h3>
+              <p class="text-xs text-emerald-400">Manage orders, quotes, and communications</p>
             </div>
           </div>
         </div>
 
         <form onsubmit="handleClientAuthSubmit(event)" class="p-6 space-y-4">
-          <p class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
-            When you provide your email address, you will receive an official welcome email directly from <strong>phreshtechmediaservices@gmail.com</strong>.
-          </p>
-
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Full Name *</label>
             <input type="text" id="auth-client-name" required value="${currentUser?.name || ''}" placeholder="e.g. Mugisha Alex" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-600" />
@@ -1147,7 +1143,7 @@ function renderAuthModal() {
           </div>
 
           <button type="submit" class="w-full bg-[#1E7E34] hover:bg-emerald-700 text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg transition flex items-center justify-center gap-2">
-            <span>Save & Dispatch Welcome Email</span>
+            <span>Sign In</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
           </button>
         </form>

@@ -23,9 +23,10 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
   const rawPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || "";
   const gmailPass = rawPass.replace(/\s+/g, "");
 
-  console.log(`[EMAIL DISPATCH ATTEMPT] Target: ${to} | Subject: "${subject}" | Sender: ${senderEmail} | HasPass: ${Boolean(gmailPass)}`);
+  console.log(`[EMAIL DISPATCH ATTEMPT] Target: ${to} | Subject: "${subject}" | Sender: ${senderEmail} | HasPass: ${Boolean(gmailPass)} (len: ${gmailPass.length})`);
 
   if (gmailPass) {
+    // Attempt 1: Port 465 SSL
     try {
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -35,6 +36,9 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
           user: senderEmail.trim(),
           pass: gmailPass
         },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 15000,
         tls: {
           rejectUnauthorized: false
         }
@@ -49,11 +53,50 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
         html: htmlBody
       });
 
-      console.log(`[LIVE GMAIL SUCCESS] Message ID: ${info.messageId} to ${to}`);
-      return { success: true, mode: "live_gmail", messageId: info.messageId, from: senderEmail };
-    } catch (err: any) {
-      console.error(`[GMAIL ERROR] ${err.message}`);
-      return { success: false, mode: "error", error: err.message, from: senderEmail };
+      console.log(`[LIVE GMAIL SUCCESS (Port 465)] Message ID: ${info.messageId} to ${to}`);
+      return { success: true, mode: "live_gmail", port: 465, messageId: info.messageId, from: senderEmail };
+    } catch (err465: any) {
+      console.warn(`[GMAIL PORT 465 ATTEMPT FAILED] ${err465.message}. Trying port 587 STARTTLS...`);
+
+      // Attempt 2: Port 587 STARTTLS fallback
+      try {
+        const transporter587 = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false,
+          requireTLS: true,
+          auth: {
+            user: senderEmail.trim(),
+            pass: gmailPass
+          },
+          connectionTimeout: 10000,
+          greetingTimeout: 10000,
+          socketTimeout: 15000,
+          tls: {
+            rejectUnauthorized: false
+          }
+        });
+
+        const info587 = await transporter587.sendMail({
+          from: `"Phresh Tech Media Services" <${senderEmail.trim()}>`,
+          to,
+          replyTo: replyTo || senderEmail.trim(),
+          subject,
+          text: textBody,
+          html: htmlBody
+        });
+
+        console.log(`[LIVE GMAIL SUCCESS (Port 587)] Message ID: ${info587.messageId} to ${to}`);
+        return { success: true, mode: "live_gmail", port: 587, messageId: info587.messageId, from: senderEmail };
+      } catch (err587: any) {
+        console.error(`[GMAIL ERROR (Both 465 & 587)] Port 465: ${err465.message} | Port 587: ${err587.message}`);
+        return { 
+          success: false, 
+          mode: "error", 
+          error: `Port 465: ${err465.message} | Port 587: ${err587.message}`, 
+          from: senderEmail 
+        };
+      }
     }
   }
 
