@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import fs from "fs";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
 import {
   renderOrderReceiptTemplate as generateOrderReceiptHtml,
@@ -12,6 +13,9 @@ import {
   renderWelcomeTemplate as generateWelcomeEmailHtml
 } from "./src/templates";
 
+// Load local environment variables if available
+dotenv.config();
+
 const app = express();
 const PORT = 3000;
 
@@ -19,8 +23,8 @@ app.use(express.json());
 
 // Transporter Helper for Live / Simulated Email Dispatch
 async function sendPhreshEmail(to: string, subject: string, textBody: string, htmlBody: string, replyTo?: string) {
-  const senderEmail = process.env.GMAIL_USER || "phreshtechmediaservices@gmail.com";
-  const rawPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || "";
+  const senderEmail = (process.env.GMAIL_USER || "phreshtechmediaservices@gmail.com").trim();
+  const rawPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || process.env.GMAIL_PASSWORD || "";
   const gmailPass = rawPass.replace(/\s+/g, "");
 
   console.log(`[EMAIL DISPATCH ATTEMPT] Target: ${to} | Subject: "${subject}" | Sender: ${senderEmail} | HasPass: ${Boolean(gmailPass)} (len: ${gmailPass.length})`);
@@ -33,7 +37,7 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
         port: 465,
         secure: true,
         auth: {
-          user: senderEmail.trim(),
+          user: senderEmail,
           pass: gmailPass
         },
         connectionTimeout: 10000,
@@ -45,9 +49,9 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
       });
 
       const info = await transporter.sendMail({
-        from: `"Phresh Tech Media Services" <${senderEmail.trim()}>`,
+        from: `"Phresh Tech Media Services" <${senderEmail}>`,
         to,
-        replyTo: replyTo || senderEmail.trim(),
+        replyTo: replyTo || senderEmail,
         subject,
         text: textBody,
         html: htmlBody
@@ -66,7 +70,7 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
           secure: false,
           requireTLS: true,
           auth: {
-            user: senderEmail.trim(),
+            user: senderEmail,
             pass: gmailPass
           },
           connectionTimeout: 10000,
@@ -78,9 +82,9 @@ async function sendPhreshEmail(to: string, subject: string, textBody: string, ht
         });
 
         const info587 = await transporter587.sendMail({
-          from: `"Phresh Tech Media Services" <${senderEmail.trim()}>`,
+          from: `"Phresh Tech Media Services" <${senderEmail}>`,
           to,
-          replyTo: replyTo || senderEmail.trim(),
+          replyTo: replyTo || senderEmail,
           subject,
           text: textBody,
           html: htmlBody
@@ -766,6 +770,12 @@ app.post("/api/php/eval", (req, res) => {
   } catch (err: any) {
     res.status(500).json({ success: false, error: err.message, output: `PHP Fatal Error: ${err.message}` });
   }
+});
+
+// Google Search Console Site Verification Endpoint
+app.get("/google3cf59a0fdc351c65.html", (req, res) => {
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send("google-site-verification: google3cf59a0fdc351c65.html");
 });
 
 async function startServer() {

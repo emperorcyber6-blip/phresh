@@ -2149,58 +2149,103 @@ function renderPillarDetailContent() {
           </div>
 
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (Offline)</span>
-              <p class="text-slate-600">UNEB report cards, NCDC marksheet engine.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 350,000 (One time)</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (Offline)</span>
+                <p class="text-slate-600">UNEB report cards, NCDC marksheet engine.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 350,000 (One time)</div>
+              </div>
+              <button onclick="addToCart('rank-core-offline')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
 
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (New Customer)</span>
-              <p class="text-slate-600">Includes 100k termly subscription.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (New Customer)</span>
+                <p class="text-slate-600">Includes 100k termly subscription.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+              </div>
+              <button onclick="addToCart('rank-core-new')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
 
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (Dual)</span>
-              <p class="text-slate-600">Online & offline synchronized initial deposit.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 300,000</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (Dual)</span>
+                <p class="text-slate-600">Online & offline synchronized initial deposit.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 300,000</div>
+              </div>
+              <button onclick="addToCart('rank-core-dual')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
 
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Phresh Eduledger</span>
-              <p class="text-slate-600">Bursary school fee management ERP.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Phresh Eduledger</span>
+                <p class="text-slate-600">Bursary school fee management ERP.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+              </div>
+              <button onclick="addToCart('eduledger')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
 
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Phresh Rent Ledger</span>
-              <p class="text-slate-600">Property & tenant rental management.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Phresh Rent Ledger</span>
+                <p class="text-slate-600">Property & tenant rental management.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+              </div>
+              <button onclick="addToCart('rent-ledger')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
 
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Church Management System</span>
-              <p class="text-slate-600">Tithe, membership & event tracking.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 400,000 (One time)</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Church Management System</span>
+                <p class="text-slate-600">Tithe, membership & event tracking.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 400,000 (One time)</div>
+              </div>
+              <button onclick="addToCart('church-mgmt')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
 
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Point of Sale (Offline)</span>
-              <p class="text-slate-600">Desktop retail cashier inventory system.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Point of Sale (Offline)</span>
+                <p class="text-slate-600">Desktop retail cashier inventory system.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+              </div>
+              <button onclick="addToCart('pos-offline')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
 
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Point of Sale (Online)</span>
-              <p class="text-slate-600">Includes annual payment of 120,000.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Point of Sale (Online)</span>
+                <p class="text-slate-600">Includes annual payment of 120,000.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
+              </div>
+              <button onclick="addToCart('pos-online-annual')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
 
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50">
-              <span class="font-black text-slate-900 block text-sm">Phresh Point of Sale (Online One Time)</span>
-              <p class="text-slate-600">Permanent cloud POS license.</p>
-              <div class="font-mono font-bold text-blue-800">UGX 800,000</div>
+            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
+              <div class="space-y-1">
+                <span class="font-black text-slate-900 block text-sm">Phresh Point of Sale (Online One Time)</span>
+                <p class="text-slate-600">Permanent cloud POS license.</p>
+                <div class="font-mono font-bold text-blue-800">UGX 800,000</div>
+              </div>
+              <button onclick="addToCart('pos-online-onetime')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                + Add to Cart
+              </button>
             </div>
           </div>
         </div>
