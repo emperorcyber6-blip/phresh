@@ -104,14 +104,18 @@
   body * {
     visibility: hidden;
   }
+  #printable-receipt-card, #printable-receipt-card *,
   #printable-quote-content, #printable-quote-content * {
     visibility: visible;
   }
-  #printable-quote-content {
+  #printable-receipt-card, #printable-quote-content {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
+    margin: 0;
+    padding: 20px;
+    box-shadow: none !important;
   }
 }
 

@@ -203,6 +203,17 @@ const OFFICIAL_PHRESH_SERVICES = [
 // System State
 let currentPage = 'home';
 let isMobileMenuOpen = false;
+let isAuthModalOpen = false;
+let currentUser = null;
+
+try {
+  const savedUser = localStorage.getItem('phresh_user');
+  if (savedUser) {
+    currentUser = JSON.parse(savedUser);
+  }
+} catch (e) {
+  currentUser = null;
+}
 
 // Sub-page & Tab States
 let activeServicePillar = 'graphic-design'; // 'graphic-design' | 'print-copy' | 'database-systems' | 'web-development' | 'tariff-catalog'
@@ -212,69 +223,44 @@ let autoSlideTimer = null;
 let tariffCategoryFilter = 'all'; // 'all' | 'software' | 'design' | 'print' | 'web'
 let tariffSearchQuery = '';
 
-// Home Page Live Quote Micro-Calculator State (Using exact Phresh Service prices)
-let homeCalcSelections = {
-  graphicDesign: 1,  // UGX 15,000
-  receipts: 2,       // UGX 25,000 x 2 = 50,000
-  rankCoreOffline: 1 // UGX 350,000
+// Client Consultation & Dedicated Direct Payment State (HivePay UGX/USD Integration)
+let paymentPageState = {
+  clientName: '',
+  clientEmail: '',
+  clientPhone: '',
+  serviceDescription: '',
+  amount: '',
+  currency: 'UGX', // 'UGX' | 'USD'
+  paymentMethod: 'mtn_momo', // 'mtn_momo' | 'airtel_money' | 'card'
+  isInitiating: false,
+  isWaitingUssdApproval: false,
+  isCompleted: false,
+  paymentRef: '',
+  gatewayRef: '',
+  instructions: '',
+  pollTimer: null,
+  countdownSeconds: 60,
+  countdownTimer: null,
+  error: null,
+  confirmedData: null
 };
 
-// User Auth & Order Summary / Cart System State
-let currentUser = JSON.parse(localStorage.getItem('phresh_user') || 'null');
-let cartItems = JSON.parse(localStorage.getItem('phresh_cart') || '[]');
-let orderProjectDetails = localStorage.getItem('phresh_order_project_details') || localStorage.getItem('phresh_cart_details') || '';
-let orderColorsSpecs = localStorage.getItem('phresh_order_colors_specs') || '';
-let orderDueDate = localStorage.getItem('phresh_order_due_date') || '';
-
-let isCartDrawerOpen = false;
-let isAuthModalOpen = false;
 let toastMessage = null;
 
-window.updateOrderProjectDetails = function(val) {
-  orderProjectDetails = val;
-  localStorage.setItem('phresh_order_project_details', val);
-  localStorage.setItem('phresh_cart_details', val);
+// Consultation Action Handlers
+window.consultService = function(serviceName) {
+  contactFormState.subject = `Consultation Request: ${serviceName}`;
+  contactFormState.message = `Hello Phresh Tech Media Services,\n\nI would like to request a consultation and discuss project requirements and pricing for "${serviceName}".\n\nPlease get in touch with me.`;
+  if (window.navigateTo) {
+    window.navigateTo('contact');
+  } else {
+    window.location.hash = 'contact';
+  }
+  showToast(`Consultation inquiry prepared for ${serviceName}`);
 };
 
-window.updateOrderColorsSpecs = function(val) {
-  orderColorsSpecs = val;
-  localStorage.setItem('phresh_order_colors_specs', val);
-};
-
-window.updateOrderDueDate = function(val) {
-  orderDueDate = val;
-  localStorage.setItem('phresh_order_due_date', val);
-};
-
-function getFormattedSpecificDetails() {
-  const parts = [];
-  if (orderProjectDetails.trim()) {
-    parts.push(`Project Details & Scope: ${orderProjectDetails.trim()}`);
-  }
-  if (orderColorsSpecs.trim()) {
-    parts.push(`Colors & Specifications: ${orderColorsSpecs.trim()}`);
-  }
-  if (orderDueDate.trim()) {
-    parts.push(`Target Due Date: ${orderDueDate.trim()}`);
-  }
-  return parts.join(' | ');
-}
-
-window.checkoutViaWhatsApp = function() {
-  if (cartItems.length === 0) return;
-  const totalUGX = cartItems.reduce((acc, i) => acc + (i.priceUGX * i.qty), 0);
-  const itemsText = cartItems.map(i => `• ${i.name} (x${i.qty}) - UGX ${(i.priceUGX * i.qty).toLocaleString()}`).join('\n');
-  
-  const detailsFormatted = getFormattedSpecificDetails();
-  
-  let msg = `Hello Phresh Tech Media Services,\nI would like to place an order for the following services:\n\n*ORDER ITEMS:*\n${itemsText}\n\n*ESTIMATED TOTAL: UGX ${totalUGX.toLocaleString()}*`;
-  
-  if (detailsFormatted) {
-    msg += `\n\n*PROJECT SPECIFICATIONS:*\n${detailsFormatted}`;
-  }
-  if (currentUser) {
-    msg += `\n\n*CLIENT DETAILS:*\nName: ${currentUser.name}\nEmail: ${currentUser.email}${currentUser.phone ? `\nPhone: ${currentUser.phone}` : ''}${currentUser.organization ? `\nOrg: ${currentUser.organization}` : ''}`;
-  }
+window.consultViaWhatsApp = function(serviceName) {
+  const msg = `Hello Phresh Tech Media Services,\nI would like to discuss requirements and agree on pricing for:\n*${serviceName || 'Custom Service'}*.\n\nPlease share your consultation availability.`;
   window.open(`https://wa.me/256757848094?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
@@ -468,97 +454,238 @@ window.handleClientAuthSubmit = async function(e) {
   renderApp();
 };
 
-window.toggleCartDrawer = function() {
-  isCartDrawerOpen = !isCartDrawerOpen;
-  if (isCartDrawerOpen) {
-    isWhatsAppWidgetOpen = false;
+window.logoutClient = function() {
+  currentUser = null;
+  try {
+    localStorage.removeItem('phresh_user');
+  } catch (e) {
+    // ignore
   }
+  showToast('Signed out successfully.');
   renderApp();
 };
 
-window.addToCart = function(serviceId, qty = 1) {
-  const service = OFFICIAL_PHRESH_SERVICES.find(s => s.id === serviceId);
-  if (!service) return;
+// ==========================================
+// DEDICATED DIRECT PAYMENT HANDLERS (HIVEPAY)
+// ==========================================
+window.handlePaymentFieldChange = function(field, val) {
+  paymentPageState[field] = val;
+  if (paymentPageState.error) paymentPageState.error = null;
 
-  const existing = cartItems.find(i => i.id === serviceId);
-  if (existing) {
-    existing.qty += qty;
-  } else {
-    cartItems.push({
-      id: service.id,
-      name: service.name,
-      priceUGX: service.priceUGX,
-      category: service.category,
-      qty: qty
-    });
+  // Auto-detect mobile network from phone number
+  if (field === 'clientPhone') {
+    const cleaned = String(val).replace(/\s+/g, '');
+    if (/^(077|078|076|074|\+25677|\+25678|\+25676|\+25674)/.test(cleaned)) {
+      paymentPageState.paymentMethod = 'mtn_momo';
+    } else if (/^(075|070|\+25675|\+25670)/.test(cleaned)) {
+      paymentPageState.paymentMethod = 'airtel_money';
+    }
   }
-  localStorage.setItem('phresh_cart', JSON.stringify(cartItems));
-  isCartDrawerOpen = true;
-  isWhatsAppWidgetOpen = false;
+
   renderApp();
 };
 
-window.removeFromCart = function(serviceId) {
-  cartItems = cartItems.filter(i => i.id !== serviceId);
-  localStorage.setItem('phresh_cart', JSON.stringify(cartItems));
+window.setPaymentPresetAmount = function(amt) {
+  paymentPageState.amount = String(amt);
+  paymentPageState.currency = 'UGX';
+  if (paymentPageState.error) paymentPageState.error = null;
   renderApp();
 };
 
-window.updateCartQty = function(serviceId, newQty) {
-  const qty = parseInt(newQty);
-  if (qty <= 0) {
-    window.removeFromCart(serviceId);
+window.handleInitiatePayment = async function(e) {
+  if (e) e.preventDefault();
+  paymentPageState.error = null;
+
+  if (!paymentPageState.clientName || paymentPageState.clientName.trim().length < 2) {
+    paymentPageState.error = "Please enter your full name or company name.";
+    renderApp();
     return;
   }
-  const item = cartItems.find(i => i.id === serviceId);
-  if (item) {
-    item.qty = qty;
-    localStorage.setItem('phresh_cart', JSON.stringify(cartItems));
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!paymentPageState.clientEmail || !emailRegex.test(paymentPageState.clientEmail.trim())) {
+    paymentPageState.error = "Please enter a valid email address to receive your official payment receipt.";
+    renderApp();
+    return;
+  }
+
+  if (paymentPageState.paymentMethod !== 'card') {
+    if (!paymentPageState.clientPhone || paymentPageState.clientPhone.trim().length < 9) {
+      paymentPageState.error = "Please enter your mobile phone number (e.g. 0777123456 or 0757848094) for USSD prompt delivery.";
+      renderApp();
+      return;
+    }
+  }
+
+  const amountNum = parseFloat(String(paymentPageState.amount).replace(/,/g, ''));
+  if (isNaN(amountNum) || amountNum <= 0) {
+    paymentPageState.error = "Please enter the agreed payment amount.";
+    renderApp();
+    return;
+  }
+
+  if (paymentPageState.currency === 'UGX' && amountNum < 500) {
+    paymentPageState.error = "Minimum payment amount is UGX 500.";
+    renderApp();
+    return;
+  }
+
+  paymentPageState.isInitiating = true;
+  renderApp();
+
+  try {
+    const res = await fetch('/api/payments/collect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: paymentPageState.clientName.trim(),
+        email: paymentPageState.clientEmail.trim(),
+        phone: paymentPageState.clientPhone ? paymentPageState.clientPhone.trim() : '',
+        amount: amountNum,
+        currency: paymentPageState.currency,
+        description: paymentPageState.serviceDescription.trim() || 'Agreed Phresh Tech Media Services',
+        paymentMethod: paymentPageState.paymentMethod,
+        reference: paymentPageState.paymentRef || undefined
+      })
+    });
+
+    const data = await res.json();
+    paymentPageState.isInitiating = false;
+
+    if (data.success) {
+      paymentPageState.paymentRef = data.paymentRef;
+      paymentPageState.gatewayRef = data.gatewayRef;
+      paymentPageState.instructions = data.instructions;
+      paymentPageState.isWaitingUssdApproval = true;
+      paymentPageState.countdownSeconds = 60;
+      renderApp();
+
+      // Start countdown timer
+      if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
+      paymentPageState.countdownTimer = setInterval(() => {
+        if (paymentPageState.countdownSeconds > 0) {
+          paymentPageState.countdownSeconds -= 1;
+          const cdEl = document.getElementById('ussd-countdown-display');
+          if (cdEl) {
+            cdEl.innerText = `${paymentPageState.countdownSeconds}s`;
+          }
+        } else {
+          clearInterval(paymentPageState.countdownTimer);
+        }
+      }, 1000);
+
+      // Start automatic polling for status
+      if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
+      paymentPageState.pollTimer = setInterval(async () => {
+        try {
+          const statusRes = await fetch(`/api/payments/status/${paymentPageState.paymentRef}`);
+          if (statusRes.ok) {
+            const statusData = await statusRes.json();
+            if (statusData.status === 'COMPLETED') {
+              clearInterval(paymentPageState.pollTimer);
+              if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
+              paymentPageState.isWaitingUssdApproval = false;
+              paymentPageState.isCompleted = true;
+              paymentPageState.confirmedData = statusData.payment;
+              renderApp();
+            }
+          }
+        } catch (e) {
+          // ignore transient poll error
+        }
+      }, 3500);
+    } else {
+      paymentPageState.error = data.error || "Unable to initiate payment transaction.";
+      renderApp();
+    }
+  } catch (err) {
+    paymentPageState.isInitiating = false;
+    paymentPageState.error = "Connection error. Please check your internet and try again.";
     renderApp();
   }
 };
 
-window.checkoutCart = async function() {
-  if (cartItems.length === 0) {
-    alert('Your Phresh Service Cart is empty.');
-    return;
-  }
-  if (!currentUser || !currentUser.email) {
-    window.openAuthModal();
-    return;
-  }
+window.handleConfirmPayment = async function() {
+  if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
+  if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
 
-  const totalUGX = cartItems.reduce((acc, i) => acc + (i.priceUGX * i.qty), 0);
+  paymentPageState.isInitiating = true;
+  renderApp();
 
   try {
-    const res = await fetch('/api/orders/place', {
+    const res = await fetch('/api/payments/confirm', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        user: currentUser,
-        cartItems: cartItems.map(i => ({ id: i.id, name: i.name, price: i.priceUGX, qty: i.qty })),
-        specificDetails: getFormattedSpecificDetails(),
-        totalUGX: totalUGX
+        reference: paymentPageState.paymentRef,
+        gatewayRef: paymentPageState.gatewayRef,
+        clientName: paymentPageState.clientName,
+        clientEmail: paymentPageState.clientEmail,
+        clientPhone: paymentPageState.clientPhone,
+        serviceDescription: paymentPageState.serviceDescription || 'Agreed Phresh Tech Media Services',
+        amount: parseFloat(String(paymentPageState.amount).replace(/,/g, '')),
+        currency: paymentPageState.currency,
+        paymentMethod: paymentPageState.paymentMethod
       })
     });
+
     const data = await res.json();
-    if (data.success) {
-      cartItems = [];
-      localStorage.setItem('phresh_cart', JSON.stringify([]));
-      isCartDrawerOpen = false;
-      showToast(`Inquiry placed! Confirmation email sent to ${currentUser.email}`);
-    }
+    paymentPageState.isInitiating = false;
+    paymentPageState.isWaitingUssdApproval = false;
+    paymentPageState.isCompleted = true;
+    paymentPageState.confirmedData = data.payment || {
+      id: paymentPageState.paymentRef,
+      gateway_reference: paymentPageState.gatewayRef,
+      client_name: paymentPageState.clientName,
+      client_email: paymentPageState.clientEmail,
+      client_phone: paymentPageState.clientPhone,
+      service_description: paymentPageState.serviceDescription || 'Agreed Phresh Tech Media Services',
+      amount: parseFloat(String(paymentPageState.amount).replace(/,/g, '')),
+      currency: paymentPageState.currency,
+      created_at: new Date().toISOString()
+    };
+    showToast(`Payment #${paymentPageState.paymentRef} verified successfully!`);
+    renderApp();
   } catch (err) {
-    cartItems = [];
-    localStorage.setItem('phresh_cart', JSON.stringify([]));
-    isCartDrawerOpen = false;
-    showToast(`Inquiry received for ${currentUser.email}`);
+    paymentPageState.isInitiating = false;
+    paymentPageState.isWaitingUssdApproval = false;
+    paymentPageState.isCompleted = true;
+    renderApp();
   }
+};
+
+window.resetPaymentPage = function() {
+  if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
+  if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
+  paymentPageState = {
+    clientName: '',
+    clientEmail: '',
+    clientPhone: '',
+    serviceDescription: '',
+    amount: '',
+    currency: 'UGX',
+    paymentMethod: 'mtn_momo',
+    isInitiating: false,
+    isWaitingUssdApproval: false,
+    isCompleted: false,
+    paymentRef: '',
+    gatewayRef: '',
+    instructions: '',
+    pollTimer: null,
+    countdownSeconds: 60,
+    countdownTimer: null,
+    error: null,
+    confirmedData: null
+  };
   renderApp();
 };
 
+window.printPaymentReceipt = function() {
+  window.print();
+};
+
 // Valid Multi-Page Routes
-const VALID_PAGES = ['home', 'services', 'portfolio', 'about', 'contact'];
+const VALID_PAGES = ['home', 'services', 'portfolio', 'about', 'contact', 'payment', 'pay'];
 
 // Hero Showcase Slides
 const HERO_SLIDES = [
@@ -568,7 +695,7 @@ const HERO_SLIDES = [
     subtitle: 'Uganda’s premier technology partner empowering schools with Phresh Rank Core report card engines, commercial print press, and web hosting.',
     badge: 'Phresh Tech Media Services',
     image: heroSoftwareImg,
-    ctaText: 'Request Custom Quote',
+    ctaText: 'Discuss Your Project',
     ctaPage: 'contact',
     stats: [
       { number: '50+', label: 'Partner Institutions' },
@@ -620,25 +747,55 @@ const HERO_SLIDES = [
   }
 ];
 
-// Initialize Application & Multi-Page Router
-document.addEventListener('DOMContentLoaded', () => {
-  const hash = window.location.hash.replace('#', '').toLowerCase();
-  if (VALID_PAGES.includes(hash)) {
-    currentPage = hash;
+// Parse route and optional prefilled query parameters from location.hash
+function parseHashRoute() {
+  const rawHash = window.location.hash.replace(/^#/, '');
+  const [routePart, queryPart] = rawHash.split('?');
+  const page = (routePart || 'home').toLowerCase();
+
+  if (VALID_PAGES.includes(page)) {
+    currentPage = page;
   }
 
-  window.addEventListener('hashchange', () => {
-    const newHash = window.location.hash.replace('#', '').toLowerCase();
-    if (VALID_PAGES.includes(newHash) && newHash !== currentPage) {
-      currentPage = newHash;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      renderApp();
+  // If entering payment page via direct link with query params: #pay?amount=...&desc=...
+  if (queryPart && (page === 'payment' || page === 'pay')) {
+    try {
+      const params = new URLSearchParams(queryPart);
+      if (params.get('amount')) paymentPageState.amount = params.get('amount');
+      if (params.get('desc')) paymentPageState.serviceDescription = params.get('desc');
+      if (params.get('name')) paymentPageState.clientName = params.get('name');
+      if (params.get('email')) paymentPageState.clientEmail = params.get('email');
+      if (params.get('phone')) paymentPageState.clientPhone = params.get('phone');
+      if (params.get('currency')) paymentPageState.currency = params.get('currency').toUpperCase();
+      if (params.get('method')) paymentPageState.paymentMethod = params.get('method');
+    } catch (e) {
+      // Ignore query param parse failure
     }
+  }
+}
+
+// Initialize Application & Multi-Page Router
+function initApp() {
+  parseHashRoute();
+
+  window.addEventListener('hashchange', () => {
+    const prevPage = currentPage;
+    parseHashRoute();
+    if (currentPage !== prevPage) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    renderApp();
   });
 
   renderApp();
   startHeroAutoSlide();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // Navigation Handler & Section Smooth Scroll
 window.navigateTo = function(pageName, subPillar = null) {
@@ -763,16 +920,24 @@ function renderApp() {
           <button onclick="scrollToSection('contact-section', 'contact')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'contact' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
             Contact
           </button>
+          <button onclick="navigateTo('pay')" class="px-3 py-2 rounded-xl transition flex items-center gap-1.5 ${currentPage === 'pay' || currentPage === 'payment' ? 'text-white bg-emerald-700 shadow-xs' : 'text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200'}">
+            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            <span>Direct Pay</span>
+          </button>
         </nav>
 
         <!-- Right Quick Actions -->
         <div class="hidden sm:flex items-center gap-2.5">
+          <button onclick="navigateTo('pay')" title="Direct Client Pay" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold px-3 py-2.5 rounded-xl shadow-xs transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <span>Pay Online</span>
+          </button>
           <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media,%20I%20would%20like%20to%20inquire%20about%20your%20services." target="_blank" title="WhatsApp: +256 757 848 094" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl shadow-xs transition flex items-center gap-2 group">
             ${WHATSAPP_ICON_SVG}
             <span>WhatsApp</span>
           </a>
           <button onclick="scrollToSection('contact-section', 'contact')" class="bg-[#8B0000] hover:bg-red-800 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-xs transition uppercase tracking-wider">
-            Get Quote
+            Discuss Your Project
           </button>
         </div>
 
@@ -811,6 +976,10 @@ function renderApp() {
           <button onclick="scrollToSection('contact-section', 'contact')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
             <span>Contact Us</span>
             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+          <button onclick="navigateTo('payment')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-emerald-800 font-bold flex items-center justify-between">
+            <span>Client Direct Payment</span>
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
           </button>
           <a href="https://wa.me/256757848094" target="_blank" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl shadow-xs transition flex items-center justify-center gap-2">
             ${WHATSAPP_ICON_SVG}
@@ -872,7 +1041,7 @@ function renderApp() {
               </p>
               <p class="p-2.5 bg-white/5 rounded-xl border border-white/10">
                 <strong class="text-white block">Kasenge Office Desk</strong>
-                <span class="text-sky-400 text-[11px]">General Inquiries & Orders</span><br />
+                <span class="text-sky-400 text-[11px]">General Inquiries & Consultations</span><br />
                 <a href="tel:+256741145595" class="hover:underline font-mono">+256 741 145595</a>
               </p>
             </div>
@@ -880,7 +1049,7 @@ function renderApp() {
 
           <div class="space-y-3 text-xs">
             <h4 class="font-black text-white uppercase tracking-wider text-xs">Direct WhatsApp & Inquiries</h4>
-            <p class="text-gray-300">Fast responsive quote dispatch directly to sales directors:</p>
+            <p class="text-gray-300">Fast responsive consultation directly with company directors:</p>
             <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs p-3 rounded-xl text-center shadow transition">
               ${WHATSAPP_ICON_SVG}
               <span>WhatsApp +256 757 848 094</span>
@@ -894,10 +1063,11 @@ function renderApp() {
 
         <div class="pt-8 border-t border-white/10 text-center text-xs text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© ${new Date().getFullYear()} Phresh Tech Media Services (phreshtechmedia.com). All Rights Reserved.</p>
-          <div class="flex gap-4">
+          <div class="flex flex-wrap items-center justify-center gap-4">
             <button onclick="navigateTo('services')" class="hover:text-emerald-400">Services Catalog</button>
             <button onclick="navigateTo('portfolio')" class="hover:text-emerald-400">Case Studies</button>
             <button onclick="navigateTo('contact')" class="hover:text-emerald-400">Contact Us</button>
+            <button onclick="navigateTo('payment')" class="hover:text-emerald-400 text-emerald-400 font-bold">Client Direct Payment</button>
           </div>
         </div>
       </div>
@@ -906,7 +1076,6 @@ function renderApp() {
     <!-- Sticky Floating Action Bar & Modals -->
     ${renderFloatingWhatsAppWidget()}
     ${renderToastNotification()}
-    ${renderCartDrawer()}
     ${renderAuthModal()}
     ${renderImagePreviewModal()}
   `;
@@ -960,8 +1129,6 @@ function renderImagePreviewModal() {
 // STICKY FLOATING WHATSAPP CHAT WIDGET RENDERER
 // ==========================================
 function renderFloatingWhatsAppWidget() {
-  if (isCartDrawerOpen) return '';
-
   return `
     <div class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end gap-3 pointer-events-none">
       
@@ -1055,13 +1222,6 @@ function renderFloatingWhatsAppWidget() {
       <!-- Sticky Floating Button Launcher Group -->
       <div class="pointer-events-auto flex items-center gap-3">
         
-        <!-- Quick Cart Launcher Button -->
-        <button onclick="toggleCartDrawer()" title="View Cart" class="bg-[#0B1B3D] hover:bg-slate-900 text-white p-3.5 rounded-full shadow-2xl border border-slate-700 flex items-center gap-2 transition hover:scale-105 active:scale-95">
-          <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-          <span class="text-xs font-bold hidden sm:inline">Phresh Cart</span>
-          <span class="bg-[#1E7E34] text-white text-[11px] font-black px-2 py-0.5 rounded-full">${cartItems.reduce((a,b)=>a+b.qty,0)}</span>
-        </button>
-
         <!-- Sticky Floating WhatsApp Button -->
         <button onclick="toggleWhatsAppWidget()" title="Contact Phresh Tech Media on WhatsApp" class="relative group bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-full shadow-2xl border border-emerald-400/50 flex items-center gap-2.5 transition-all duration-300 transform hover:scale-105 active:scale-95 ring-4 ring-emerald-500/20">
           
@@ -1153,169 +1313,450 @@ function renderAuthModal() {
   `;
 }
 
-function renderCartDrawer() {
-  if (!isCartDrawerOpen) return '';
+// ==========================================
+// DEDICATED DIRECT PAYMENT PAGE (HIVEPAY)
+// ==========================================
+function renderDedicatedPaymentPage() {
+  const {
+    clientName,
+    clientEmail,
+    clientPhone,
+    serviceDescription,
+    amount,
+    currency,
+    paymentMethod,
+    isInitiating,
+    isWaitingUssdApproval,
+    isCompleted,
+    paymentRef,
+    gatewayRef,
+    instructions,
+    countdownSeconds,
+    error,
+    confirmedData
+  } = paymentPageState;
 
-  const totalUGX = cartItems.reduce((acc, item) => acc + (item.priceUGX * item.qty), 0);
+  // Case 1: Payment Successfully Verified & Completed (Official Stamped Receipt)
+  if (isCompleted && confirmedData) {
+    const formattedAmount = `${confirmedData.currency || currency} ${Number(confirmedData.amount || amount).toLocaleString()}`;
+    const methodLabel = paymentMethod === 'mtn_momo'
+      ? 'MTN Mobile Money (Uganda)'
+      : paymentMethod === 'airtel_money'
+        ? 'Airtel Money (Uganda)'
+        : 'Visa / Mastercard Card Checkout';
+
+    return `
+      <div id="payment-receipt-view" class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-100 min-h-[85vh] flex items-center justify-center">
+        <div id="printable-receipt-card" class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in">
+          
+          <!-- Stamped Top Banner -->
+          <div class="bg-gradient-to-r from-[#0B1B3D] via-[#152e61] to-[#08132B] p-6 sm:p-8 text-white relative border-b-4 border-emerald-500">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3.5">
+                <img src="/logo.svg" alt="Phresh Tech Media" class="h-12 w-auto bg-white p-1 rounded-xl shadow-md" referrerPolicy="no-referrer" />
+                <div>
+                  <h2 class="text-xl font-black tracking-tight text-white leading-none">PHRESH TECH MEDIA</h2>
+                  <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400 mt-1 block">Official Verified Payment Receipt</span>
+                </div>
+              </div>
+              <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-xs">
+                <span>✓ Verified & Paid</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Receipt Details Card -->
+          <div class="p-6 sm:p-8 space-y-6">
+            
+            <div class="text-center py-2 space-y-1 border-b border-slate-100 pb-4">
+              <span class="text-xs uppercase tracking-wider text-slate-500 font-bold">Total Confirmed Settlement</span>
+              <div class="text-3xl sm:text-4xl font-black text-emerald-700 font-mono tracking-tight">${formattedAmount}</div>
+              <p class="text-xs text-slate-600">Paid by <strong class="text-slate-900">${confirmedData.client_name || clientName}</strong></p>
+            </div>
+
+            <!-- Transaction Data Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-500 block">Payment Reference</span>
+                <span class="font-mono font-black text-slate-900 text-sm">${confirmedData.id || paymentRef}</span>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-500 block">Gateway Reference (HivePay)</span>
+                <span class="font-mono font-bold text-slate-700">${confirmedData.gateway_reference || gatewayRef || 'HP-SETTLED'}</span>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-500 block">Payment Method</span>
+                <span class="font-bold text-slate-900">${methodLabel}</span>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-500 block">Settlement Account</span>
+                <span class="font-mono font-bold text-slate-700">HP2610222987 (Phresh Media)</span>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-500 block">Date & Timestamp</span>
+                <span class="text-slate-700 font-medium">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-500 block">Client Contact</span>
+                <span class="text-slate-700 font-medium">${confirmedData.client_email || clientEmail}</span>
+              </div>
+            </div>
+
+            <!-- Agreed Service Description -->
+            <div class="border border-slate-200 rounded-2xl p-4 bg-white space-y-1 text-xs">
+              <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider block">Agreed Service / Project Description</span>
+              <p class="text-slate-900 font-bold text-sm leading-relaxed">${confirmedData.service_description || serviceDescription || 'Agreed Technical Services & Consultation'}</p>
+              <span class="text-[11px] text-slate-500 block pt-1">Direct project settlement following consultation with Phresh Tech Media directors.</span>
+            </div>
+
+            <!-- Automated Confirmation Alert -->
+            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-xs text-emerald-900 space-y-1">
+              <div class="flex items-center gap-2 font-bold text-emerald-950">
+                <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 000-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <span>Official Receipt Dispatched</span>
+              </div>
+              <p class="text-emerald-800 text-[11px] leading-relaxed">
+                An official PDF-styled receipt copy has been recorded for <strong>${confirmedData.client_email || clientEmail}</strong> and our finance department at <strong>phreshtechmediaservices@gmail.com</strong>.
+              </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+              <button onclick="printPaymentReceipt()" class="w-full sm:w-1/2 bg-[#0B1B3D] hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                <span>Print Official Receipt</span>
+              </button>
+              
+              <a href="https://wa.me/256757848094?text=${encodeURIComponent(`Hello Phresh Tech Media, I have completed payment of ${formattedAmount} for Reference: ${confirmedData.id || paymentRef}. Please confirm next steps.`)}" target="_blank" class="w-full sm:w-1/2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm text-center">
+                ${WHATSAPP_ICON_SVG}
+                <span>Notify via WhatsApp</span>
+              </a>
+            </div>
+
+            <div class="text-center pt-2">
+              <button onclick="resetPaymentPage(); navigateTo('home');" class="text-xs text-slate-500 hover:text-slate-800 underline font-semibold">
+                ← Return to Phresh Tech Media Homepage
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    `;
+  }
+
+  // Case 2: Interactive USSD Prompt Overlay / Waiting State
+  if (isWaitingUssdApproval) {
+    const formattedAmount = `${currency} ${Number(amount || 0).toLocaleString()}`;
+    const networkName = paymentMethod === 'mtn_momo' ? 'MTN Mobile Money' : 'Airtel Money';
+    const isMtn = paymentMethod === 'mtn_momo';
+
+    return `
+      <div class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-100 min-h-[85vh] flex items-center justify-center">
+        <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in">
+          
+          <!-- Top Header -->
+          <div class="bg-[#0B1B3D] text-white p-6 border-b-4 ${isMtn ? 'border-amber-400' : 'border-red-500'} text-center space-y-2 relative overflow-hidden">
+            <div class="w-16 h-16 bg-white/10 border-2 border-white/20 rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-inner animate-pulse">
+              📱
+            </div>
+            <h2 class="text-xl font-black">USSD Prompt Dispatched</h2>
+            <p class="text-xs text-slate-300">Awaiting your Mobile Money PIN entry on your handset</p>
+          </div>
+
+          <!-- Body -->
+          <div class="p-6 sm:p-8 space-y-5 text-center text-xs">
+            
+            <div class="${isMtn ? 'bg-amber-50 border-amber-200 text-amber-950' : 'bg-red-50 border-red-200 text-red-950'} border rounded-2xl p-5 space-y-2.5">
+              <div class="flex items-center justify-center gap-2">
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isMtn ? 'bg-amber-400 text-slate-900' : 'bg-red-600 text-white'}">
+                  ${networkName}
+                </span>
+                <span class="text-[11px] font-bold text-slate-600 font-mono">Merchant: HP2610222987</span>
+              </div>
+              <p class="text-slate-800 leading-relaxed text-xs">
+                A prompt has been dispatched to <strong class="text-slate-950 font-mono text-sm">${clientPhone}</strong>. Please enter your PIN on your handset screen to authorize:
+              </p>
+              <div class="text-3xl font-black text-[#0B1B3D] font-mono tracking-tight">${formattedAmount}</div>
+              <div class="text-[11px] text-slate-500 font-mono">Ref: ${paymentRef} • Gateway: ${gatewayRef || 'HP-LIVE'}</div>
+            </div>
+
+            <!-- Countdown and Live Status Indicator -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                  <span>Awaiting PIN Entry...</span>
+                </span>
+                <span id="ussd-countdown-display" class="font-mono text-emerald-700 font-black text-sm">${countdownSeconds || 60}s</span>
+              </div>
+              <p class="text-[11px] text-slate-500 text-left">
+                Keep this window open. Once you enter your PIN, the transaction settles immediately and your verified receipt appears automatically.
+              </p>
+            </div>
+
+            <div class="space-y-2.5 pt-1">
+              <button onclick="handleConfirmPayment()" class="w-full bg-[#1E7E34] hover:bg-emerald-700 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider shadow-lg transition flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                <span>I Have Entered My PIN (Verify Payment)</span>
+              </button>
+
+              <button onclick="paymentPageState.isWaitingUssdApproval = false; renderApp();" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-xs transition">
+                Change Details or Try Another Number
+              </button>
+            </div>
+
+            <div class="text-[10px] text-slate-400 border-t border-slate-100 pt-3 flex items-center justify-between">
+              <span>HivePay Merchant HP2610222987</span>
+              <span>256-Bit SSL Encrypted</span>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    `;
+  }
+
+  // Case 3: Standard Dedicated Direct Payment Intake Form
+  const isAirtelDetected = /^(075|070|\+25675|\+25670)/.test(String(clientPhone || '').replace(/\s+/g, ''));
+  const isMtnDetected = /^(077|078|076|074|\+25677|\+25678|\+25676|\+25674)/.test(String(clientPhone || '').replace(/\s+/g, ''));
 
   return `
-    <div class="fixed inset-0 z-[90] bg-slate-900/60 backdrop-blur-xs flex justify-end animate-fade-in">
-      <div class="bg-white w-full max-w-md h-full shadow-2xl border-l border-slate-200 flex flex-col justify-between overflow-hidden">
+    <div id="payment-page-section" class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 min-h-[85vh]">
+      <div class="max-w-3xl mx-auto space-y-8">
         
-        <!-- Order Summary Header -->
-        <div class="bg-[#0B1B3D] text-white p-5 flex items-center justify-between border-b border-white/10 shrink-0">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold">
-              📋
-            </div>
-            <div>
-              <h3 class="font-black text-base tracking-tight">Order Summary & Specifications</h3>
-              <p class="text-xs text-emerald-400 font-mono">${cartItems.reduce((a,b)=>a+b.qty,0)} Item(s) Selected • Phresh Tech</p>
-            </div>
-          </div>
-          <button onclick="toggleCartDrawer()" class="text-slate-300 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition" title="Close Sidebar">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-          </button>
-        </div>
-
-        <!-- Quick Pick Service Dropdown -->
-        <div class="p-3.5 bg-slate-100 border-b border-slate-200 shrink-0">
-          <label class="block text-[10px] font-black uppercase text-slate-700 mb-1 flex items-center justify-between">
-            <span>⚡ Pick & Add Phresh Services</span>
-            <span class="text-emerald-700 font-mono">21 Catalog Items</span>
-          </label>
-          <select onchange="if(this.value){ addToCart(this.value); this.value=''; }" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:border-emerald-600 shadow-xs">
-            <option value="">+ Add Service to Order...</option>
-            ${OFFICIAL_PHRESH_SERVICES.map(s => `
-              <option value="${s.id}">${s.name} — UGX ${s.priceUGX.toLocaleString()}</option>
-            `).join('')}
-          </select>
-        </div>
-
-        <!-- Client Identity Bar -->
-        <div class="bg-slate-50 px-4 py-2 border-b border-slate-200 flex items-center justify-between shrink-0 text-xs">
-          ${currentUser && currentUser.email ? `
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span class="text-slate-600">Client: <strong class="text-slate-900">${currentUser.name || currentUser.email}</strong></span>
-            </div>
-            <button onclick="openAuthModal()" class="text-[11px] text-emerald-700 font-bold hover:underline">Change</button>
-          ` : `
-            <div class="flex items-center gap-2 text-amber-800">
-              <span class="text-amber-600 font-bold">⚠️</span>
-              <span>Client account details required</span>
-            </div>
-            <button onclick="openAuthModal()" class="text-[11px] bg-amber-100 text-amber-900 font-bold px-2.5 py-1 rounded-lg hover:bg-amber-200">Sign In</button>
-          `}
-        </div>
-
-        <!-- Main Scrollable Body: Selected Items + Order Details Form -->
-        <div class="p-4 flex-1 overflow-y-auto space-y-4">
-          
-          <!-- Selected Items Breakdown -->
+        <!-- Header Banner -->
+        <div class="bg-gradient-to-r from-[#0B1B3D] via-[#152e61] to-[#08132B] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="space-y-2">
-            <div class="flex items-center justify-between border-b border-slate-200 pb-1">
-              <span class="text-[11px] font-black uppercase tracking-wider text-slate-800">1. Selected Services (${cartItems.length})</span>
-              ${cartItems.length > 0 ? `<button onclick="cartItems=[]; localStorage.setItem('phresh_cart', '[]'); renderApp();" class="text-[10px] text-red-600 hover:underline">Clear All</button>` : ''}
+            <div class="flex items-center gap-2">
+              <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-emerald-400/30">
+                Official Client Payment Portal
+              </span>
+              <span class="text-xs text-slate-300 font-bold">• HivePay Merchant HP2610222987</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Direct Project & Service Settlement</h1>
+            <p class="text-xs text-slate-300 leading-relaxed max-w-xl">
+              Pay securely for agreed software licenses, commercial printing jobs, and IT services following consultation with Phresh Tech Media directors. Dispatches an instant USSD PIN prompt directly to your phone.
+            </p>
+          </div>
+          <img src="/logo.svg" alt="Phresh Tech Media" class="h-14 w-auto bg-white p-2 rounded-2xl shadow-md self-start md:self-auto shrink-0" referrerPolicy="no-referrer" />
+        </div>
+
+        <!-- Error Alert -->
+        ${error ? `
+          <div class="p-4 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-700 font-bold flex items-center gap-2 animate-fade-in shadow-xs">
+            <span>⚠️</span>
+            <span>${error}</span>
+          </div>
+        ` : ''}
+
+        <!-- Main Payment Form Card -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          
+          <form onsubmit="handleInitiatePayment(event)" class="space-y-6 text-xs" novalidate>
+            
+            <!-- Step 1: Client Information -->
+            <div class="space-y-4">
+              <div class="border-b border-slate-100 pb-2 flex items-center justify-between">
+                <span class="text-xs font-black uppercase text-[#0B1B3D] tracking-wider">1. Client Contact Details</span>
+                <span class="text-[11px] text-slate-400">For official receipt & VAT record</span>
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-bold text-slate-800 mb-1">Your Full Name / Organization <span class="text-red-500">*</span></label>
+                  <input 
+                    type="text" 
+                    required 
+                    value="${clientName}" 
+                    oninput="handlePaymentFieldChange('clientName', this.value)" 
+                    placeholder="e.g. Director Denis Mukasa / Global High School" 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition"
+                  />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-800 mb-1">Email Address <span class="text-red-500">*</span></label>
+                  <input 
+                    type="email" 
+                    required 
+                    value="${clientEmail}" 
+                    oninput="handlePaymentFieldChange('clientEmail', this.value)" 
+                    placeholder="e.g. denis@organization.org" 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
+                  <span>
+                    Mobile Money Handset Phone Number <span class="text-red-500">*</span>
+                  </span>
+                  ${isMtnDetected ? `
+                    <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">MTN MoMo Detected</span>
+                  ` : isAirtelDetected ? `
+                    <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-300">Airtel Money Detected</span>
+                  ` : `
+                    <span class="text-[10px] text-slate-400">MTN or Airtel Uganda</span>
+                  `}
+                </label>
+                <div class="relative">
+                  <input 
+                    type="tel" 
+                    required 
+                    value="${clientPhone}" 
+                    oninput="handlePaymentFieldChange('clientPhone', this.value)" 
+                    placeholder="e.g. 0777123456 or 0757848094" 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition font-mono"
+                  />
+                  <span class="absolute right-3 top-3 text-[10px] font-bold uppercase text-slate-400">UG (+256)</span>
+                </div>
+                <span class="text-[10px] text-slate-500 mt-1 block">The phone that will receive the live USSD PIN prompt directly on screen.</span>
+              </div>
             </div>
 
-            ${cartItems.length === 0 ? `
-              <div class="text-center py-8 space-y-2 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
-                <div class="w-12 h-12 rounded-full bg-slate-200 text-slate-500 mx-auto flex items-center justify-center text-xl">
-                  🛒
-                </div>
-                <p class="text-slate-700 font-extrabold text-xs">No services selected yet</p>
-                <p class="text-[11px] text-slate-400 max-w-xs mx-auto">Pick a service from the quick dropdown above or from our Tariff Catalog to build your order summary.</p>
+            <!-- Step 2: Agreed Service & Amount -->
+            <div class="space-y-4 pt-2">
+              <div class="border-b border-slate-100 pb-2 flex items-center justify-between">
+                <span class="text-xs font-black uppercase text-[#0B1B3D] tracking-wider">2. Agreed Service & Payment Amount</span>
+                <span class="text-[11px] text-emerald-700 font-bold">Consultation-first settlement</span>
               </div>
-            ` : cartItems.map(item => `
-              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 hover:border-slate-300 transition">
-                <div class="flex items-start justify-between gap-2">
-                  <div>
-                    <h4 class="font-bold text-xs text-slate-900 leading-tight">${item.name}</h4>
-                    <span class="text-[10px] font-mono text-emerald-700 uppercase font-semibold">Phresh Service</span>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Service or Project Description <span class="text-red-500">*</span></label>
+                <input 
+                  type="text" 
+                  required 
+                  value="${serviceDescription}" 
+                  oninput="handlePaymentFieldChange('serviceDescription', this.value)" 
+                  placeholder="e.g. Phresh Rank Core License, 5 Carbonless Receipt Books, Web Portal Setup..." 
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition"
+                />
+              </div>
+
+              <div class="grid sm:grid-cols-12 gap-4">
+                <div class="sm:col-span-8">
+                  <label class="block font-bold text-slate-800 mb-1">
+                    Agreed Payment Amount <span class="text-red-500">*</span>
+                  </label>
+                  <div class="relative flex items-center">
+                    <span class="absolute left-3.5 font-mono font-black text-slate-600 text-sm">${currency}</span>
+                    <input 
+                      type="number" 
+                      min="500" 
+                      step="any" 
+                      required 
+                      value="${amount}" 
+                      oninput="handlePaymentFieldChange('amount', this.value)" 
+                      placeholder="e.g. 350000" 
+                      class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-16 pr-4 py-3.5 text-base font-black text-[#0B1B3D] focus:outline-none focus:border-emerald-600 focus:bg-white transition font-mono shadow-xs"
+                    />
                   </div>
-                  <button onclick="removeFromCart('${item.id}')" class="text-slate-400 hover:text-red-600 text-xs p-1" title="Remove Item">
-                    ✕
+                </div>
+
+                <div class="sm:col-span-4">
+                  <label class="block font-bold text-slate-800 mb-1">Currency</label>
+                  <select 
+                    value="${currency}" 
+                    onchange="handlePaymentFieldChange('currency', this.value)" 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-emerald-600 shadow-xs"
+                  >
+                    <option value="UGX">UGX (Uganda Shillings)</option>
+                    <option value="USD">USD (US Dollars)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="space-y-1.5 pt-1">
+                <span class="text-[10px] font-bold uppercase text-slate-400">Quick Agreed Tier Presets:</span>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" onclick="setPaymentPresetAmount(50000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
+                    UGX 50,000
+                  </button>
+                  <button type="button" onclick="setPaymentPresetAmount(150000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
+                    UGX 150,000
+                  </button>
+                  <button type="button" onclick="setPaymentPresetAmount(350000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
+                    UGX 350,000
+                  </button>
+                  <button type="button" onclick="setPaymentPresetAmount(500000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
+                    UGX 500,000
+                  </button>
+                  <button type="button" onclick="setPaymentPresetAmount(1200000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
+                    UGX 1,200,000
                   </button>
                 </div>
-                <div class="flex items-center justify-between pt-2 border-t border-slate-200/80">
-                  <div class="flex items-center border border-slate-300 rounded-lg bg-white overflow-hidden text-xs">
-                    <button onclick="updateCartQty('${item.id}', ${item.qty - 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">-</button>
-                    <span class="px-3 font-mono font-bold text-slate-800">${item.qty}</span>
-                    <button onclick="updateCartQty('${item.id}', ${item.qty + 1})" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">+</button>
-                  </div>
-                  <div class="text-right">
-                    <span class="text-xs font-black text-[#0B1B3D] font-mono">UGX ${(item.priceUGX * item.qty).toLocaleString()}</span>
-                    <span class="block text-[10px] text-slate-400 font-mono">UGX ${item.priceUGX.toLocaleString()} ea</span>
-                  </div>
-                </div>
               </div>
-            `).join('')}
-          </div>
-
-          <!-- Project Inputs Section (Details, Colors, Due Date) -->
-          <div class="space-y-3 pt-2 border-t border-slate-200">
-            <span class="text-[11px] font-black uppercase tracking-wider text-slate-800 block">2. Project Customization Details</span>
-            
-            <!-- Project Details & Scope Field -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center justify-between">
-                <span>📝 Project Details & Requirements</span>
-                <span class="text-[10px] text-slate-400 font-normal">School/Org Name & Scope</span>
-              </label>
-              <textarea oninput="updateOrderProjectDetails(this.value)" placeholder="e.g. School Report Card System for 500 pupils, term 2 exam sheets, or custom software specifications..." class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 font-normal leading-relaxed resize-none h-16 shadow-xs">${orderProjectDetails}</textarea>
             </div>
 
-            <!-- Colors & Branding Specifications -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center justify-between">
-                <span>🎨 Colors & Design Specifications</span>
-                <span class="text-[10px] text-slate-400 font-normal">Brand colors / Print finish</span>
-              </label>
-              <input type="text" oninput="updateOrderColorsSpecs(this.value)" value="${orderColorsSpecs}" placeholder="e.g. Navy Blue & Gold, CMYK, A4 Glossy Paper, Waterproof Vinyl..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 shadow-xs" />
+            <!-- Step 3: Payment Method Selection -->
+            <div class="space-y-4 pt-2">
+              <div class="border-b border-slate-100 pb-2">
+                <span class="text-xs font-black uppercase text-[#0B1B3D] tracking-wider block">3. Select Payment Gateway Method</span>
+                <span class="text-[11px] text-slate-500">Live USSD push prompt via HivePay Uganda</span>
+              </div>
+
+              <div class="grid sm:grid-cols-3 gap-3">
+                
+                <!-- MTN MoMo -->
+                <label class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'mtn_momo' ? 'border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-black text-slate-900">MTN MoMo</span>
+                    <input type="radio" name="payment_method" value="mtn_momo" ${paymentMethod === 'mtn_momo' ? 'checked' : ''} onchange="handlePaymentFieldChange('paymentMethod', 'mtn_momo')" class="text-amber-500 focus:ring-amber-400" />
+                  </div>
+                  <span class="text-[10px] text-slate-500">Interactive USSD push directly to MTN phone.</span>
+                </label>
+
+                <!-- Airtel Money -->
+                <label class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'airtel_money' ? 'border-red-500 bg-red-50/50 ring-2 ring-red-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-black text-slate-900">Airtel Money</span>
+                    <input type="radio" name="payment_method" value="airtel_money" ${paymentMethod === 'airtel_money' ? 'checked' : ''} onchange="handlePaymentFieldChange('paymentMethod', 'airtel_money')" class="text-red-500 focus:ring-red-400" />
+                  </div>
+                  <span class="text-[10px] text-slate-500">Instant PIN prompt to Airtel Uganda mobile line.</span>
+                </label>
+
+                <!-- Visa/Mastercard -->
+                <label class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'card' ? 'border-blue-500 bg-blue-50/50 ring-2 ring-blue-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-black text-slate-900">Card Checkout</span>
+                    <input type="radio" name="payment_method" value="card" ${paymentMethod === 'card' ? 'checked' : ''} onchange="handlePaymentFieldChange('paymentMethod', 'card')" class="text-blue-500 focus:ring-blue-400" />
+                  </div>
+                  <span class="text-[10px] text-slate-500">3D-Secure Visa & Mastercard global checkout.</span>
+                </label>
+
+              </div>
             </div>
 
-            <!-- Target Due Date -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center justify-between">
-                <span>📅 Target Due Date / Deadline</span>
-                <span class="text-[10px] text-slate-400 font-normal">Expected delivery</span>
-              </label>
-              <input type="date" oninput="updateOrderDueDate(this.value)" value="${orderDueDate}" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 shadow-xs font-mono" />
+            <!-- Submit Button -->
+            <div class="pt-4 space-y-3">
+              <button 
+                type="submit" 
+                ${isInitiating ? 'disabled' : ''} 
+                class="w-full bg-[#1E7E34] hover:bg-emerald-700 disabled:opacity-50 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:shadow-emerald-900/30 transition flex items-center justify-center gap-2"
+              >
+                ${isInitiating ? `
+                  <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  <span>Initiating HivePay USSD Session...</span>
+                ` : `
+                  <span>Proceed to Payment (${currency} ${Number(amount || 0).toLocaleString()}) →</span>
+                `}
+              </button>
+
+              <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-100">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                  HivePay Merchant HP2610222987 Verified
+                </span>
+                <span>Phresh Tech Media Services Uganda</span>
+              </div>
             </div>
 
-          </div>
-
-        </div>
-
-        <!-- Sticky Order Summary Footer & Finalize Buttons -->
-        <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-3 shrink-0 shadow-lg">
-          
-          <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs">
-            <div class="flex items-center justify-between text-slate-600">
-              <span>Subtotal:</span>
-              <span class="font-mono font-bold text-slate-800">UGX ${totalUGX.toLocaleString()}</span>
-            </div>
-            <div class="flex items-center justify-between text-slate-600">
-              <span>Estimated VAT / Administrative:</span>
-              <span class="font-mono font-bold text-emerald-700">Included</span>
-            </div>
-            <div class="flex items-center justify-between text-sm font-black text-slate-900 pt-1.5 border-t border-slate-100">
-              <span>Total Estimated Quote:</span>
-              <span class="font-mono text-base text-[#0B1B3D]">UGX ${totalUGX.toLocaleString()}</span>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="checkoutViaWhatsApp()" ${cartItems.length === 0 ? 'disabled' : ''} class="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-extrabold py-3.5 rounded-xl text-[11px] shadow-md transition flex items-center justify-center gap-1.5">
-              ${WHATSAPP_ICON_SVG}
-              <span>WhatsApp Order</span>
-            </button>
-
-            <button onclick="checkoutCart()" ${cartItems.length === 0 ? 'disabled' : ''} class="bg-[#8B0000] hover:bg-red-800 disabled:opacity-50 text-white font-black py-3.5 rounded-xl text-[11px] uppercase tracking-wider shadow-md transition flex items-center justify-center gap-1.5">
-              <span>Make Order →</span>
-            </button>
-          </div>
+          </form>
 
         </div>
 
@@ -1337,6 +1778,9 @@ function renderActivePage() {
       return renderAboutPage();
     case 'contact':
       return renderContactPage();
+    case 'payment':
+    case 'pay':
+      return renderDedicatedPaymentPage();
     default:
       return renderHomePage();
   }
@@ -1414,10 +1858,14 @@ function renderFeaturedServicesThreeGrid() {
                 <span class="text-slate-400 font-medium">Starting Estimate:</span>
                 <span class="font-mono font-black text-emerald-400">From UGX 400,000</span>
               </div>
-              <button onclick="addToCart('phresh-nexus')" class="w-full bg-[#1E7E34] hover:bg-emerald-600 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-                <span>Add Web System to Cart</span>
-              </button>
+              <div class="flex items-center gap-2">
+                <button onclick="consultService('Custom Web & Software Development')" class="flex-1 bg-[#1E7E34] hover:bg-emerald-600 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
+                  <span>Discuss Web Project →</span>
+                </button>
+                <button onclick="consultViaWhatsApp('Custom Web & Software Development')" title="Discuss via WhatsApp" class="bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-xl transition shadow flex items-center justify-center">
+                  ${WHATSAPP_ICON_SVG}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1467,10 +1915,14 @@ function renderFeaturedServicesThreeGrid() {
                 <span class="text-slate-400 font-medium">Rank Core Base:</span>
                 <span class="font-mono font-black text-blue-400">UGX 350,000</span>
               </div>
-              <button onclick="addToCart('rank-core-offline')" class="w-full bg-blue-700 hover:bg-blue-600 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-                <span>Add Rank Core DB to Cart</span>
-              </button>
+              <div class="flex items-center gap-2">
+                <button onclick="consultService('MySQL Database Systems & Phresh Rank Core')" class="flex-1 bg-blue-700 hover:bg-blue-600 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
+                  <span>Schedule System Audit →</span>
+                </button>
+                <button onclick="consultViaWhatsApp('MySQL Database Systems & Phresh Rank Core')" title="Discuss via WhatsApp" class="bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-xl transition shadow flex items-center justify-center">
+                  ${WHATSAPP_ICON_SVG}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1520,10 +1972,14 @@ function renderFeaturedServicesThreeGrid() {
                 <span class="text-slate-400 font-medium">Standard Service:</span>
                 <span class="font-mono font-black text-amber-400">UGX 15,000</span>
               </div>
-              <button onclick="addToCart('graphic-designing')" class="w-full bg-amber-600 hover:bg-amber-500 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-                <span>Add Graphic Design to Cart</span>
-              </button>
+              <div class="flex items-center gap-2">
+                <button onclick="consultService('Professional Graphic Design & Visual Branding')" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
+                  <span>Start Branding Project →</span>
+                </button>
+                <button onclick="consultViaWhatsApp('Professional Graphic Design & Visual Branding')" title="Discuss via WhatsApp" class="bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-xl transition shadow flex items-center justify-center">
+                  ${WHATSAPP_ICON_SVG}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1891,15 +2347,6 @@ function renderHeroSlideContent() {
   }
 }
 
-window.updateHomeCalc = function(key, value) {
-  homeCalcSelections[key] = Math.max(0, parseInt(value) || 0);
-  const total = (homeCalcSelections.graphicDesign || 0) * 15000 + 
-                (homeCalcSelections.receipts || 0) * 25000 + 
-                (homeCalcSelections.rankCoreOffline || 0) * 350000;
-  const el = document.getElementById('home-calc-total-ugx');
-  if (el) el.innerText = `UGX ${total.toLocaleString()}`;
-};
-
 // ==========================================
 // 2. SERVICES & SOLUTIONS PAGE RENDERER
 // ==========================================
@@ -2020,8 +2467,8 @@ function renderTariffCatalog() {
                 </td>
                 <td class="p-3.5 text-slate-500">${item.note}</td>
                 <td class="p-3.5 text-right">
-                  <button onclick="addToCart('${item.id}')" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-lg shadow-sm transition">
-                    + Add to Cart
+                  <button onclick="consultService('${item.name.replace(/'/g, "\\'")}')" class="bg-[#0B1B3D] hover:bg-[#152e61] text-white font-bold text-[11px] px-3.5 py-1.5 rounded-lg shadow-xs transition whitespace-nowrap">
+                    Discuss Service →
                   </button>
                 </td>
               </tr>
@@ -2155,8 +2602,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">UNEB report cards, NCDC marksheet engine.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 350,000 (One time)</div>
               </div>
-              <button onclick="addToCart('rank-core-offline')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Phresh Rank Core (Offline)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
 
@@ -2166,8 +2613,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">Includes 100k termly subscription.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
               </div>
-              <button onclick="addToCart('rank-core-new')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Phresh Rank Core (New Customer)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
 
@@ -2177,8 +2624,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">Online & offline synchronized initial deposit.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 300,000</div>
               </div>
-              <button onclick="addToCart('rank-core-dual')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Phresh Rank Core (Dual Online/Offline)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
 
@@ -2188,8 +2635,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">Bursary school fee management ERP.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
               </div>
-              <button onclick="addToCart('eduledger')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Phresh Eduledger Fee Management')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
 
@@ -2199,8 +2646,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">Property & tenant rental management.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
               </div>
-              <button onclick="addToCart('rent-ledger')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Phresh Rent Ledger System')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
 
@@ -2210,8 +2657,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">Tithe, membership & event tracking.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 400,000 (One time)</div>
               </div>
-              <button onclick="addToCart('church-mgmt')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Church Management System')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
 
@@ -2221,8 +2668,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">Desktop retail cashier inventory system.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
               </div>
-              <button onclick="addToCart('pos-offline')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Point of Sale (Offline)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
 
@@ -2232,8 +2679,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">Includes annual payment of 120,000.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
               </div>
-              <button onclick="addToCart('pos-online-annual')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Point of Sale (Online Annual)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
 
@@ -2243,8 +2690,8 @@ function renderPillarDetailContent() {
                 <p class="text-slate-600">Permanent cloud POS license.</p>
                 <div class="font-mono font-bold text-blue-800">UGX 800,000</div>
               </div>
-              <button onclick="addToCart('pos-online-onetime')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                + Add to Cart
+              <button onclick="consultService('Phresh Point of Sale (Online One Time)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
+                Request Consultation →
               </button>
             </div>
           </div>
@@ -2367,8 +2814,8 @@ function renderHomeProductShowcase() {
                   <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-[11px] flex items-center gap-1">
                     🔍 View Screenshot
                   </button>
-                  <button onclick="navigateTo('contact')" class="text-[#8B0000] hover:text-red-800 font-black text-[11px]">
-                    Order System →
+                  <button onclick="consultService('${item.title.replace(/'/g, "\\'")}')" class="text-[#8B0000] hover:text-red-800 font-black text-[11px]">
+                    Request Consultation →
                   </button>
                 </div>
               </div>
@@ -2822,10 +3269,10 @@ function renderContactPage() {
   return `
     <div id="contact-section" class="bg-gradient-to-b from-[#0B1B3D] to-[#08132B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-white/10">
       <div class="max-w-7xl mx-auto space-y-3">
-        <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Direct Inquiries & Software Orders</span>
+        <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Direct Inquiries & Consultations</span>
         <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Contact Portal & Location</h1>
         <p class="text-gray-300 text-sm max-w-2xl">
-          Get in touch with Directors Mulindwa Ibrahim (Ibra) and Steven Bagalana (Steve) or our Kasenge Office Desk for custom software installations, commercial print orders, or web hosting.
+          Get in touch with Directors Mulindwa Ibrahim (Ibra) and Steven Bagalana (Steve) or our Kasenge Office Desk for custom software installations, commercial print projects, or web hosting consultations.
         </p>
       </div>
     </div>
@@ -2841,7 +3288,7 @@ function renderContactPage() {
               
               <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-2">
                 <span class="font-bold text-slate-900 block text-sm">Official WhatsApp Support</span>
-                <p class="text-slate-600">Fast sales dispatch & quote discussion:</p>
+                <p class="text-slate-600">Fast project consultation & requirements discussion:</p>
                 <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-xs transition">
                   ${WHATSAPP_ICON_SVG}
                   <span>Message +256 757 848 094</span>

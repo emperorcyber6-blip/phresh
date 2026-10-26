@@ -65,3 +65,4 @@ export * from './quoteReceipt';
 export * from './welcomeEmail';
 export * from './adminOrderAlert';
 export * from './adminInquiryAlert';
+export * from './paymentReceipt';
