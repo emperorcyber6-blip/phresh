@@ -223,7 +223,7 @@ let autoSlideTimer = null;
 let tariffCategoryFilter = 'all'; // 'all' | 'software' | 'design' | 'print' | 'web'
 let tariffSearchQuery = '';
 
-// Client Consultation & Dedicated Direct Payment State (HivePay UGX/USD Integration)
+// Client Consultation & Dedicated Direct Payment State (Automated Settlement Switch)
 let paymentPageState = {
   clientName: '',
   clientEmail: '',
@@ -243,6 +243,26 @@ let paymentPageState = {
   countdownTimer: null,
   error: null,
   confirmedData: null
+};
+window.paymentPageState = paymentPageState;
+
+window.cancelWaitingUssd = function() {
+  if (paymentPageState.pollTimer) {
+    clearInterval(paymentPageState.pollTimer);
+    paymentPageState.pollTimer = null;
+  }
+  if (paymentPageState.countdownTimer) {
+    clearInterval(paymentPageState.countdownTimer);
+    paymentPageState.countdownTimer = null;
+  }
+  paymentPageState.isWaitingUssdApproval = false;
+  paymentPageState.isInitiating = false;
+  paymentPageState.error = null;
+  renderApp();
+  setTimeout(() => {
+    const el = document.getElementById('payment-client-phone');
+    if (el) el.focus();
+  }, 60);
 };
 
 let toastMessage = null;
@@ -303,7 +323,10 @@ window.handleContactFieldChange = function(field, value) {
   contactFormState[field] = value;
   if (contactFormState.errors && contactFormState.errors[field]) {
     delete contactFormState.errors[field];
-    renderApp();
+    const errEl = document.getElementById(`contact-error-${field}`);
+    if (errEl) {
+      errEl.style.display = 'none';
+    }
   }
 };
 
@@ -466,70 +489,167 @@ window.logoutClient = function() {
 };
 
 // ==========================================
-// DEDICATED DIRECT PAYMENT HANDLERS (HIVEPAY)
+// DEDICATED DIRECT PAYMENT HANDLERS
 // ==========================================
 window.handlePaymentFieldChange = function(field, val) {
   paymentPageState[field] = val;
-  if (paymentPageState.error) paymentPageState.error = null;
+  
+  // Clear any existing error banner smoothly without rebuilding DOM
+  if (paymentPageState.error) {
+    paymentPageState.error = null;
+    const errBanner = document.getElementById('payment-error-banner');
+    if (errBanner) errBanner.classList.add('hidden');
+  }
 
-  // Auto-detect mobile network from phone number
+  // Auto-detect mobile network from phone number without re-rendering the DOM!
   if (field === 'clientPhone') {
     const cleaned = String(val).replace(/\s+/g, '');
+    const badgeEl = document.getElementById('payment-phone-network-badge');
+    const mtnRadio = document.getElementById('payment-method-mtn');
+    const airtelRadio = document.getElementById('payment-method-airtel');
+    const mtnCard = document.getElementById('payment-method-card-mtn');
+    const airtelCard = document.getElementById('payment-method-card-airtel');
+
     if (/^(077|078|076|074|\+25677|\+25678|\+25676|\+25674)/.test(cleaned)) {
       paymentPageState.paymentMethod = 'mtn_momo';
+      if (badgeEl) badgeEl.innerHTML = `<span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">MTN MoMo Detected</span>`;
+      if (mtnRadio) mtnRadio.checked = true;
+      if (mtnCard) mtnCard.className = "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/30";
+      if (airtelCard) airtelCard.className = "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
     } else if (/^(075|070|\+25675|\+25670)/.test(cleaned)) {
       paymentPageState.paymentMethod = 'airtel_money';
+      if (badgeEl) badgeEl.innerHTML = `<span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-300">Airtel Money Detected</span>`;
+      if (airtelRadio) airtelRadio.checked = true;
+      if (airtelCard) airtelCard.className = "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-red-500 bg-red-50/50 ring-2 ring-red-500/30";
+      if (mtnCard) mtnCard.className = "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
+    } else {
+      if (badgeEl) badgeEl.innerHTML = `<span class="text-[10px] text-slate-400">MTN or Airtel Uganda</span>`;
     }
   }
 
-  renderApp();
+  // NOTE: We intentionally DO NOT call renderApp() here so cursor focus and keyboards remain active.
 };
 
 window.setPaymentPresetAmount = function(amt) {
   paymentPageState.amount = String(amt);
   paymentPageState.currency = 'UGX';
-  if (paymentPageState.error) paymentPageState.error = null;
-  renderApp();
+  const amtInput = document.getElementById('payment-amount-input');
+  if (amtInput) {
+    amtInput.value = amt;
+  }
+  const currSelect = document.getElementById('payment-currency-select');
+  if (currSelect) {
+    currSelect.value = 'UGX';
+  }
+  const currLabel = document.getElementById('payment-currency-symbol');
+  if (currLabel) {
+    currLabel.innerText = 'UGX';
+  }
+  if (paymentPageState.error) {
+    paymentPageState.error = null;
+    const errBanner = document.getElementById('payment-error-banner');
+    if (errBanner) errBanner.classList.add('hidden');
+  }
+};
+
+window.handlePaymentMethodSelect = function(method) {
+  paymentPageState.paymentMethod = method;
+  const mtnRadio = document.getElementById('payment-method-mtn');
+  const airtelRadio = document.getElementById('payment-method-airtel');
+  const cardRadio = document.getElementById('payment-method-card');
+  const mtnCard = document.getElementById('payment-method-card-mtn');
+  const airtelCard = document.getElementById('payment-method-card-airtel');
+  const cardCard = document.getElementById('payment-method-card-card');
+
+  if (mtnRadio) mtnRadio.checked = (method === 'mtn_momo');
+  if (airtelRadio) airtelRadio.checked = (method === 'airtel_money');
+  if (cardRadio) cardRadio.checked = (method === 'card');
+
+  if (mtnCard) {
+    mtnCard.className = method === 'mtn_momo' 
+      ? "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/30"
+      : "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
+  }
+  if (airtelCard) {
+    airtelCard.className = method === 'airtel_money'
+      ? "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-red-500 bg-red-50/50 ring-2 ring-red-500/30"
+      : "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
+  }
+  if (cardCard) {
+    cardCard.className = method === 'card'
+      ? "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-blue-500 bg-blue-50/50 ring-2 ring-blue-500/30"
+      : "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
+  }
+};
+
+window.handlePaymentCurrencySelect = function(curr) {
+  paymentPageState.currency = curr;
+  const currLabel = document.getElementById('payment-currency-symbol');
+  if (currLabel) {
+    currLabel.innerText = curr;
+  }
 };
 
 window.handleInitiatePayment = async function(e) {
   if (e) e.preventDefault();
-  paymentPageState.error = null;
+
+  // Read latest input values directly from DOM
+  const nameInput = document.getElementById('payment-client-name');
+  const emailInput = document.getElementById('payment-client-email');
+  const phoneInput = document.getElementById('payment-client-phone');
+  const descInput = document.getElementById('payment-service-desc');
+  const amountInput = document.getElementById('payment-amount-input');
+  
+  if (nameInput) paymentPageState.clientName = nameInput.value;
+  if (emailInput) paymentPageState.clientEmail = emailInput.value;
+  if (phoneInput) paymentPageState.clientPhone = phoneInput.value;
+  if (descInput) paymentPageState.serviceDescription = descInput.value;
+  if (amountInput) paymentPageState.amount = amountInput.value;
+
+  function showPaymentFormError(msg) {
+    paymentPageState.error = msg;
+    const errBanner = document.getElementById('payment-error-banner');
+    const errText = document.getElementById('payment-error-text');
+    if (errBanner && errText) {
+      errText.innerText = msg;
+      errBanner.classList.remove('hidden');
+      errBanner.classList.add('flex');
+      errBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      renderApp();
+    }
+  }
 
   if (!paymentPageState.clientName || paymentPageState.clientName.trim().length < 2) {
-    paymentPageState.error = "Please enter your full name or company name.";
-    renderApp();
+    showPaymentFormError("Please enter your full name or company name.");
     return;
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!paymentPageState.clientEmail || !emailRegex.test(paymentPageState.clientEmail.trim())) {
-    paymentPageState.error = "Please enter a valid email address to receive your official payment receipt.";
-    renderApp();
+    showPaymentFormError("Please enter a valid email address to receive your official payment receipt.");
     return;
   }
 
   if (paymentPageState.paymentMethod !== 'card') {
     if (!paymentPageState.clientPhone || paymentPageState.clientPhone.trim().length < 9) {
-      paymentPageState.error = "Please enter your mobile phone number (e.g. 0777123456 or 0757848094) for USSD prompt delivery.";
-      renderApp();
+      showPaymentFormError("Please enter your mobile phone number (e.g. 0777123456 or 0757848094) for USSD prompt delivery.");
       return;
     }
   }
 
   const amountNum = parseFloat(String(paymentPageState.amount).replace(/,/g, ''));
   if (isNaN(amountNum) || amountNum <= 0) {
-    paymentPageState.error = "Please enter the agreed payment amount.";
-    renderApp();
+    showPaymentFormError("Please enter the agreed payment amount.");
     return;
   }
 
   if (paymentPageState.currency === 'UGX' && amountNum < 500) {
-    paymentPageState.error = "Minimum payment amount is UGX 500.";
-    renderApp();
+    showPaymentFormError("Minimum payment amount is UGX 500.");
     return;
   }
 
+  paymentPageState.error = null;
   paymentPageState.isInitiating = true;
   renderApp();
 
@@ -571,10 +691,15 @@ window.handleInitiatePayment = async function(e) {
           }
         } else {
           clearInterval(paymentPageState.countdownTimer);
+          paymentPageState.countdownTimer = null;
+          const statusText = document.getElementById('auto-status-indicator-text');
+          if (statusText) {
+            statusText.innerText = "Prompt session expired. You may change details or try again.";
+          }
         }
       }, 1000);
 
-      // Start automatic polling for status
+      // Automated real-time polling to verify gateway settlement upon PIN entry
       if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
       paymentPageState.pollTimer = setInterval(async () => {
         try {
@@ -582,18 +707,37 @@ window.handleInitiatePayment = async function(e) {
           if (statusRes.ok) {
             const statusData = await statusRes.json();
             if (statusData.status === 'COMPLETED') {
-              clearInterval(paymentPageState.pollTimer);
-              if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
+              if (paymentPageState.pollTimer) {
+                clearInterval(paymentPageState.pollTimer);
+                paymentPageState.pollTimer = null;
+              }
+              if (paymentPageState.countdownTimer) {
+                clearInterval(paymentPageState.countdownTimer);
+                paymentPageState.countdownTimer = null;
+              }
               paymentPageState.isWaitingUssdApproval = false;
               paymentPageState.isCompleted = true;
               paymentPageState.confirmedData = statusData.payment;
+              showToast(`Payment #${paymentPageState.paymentRef} verified successfully!`);
+              renderApp();
+            } else if (statusData.status === 'FAILED') {
+              if (paymentPageState.pollTimer) {
+                clearInterval(paymentPageState.pollTimer);
+                paymentPageState.pollTimer = null;
+              }
+              if (paymentPageState.countdownTimer) {
+                clearInterval(paymentPageState.countdownTimer);
+                paymentPageState.countdownTimer = null;
+              }
+              paymentPageState.isWaitingUssdApproval = false;
+              paymentPageState.error = "Payment authorization was declined or cancelled on handset. Please try again.";
               renderApp();
             }
           }
         } catch (e) {
           // ignore transient poll error
         }
-      }, 3500);
+      }, 2500);
     } else {
       paymentPageState.error = data.error || "Unable to initiate payment transaction.";
       renderApp();
@@ -605,58 +749,37 @@ window.handleInitiatePayment = async function(e) {
   }
 };
 
-window.handleConfirmPayment = async function() {
-  if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
-  if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
-
-  paymentPageState.isInitiating = true;
-  renderApp();
-
+// Automated Status Verification Helper
+window.checkPaymentStatusNow = async function() {
+  if (!paymentPageState.paymentRef) return;
   try {
-    const res = await fetch('/api/payments/confirm', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        reference: paymentPageState.paymentRef,
-        gatewayRef: paymentPageState.gatewayRef,
-        clientName: paymentPageState.clientName,
-        clientEmail: paymentPageState.clientEmail,
-        clientPhone: paymentPageState.clientPhone,
-        serviceDescription: paymentPageState.serviceDescription || 'Agreed Phresh Tech Media Services',
-        amount: parseFloat(String(paymentPageState.amount).replace(/,/g, '')),
-        currency: paymentPageState.currency,
-        paymentMethod: paymentPageState.paymentMethod
-      })
-    });
-
-    const data = await res.json();
-    paymentPageState.isInitiating = false;
-    paymentPageState.isWaitingUssdApproval = false;
-    paymentPageState.isCompleted = true;
-    paymentPageState.confirmedData = data.payment || {
-      id: paymentPageState.paymentRef,
-      gateway_reference: paymentPageState.gatewayRef,
-      client_name: paymentPageState.clientName,
-      client_email: paymentPageState.clientEmail,
-      client_phone: paymentPageState.clientPhone,
-      service_description: paymentPageState.serviceDescription || 'Agreed Phresh Tech Media Services',
-      amount: parseFloat(String(paymentPageState.amount).replace(/,/g, '')),
-      currency: paymentPageState.currency,
-      created_at: new Date().toISOString()
-    };
-    showToast(`Payment #${paymentPageState.paymentRef} verified successfully!`);
-    renderApp();
-  } catch (err) {
-    paymentPageState.isInitiating = false;
-    paymentPageState.isWaitingUssdApproval = false;
-    paymentPageState.isCompleted = true;
-    renderApp();
+    const res = await fetch(`/api/payments/status/${paymentPageState.paymentRef}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.status === 'COMPLETED') {
+        if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
+        if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
+        paymentPageState.isWaitingUssdApproval = false;
+        paymentPageState.isCompleted = true;
+        paymentPageState.confirmedData = data.payment;
+        showToast(`Payment verified!`);
+        renderApp();
+      }
+    }
+  } catch (e) {
+    // ignore
   }
 };
 
 window.resetPaymentPage = function() {
-  if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
-  if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
+  if (paymentPageState.pollTimer) {
+    clearInterval(paymentPageState.pollTimer);
+    paymentPageState.pollTimer = null;
+  }
+  if (paymentPageState.countdownTimer) {
+    clearInterval(paymentPageState.countdownTimer);
+    paymentPageState.countdownTimer = null;
+  }
   paymentPageState = {
     clientName: '',
     clientEmail: '',
@@ -677,6 +800,7 @@ window.resetPaymentPage = function() {
     error: null,
     confirmedData: null
   };
+  window.paymentPageState = paymentPageState;
   renderApp();
 };
 
@@ -1166,7 +1290,7 @@ function renderFloatingWhatsAppWidget() {
                 <span class="text-[9px] text-slate-400">Kampala, UG</span>
               </div>
               <p class="leading-relaxed">
-                Hello! 👋 Welcome to Phresh Tech Media. How can we help your school, business, or project today?
+                Hello! Welcome to Phresh Tech Media. How can we help your school, business, or project today?
               </p>
             </div>
 
@@ -1176,22 +1300,22 @@ function renderFloatingWhatsAppWidget() {
               
               <div class="grid grid-cols-1 gap-1.5">
                 <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I need an inquiry/quote for Phresh Rank Core School Report Card Engine.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
-                  <span class="font-medium text-xs">🎓 Phresh Rank Core Report Cards</span>
+                  <span class="font-medium text-xs">Phresh Rank Core Report Cards</span>
                   <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
                 </button>
 
                 <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I would like to inquire about EduLedger School Fees ERP System.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
-                  <span class="font-medium text-xs">💳 EduLedger Fee Management ERP</span>
+                  <span class="font-medium text-xs">EduLedger Fee Management ERP</span>
                   <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
                 </button>
 
                 <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I would like to order Duplicate Carbonless Receipt Books or School Banners.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
-                  <span class="font-medium text-xs">🖨️ Receipt Books, Banners & Press</span>
+                  <span class="font-medium text-xs">Receipt Books, Banners & Press</span>
                   <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
                 </button>
 
                 <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I need a custom database system / website build.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
-                  <span class="font-medium text-xs">💻 Custom Software & Web Systems</span>
+                  <span class="font-medium text-xs">Custom Software & Web Systems</span>
                   <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
                 </button>
               </div>
@@ -1211,7 +1335,7 @@ function renderFloatingWhatsAppWidget() {
 
             <!-- Direct Link Button -->
             <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media,%20I%20have%20an%20inquiry%20about%20your%20services." target="_blank" class="block w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 rounded-xl shadow transition text-xs mt-2">
-              ⚡ Open Direct Chat (+256 757 848094)
+              Open Direct Chat (+256 757 848094)
             </a>
 
           </div>
@@ -1272,7 +1396,7 @@ function renderAuthModal() {
           </button>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold">
-              👤
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
             </div>
             <div>
               <h3 class="font-black text-lg text-white">Sign In to Your Account</h3>
@@ -1314,7 +1438,7 @@ function renderAuthModal() {
 }
 
 // ==========================================
-// DEDICATED DIRECT PAYMENT PAGE (HIVEPAY)
+// DEDICATED DIRECT PAYMENT PAGE
 // ==========================================
 function renderDedicatedPaymentPage() {
   const {
@@ -1343,7 +1467,7 @@ function renderDedicatedPaymentPage() {
       ? 'MTN Mobile Money (Uganda)'
       : paymentMethod === 'airtel_money'
         ? 'Airtel Money (Uganda)'
-        : 'Visa / Mastercard Card Checkout';
+        : 'Visa / Mastercard Card Settlement';
 
     return `
       <div id="payment-receipt-view" class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-100 min-h-[85vh] flex items-center justify-center">
@@ -1360,7 +1484,7 @@ function renderDedicatedPaymentPage() {
                 </div>
               </div>
               <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-xs">
-                <span>✓ Verified & Paid</span>
+                <span>Verified & Paid</span>
               </div>
             </div>
           </div>
@@ -1381,8 +1505,8 @@ function renderDedicatedPaymentPage() {
                 <span class="font-mono font-black text-slate-900 text-sm">${confirmedData.id || paymentRef}</span>
               </div>
               <div>
-                <span class="text-[10px] uppercase font-bold text-slate-500 block">Gateway Reference (HivePay)</span>
-                <span class="font-mono font-bold text-slate-700">${confirmedData.gateway_reference || gatewayRef || 'HP-SETTLED'}</span>
+                <span class="text-[10px] uppercase font-bold text-slate-500 block">Clearing Reference</span>
+                <span class="font-mono font-bold text-slate-700">${confirmedData.gateway_reference || gatewayRef || 'PTM-SETTLED'}</span>
               </div>
               <div>
                 <span class="text-[10px] uppercase font-bold text-slate-500 block">Payment Method</span>
@@ -1390,7 +1514,7 @@ function renderDedicatedPaymentPage() {
               </div>
               <div>
                 <span class="text-[10px] uppercase font-bold text-slate-500 block">Settlement Account</span>
-                <span class="font-mono font-bold text-slate-700">HP2610222987 (Phresh Media)</span>
+                <span class="font-mono font-bold text-slate-700">Phresh Tech Media Official</span>
               </div>
               <div>
                 <span class="text-[10px] uppercase font-bold text-slate-500 block">Date & Timestamp</span>
@@ -1458,8 +1582,8 @@ function renderDedicatedPaymentPage() {
           
           <!-- Top Header -->
           <div class="bg-[#0B1B3D] text-white p-6 border-b-4 ${isMtn ? 'border-amber-400' : 'border-red-500'} text-center space-y-2 relative overflow-hidden">
-            <div class="w-16 h-16 bg-white/10 border-2 border-white/20 rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-inner animate-pulse">
-              📱
+            <div class="w-16 h-16 bg-white/10 border-2 border-white/20 rounded-2xl mx-auto flex items-center justify-center shadow-inner animate-pulse">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
             </div>
             <h2 class="text-xl font-black">USSD Prompt Dispatched</h2>
             <p class="text-xs text-slate-300">Awaiting your Mobile Money PIN entry on your handset</p>
@@ -1473,42 +1597,51 @@ function renderDedicatedPaymentPage() {
                 <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isMtn ? 'bg-amber-400 text-slate-900' : 'bg-red-600 text-white'}">
                   ${networkName}
                 </span>
-                <span class="text-[11px] font-bold text-slate-600 font-mono">Merchant: HP2610222987</span>
+                <span class="text-[11px] font-bold text-slate-600 font-mono">Direct Carrier Settlement</span>
               </div>
               <p class="text-slate-800 leading-relaxed text-xs">
                 A prompt has been dispatched to <strong class="text-slate-950 font-mono text-sm">${clientPhone}</strong>. Please enter your PIN on your handset screen to authorize:
               </p>
               <div class="text-3xl font-black text-[#0B1B3D] font-mono tracking-tight">${formattedAmount}</div>
-              <div class="text-[11px] text-slate-500 font-mono">Ref: ${paymentRef} • Gateway: ${gatewayRef || 'HP-LIVE'}</div>
+              <div class="text-[11px] text-slate-500 font-mono">Reference: ${paymentRef}</div>
             </div>
 
             <!-- Countdown and Live Status Indicator -->
-            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-left">
               <div class="flex items-center justify-between text-xs font-bold text-slate-700">
                 <span class="flex items-center gap-2">
                   <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                  <span>Awaiting PIN Entry...</span>
+                  <span id="auto-status-indicator-text">Awaiting PIN authorization on handset...</span>
                 </span>
                 <span id="ussd-countdown-display" class="font-mono text-emerald-700 font-black text-sm">${countdownSeconds || 60}s</span>
               </div>
-              <p class="text-[11px] text-slate-500 text-left">
-                Keep this window open. Once you enter your PIN, the transaction settles immediately and your verified receipt appears automatically.
+              <p class="text-[11px] text-slate-500 leading-relaxed">
+                Payment verifies automatically in real time once your PIN is entered. This screen will update on its own without requiring any manual button.
               </p>
             </div>
 
-            <div class="space-y-2.5 pt-1">
-              <button onclick="handleConfirmPayment()" class="w-full bg-[#1E7E34] hover:bg-emerald-700 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider shadow-lg transition flex items-center justify-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-                <span>I Have Entered My PIN (Verify Payment)</span>
-              </button>
+            <!-- Real-Time Automated Verification Radar Card -->
+            <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-4 flex items-center justify-center gap-3">
+              <svg class="animate-spin w-5 h-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <div class="text-left">
+                <div class="text-xs font-bold text-emerald-950">Automated Network Verification Active</div>
+                <div class="text-[11px] text-emerald-700">Listening to carrier transaction confirmation stream...</div>
+              </div>
+            </div>
 
-              <button onclick="paymentPageState.isWaitingUssdApproval = false; renderApp();" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-xs transition">
-                Change Details or Try Another Number
+            <!-- Change Details or Try Another Number Button -->
+            <div class="pt-1">
+              <button type="button" onclick="cancelWaitingUssd()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 rounded-xl text-xs transition flex items-center justify-center gap-2 border border-slate-200 shadow-xs">
+                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                <span>Change Details or Try Another Number</span>
               </button>
             </div>
 
             <div class="text-[10px] text-slate-400 border-t border-slate-100 pt-3 flex items-center justify-between">
-              <span>HivePay Merchant HP2610222987</span>
+              <span>Direct Settlement Switch</span>
               <span>256-Bit SSL Encrypted</span>
             </div>
 
@@ -1534,7 +1667,7 @@ function renderDedicatedPaymentPage() {
               <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-emerald-400/30">
                 Official Client Payment Portal
               </span>
-              <span class="text-xs text-slate-300 font-bold">• HivePay Merchant HP2610222987</span>
+              <span class="text-xs text-slate-300 font-bold">• Direct Official Settlement</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Direct Project & Service Settlement</h1>
             <p class="text-xs text-slate-300 leading-relaxed max-w-xl">
@@ -1545,12 +1678,10 @@ function renderDedicatedPaymentPage() {
         </div>
 
         <!-- Error Alert -->
-        ${error ? `
-          <div class="p-4 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-700 font-bold flex items-center gap-2 animate-fade-in shadow-xs">
-            <span>⚠️</span>
-            <span>${error}</span>
-          </div>
-        ` : ''}
+        <div id="payment-error-banner" class="${error ? 'flex' : 'hidden'} p-4 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-700 font-bold items-center gap-2 animate-fade-in shadow-xs">
+          <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <span id="payment-error-text">${error || ''}</span>
+        </div>
 
         <!-- Main Payment Form Card -->
         <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
@@ -1568,6 +1699,7 @@ function renderDedicatedPaymentPage() {
                 <div>
                   <label class="block font-bold text-slate-800 mb-1">Your Full Name / Organization <span class="text-red-500">*</span></label>
                   <input 
+                    id="payment-client-name"
                     type="text" 
                     required 
                     value="${clientName}" 
@@ -1580,6 +1712,7 @@ function renderDedicatedPaymentPage() {
                 <div>
                   <label class="block font-bold text-slate-800 mb-1">Email Address <span class="text-red-500">*</span></label>
                   <input 
+                    id="payment-client-email"
                     type="email" 
                     required 
                     value="${clientEmail}" 
@@ -1595,16 +1728,19 @@ function renderDedicatedPaymentPage() {
                   <span>
                     Mobile Money Handset Phone Number <span class="text-red-500">*</span>
                   </span>
-                  ${isMtnDetected ? `
-                    <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">MTN MoMo Detected</span>
-                  ` : isAirtelDetected ? `
-                    <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-300">Airtel Money Detected</span>
-                  ` : `
-                    <span class="text-[10px] text-slate-400">MTN or Airtel Uganda</span>
-                  `}
+                  <span id="payment-phone-network-badge">
+                    ${isMtnDetected ? `
+                      <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">MTN MoMo Detected</span>
+                    ` : isAirtelDetected ? `
+                      <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-300">Airtel Money Detected</span>
+                    ` : `
+                      <span class="text-[10px] text-slate-400">MTN or Airtel Uganda</span>
+                    `}
+                  </span>
                 </label>
                 <div class="relative">
                   <input 
+                    id="payment-client-phone"
                     type="tel" 
                     required 
                     value="${clientPhone}" 
@@ -1628,6 +1764,7 @@ function renderDedicatedPaymentPage() {
               <div>
                 <label class="block font-bold text-slate-800 mb-1">Service or Project Description <span class="text-red-500">*</span></label>
                 <input 
+                  id="payment-service-desc"
                   type="text" 
                   required 
                   value="${serviceDescription}" 
@@ -1643,8 +1780,9 @@ function renderDedicatedPaymentPage() {
                     Agreed Payment Amount <span class="text-red-500">*</span>
                   </label>
                   <div class="relative flex items-center">
-                    <span class="absolute left-3.5 font-mono font-black text-slate-600 text-sm">${currency}</span>
+                    <span id="payment-currency-symbol" class="absolute left-3.5 font-mono font-black text-slate-600 text-sm">${currency}</span>
                     <input 
+                      id="payment-amount-input"
                       type="number" 
                       min="500" 
                       step="any" 
@@ -1660,12 +1798,12 @@ function renderDedicatedPaymentPage() {
                 <div class="sm:col-span-4">
                   <label class="block font-bold text-slate-800 mb-1">Currency</label>
                   <select 
-                    value="${currency}" 
-                    onchange="handlePaymentFieldChange('currency', this.value)" 
+                    id="payment-currency-select"
+                    onchange="handlePaymentCurrencySelect(this.value)" 
                     class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-emerald-600 shadow-xs"
                   >
-                    <option value="UGX">UGX (Uganda Shillings)</option>
-                    <option value="USD">USD (US Dollars)</option>
+                    <option value="UGX" ${currency === 'UGX' ? 'selected' : ''}>UGX (Uganda Shillings)</option>
+                    <option value="USD" ${currency === 'USD' ? 'selected' : ''}>USD (US Dollars)</option>
                   </select>
                 </div>
               </div>
@@ -1696,38 +1834,38 @@ function renderDedicatedPaymentPage() {
             <!-- Step 3: Payment Method Selection -->
             <div class="space-y-4 pt-2">
               <div class="border-b border-slate-100 pb-2">
-                <span class="text-xs font-black uppercase text-[#0B1B3D] tracking-wider block">3. Select Payment Gateway Method</span>
-                <span class="text-[11px] text-slate-500">Live USSD push prompt via HivePay Uganda</span>
+                <span class="text-xs font-black uppercase text-[#0B1B3D] tracking-wider block">3. Select Payment Method</span>
+                <span class="text-[11px] text-slate-500">Instant USSD prompt sent directly to your phone</span>
               </div>
 
               <div class="grid sm:grid-cols-3 gap-3">
                 
                 <!-- MTN MoMo -->
-                <label class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'mtn_momo' ? 'border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
+                <div id="payment-method-card-mtn" onclick="handlePaymentMethodSelect('mtn_momo')" class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'mtn_momo' ? 'border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
                   <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-black text-slate-900">MTN MoMo</span>
-                    <input type="radio" name="payment_method" value="mtn_momo" ${paymentMethod === 'mtn_momo' ? 'checked' : ''} onchange="handlePaymentFieldChange('paymentMethod', 'mtn_momo')" class="text-amber-500 focus:ring-amber-400" />
+                    <input type="radio" id="payment-method-mtn" name="payment_method" value="mtn_momo" ${paymentMethod === 'mtn_momo' ? 'checked' : ''} class="text-amber-500 focus:ring-amber-400" />
                   </div>
                   <span class="text-[10px] text-slate-500">Interactive USSD push directly to MTN phone.</span>
-                </label>
+                </div>
 
                 <!-- Airtel Money -->
-                <label class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'airtel_money' ? 'border-red-500 bg-red-50/50 ring-2 ring-red-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
+                <div id="payment-method-card-airtel" onclick="handlePaymentMethodSelect('airtel_money')" class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'airtel_money' ? 'border-red-500 bg-red-50/50 ring-2 ring-red-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
                   <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-black text-slate-900">Airtel Money</span>
-                    <input type="radio" name="payment_method" value="airtel_money" ${paymentMethod === 'airtel_money' ? 'checked' : ''} onchange="handlePaymentFieldChange('paymentMethod', 'airtel_money')" class="text-red-500 focus:ring-red-400" />
+                    <input type="radio" id="payment-method-airtel" name="payment_method" value="airtel_money" ${paymentMethod === 'airtel_money' ? 'checked' : ''} class="text-red-500 focus:ring-red-400" />
                   </div>
                   <span class="text-[10px] text-slate-500">Instant PIN prompt to Airtel Uganda mobile line.</span>
-                </label>
+                </div>
 
                 <!-- Visa/Mastercard -->
-                <label class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'card' ? 'border-blue-500 bg-blue-50/50 ring-2 ring-blue-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
+                <div id="payment-method-card-card" onclick="handlePaymentMethodSelect('card')" class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'card' ? 'border-blue-500 bg-blue-50/50 ring-2 ring-blue-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
                   <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-black text-slate-900">Card Checkout</span>
-                    <input type="radio" name="payment_method" value="card" ${paymentMethod === 'card' ? 'checked' : ''} onchange="handlePaymentFieldChange('paymentMethod', 'card')" class="text-blue-500 focus:ring-blue-400" />
+                    <input type="radio" id="payment-method-card" name="payment_method" value="card" ${paymentMethod === 'card' ? 'checked' : ''} class="text-blue-500 focus:ring-blue-400" />
                   </div>
-                  <span class="text-[10px] text-slate-500">3D-Secure Visa & Mastercard global checkout.</span>
-                </label>
+                  <span class="text-[10px] text-slate-500">Visa & Mastercard direct card settlement.</span>
+                </div>
 
               </div>
             </div>
@@ -1741,7 +1879,7 @@ function renderDedicatedPaymentPage() {
               >
                 ${isInitiating ? `
                   <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                  <span>Initiating HivePay USSD Session...</span>
+                  <span>Dispatching USSD Prompt...</span>
                 ` : `
                   <span>Proceed to Payment (${currency} ${Number(amount || 0).toLocaleString()}) →</span>
                 `}
@@ -1750,7 +1888,7 @@ function renderDedicatedPaymentPage() {
               <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-100">
                 <span class="flex items-center gap-1">
                   <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                  HivePay Merchant HP2610222987 Verified
+                  Bank-Grade 256-Bit SSL Encrypted
                 </span>
                 <span>Phresh Tech Media Services Uganda</span>
               </div>
@@ -2309,8 +2447,9 @@ function renderHeroSlideContent() {
                 <span>Inquire About This Service</span>
                 <span>→</span>
               </button>
-              <button onclick="openImageModal('${slide.image}', '${slide.title.replace(/'/g, "\\'")}', '${slide.subtitle.replace(/'/g, "\\'")}', '${slide.badge}')" class="text-xs text-gray-300 hover:text-white font-bold flex items-center gap-1 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/10 transition">
-                🔍 Enlarge Screen
+              <button onclick="openImageModal('${slide.image}', '${slide.title.replace(/'/g, "\\'")}', '${slide.subtitle.replace(/'/g, "\\'")}', '${slide.badge}')" class="text-xs text-gray-300 hover:text-white font-bold flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/10 transition">
+                <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
+                <span>Enlarge Screen</span>
               </button>
             </div>
 
@@ -2454,7 +2593,7 @@ function renderTariffCatalog() {
               <th class="p-3.5 text-right">Action</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-200 font-medium text-slate-800">
+          <tbody id="tariff-table-tbody" class="divide-y divide-slate-200 font-medium text-slate-800">
             ${filtered.map((item, idx) => `
               <tr class="hover:bg-emerald-50/40 transition">
                 <td class="p-3.5 font-mono text-slate-400">${idx + 1}</td>
@@ -2487,6 +2626,16 @@ window.setTariffCategory = function(cat) {
 
 window.setTariffSearch = function(query) {
   tariffSearchQuery = query;
+  const tbody = document.getElementById('tariff-table-tbody');
+  if (tbody) {
+    const q = (query || '').toLowerCase().trim();
+    const rows = tbody.querySelectorAll('tr');
+    rows.forEach(r => {
+      const text = r.innerText.toLowerCase();
+      r.style.display = (!q || text.includes(q)) ? '' : 'none';
+    });
+    return;
+  }
   renderApp();
 };
 
@@ -2811,8 +2960,9 @@ function renderHomeProductShowcase() {
                   <p class="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">${item.subtitle}</p>
                 </div>
                 <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
-                  <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-[11px] flex items-center gap-1">
-                    🔍 View Screenshot
+                  <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-[11px] flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
+                    <span>View Screenshot</span>
                   </button>
                   <button onclick="consultService('${item.title.replace(/'/g, "\\'")}')" class="text-[#8B0000] hover:text-red-800 font-black text-[11px]">
                     Request Consultation →
@@ -2893,8 +3043,9 @@ function renderPortfolioPage() {
                   <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${item.subtitle}</p>
                 </div>
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-xs flex items-center gap-1">
-                    🔍 View Full Res
+                  <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-xs flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
+                    <span>View Full Res</span>
                   </button>
                   <button onclick="navigateTo('contact')" class="text-[#8B0000] hover:text-red-800 font-black text-xs">
                     Inquire Now →
@@ -3161,7 +3312,7 @@ function renderSecureContactFormComponent() {
           <div>
             <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
               <span>Full Name <span class="text-red-500">*</span></span>
-              ${errors.name ? `<span class="text-[10px] text-red-600 font-semibold">${errors.name}</span>` : ''}
+              <span id="contact-error-name" class="text-[10px] text-red-600 font-semibold ${errors.name ? '' : 'hidden'}">${errors.name || ''}</span>
             </label>
             <input 
               type="text" 
@@ -3176,7 +3327,7 @@ function renderSecureContactFormComponent() {
           <div>
             <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
               <span>Email Address <span class="text-red-500">*</span></span>
-              ${errors.email ? `<span class="text-[10px] text-red-600 font-semibold">${errors.email}</span>` : ''}
+              <span id="contact-error-email" class="text-[10px] text-red-600 font-semibold ${errors.email ? '' : 'hidden'}">${errors.email || ''}</span>
             </label>
             <input 
               type="email" 
@@ -3193,7 +3344,7 @@ function renderSecureContactFormComponent() {
           <div>
             <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
               <span>Inquiry Subject <span class="text-red-500">*</span></span>
-              ${errors.subject ? `<span class="text-[10px] text-red-600 font-semibold">${errors.subject}</span>` : ''}
+              <span id="contact-error-subject" class="text-[10px] text-red-600 font-semibold ${errors.subject ? '' : 'hidden'}">${errors.subject || ''}</span>
             </label>
             <input 
               type="text" 
@@ -3223,7 +3374,7 @@ function renderSecureContactFormComponent() {
         <div>
           <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
             <span>Detailed Message & Requirements <span class="text-red-500">*</span></span>
-            ${errors.message ? `<span class="text-[10px] text-red-600 font-semibold">${errors.message}</span>` : ''}
+            <span id="contact-error-message" class="text-[10px] text-red-600 font-semibold ${errors.message ? '' : 'hidden'}">${errors.message || ''}</span>
           </label>
           <textarea 
             rows="5"

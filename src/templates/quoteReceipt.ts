@@ -141,10 +141,10 @@ export function renderQuoteReceiptTemplate(data: QuoteTemplateData): string {
               <!-- Actions -->
               <div style="text-align: center; margin-top: 20px;">
                 <a href="https://wa.me/256757848094?text=${whatsappMsg}" target="_blank" style="background-color: #1E7E34; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; padding: 12px 20px; border-radius: 8px; display: inline-block; text-transform: uppercase; margin-right: 8px;">
-                  💬 Finalize Quote on WhatsApp
+                   Finalize Quote on WhatsApp
                 </a>
                 <a href="tel:+256702083515" style="background-color: #0B1B3D; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; padding: 12px 20px; border-radius: 8px; display: inline-block; text-transform: uppercase;">
-                  📞 Speak with Director
+                   Speak with Director
                 </a>
               </div>
             </td>

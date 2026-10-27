@@ -62,7 +62,7 @@ export function renderAdminOrderAlertTemplate(data: OrderReceiptTemplateData): s
                 Incoming Order Alert
               </span>
               <h2 style="color: #ffffff; margin: 8px 0 0 0; font-size: 19px; font-weight: 900;">
-                📦 New Order: #${orderId}
+                 New Order: #${orderId}
               </h2>
               <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 12px;">
                 Placed by ${customerName} on ${date}

@@ -62,10 +62,10 @@ export function renderWelcomeTemplate(data: WelcomeTemplateData): string {
 
               <div style="text-align: center; margin-top: 10px;">
                 <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media%20Services" target="_blank" style="background-color: #1E7E34; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; padding: 12px 20px; border-radius: 8px; display: inline-block; text-transform: uppercase; margin-right: 8px;">
-                  💬 Direct WhatsApp Chat
+                   Direct WhatsApp Chat
                 </a>
                 <a href="mailto:phreshtechmediaservices@gmail.com" style="background-color: #8B0000; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; padding: 12px 20px; border-radius: 8px; display: inline-block; text-transform: uppercase;">
-                  ✉️ Email Our Team
+                   Email Our Team
                 </a>
               </div>
             </td>

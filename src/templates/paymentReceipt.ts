@@ -99,7 +99,7 @@ export function renderPaymentReceiptTemplate(data: PaymentReceiptTemplateData): 
                     <span style="font-size: 13px; color: #0B1B3D; font-weight: 600;">${data.paymentMethod}</span>
                   </td>
                   <td width="50%" style="text-align: right;">
-                    <span style="display: block; font-size: 11px; text-transform: uppercase; color: #64748B; font-weight: 700;">Gateway Ref</span>
+                    <span style="display: block; font-size: 11px; text-transform: uppercase; color: #64748B; font-weight: 700;">Settlement Ref</span>
                     <span style="font-size: 12px; color: #475569; font-family: monospace;">${data.gatewayRef || 'N/A'}</span>
                   </td>
                 </tr>

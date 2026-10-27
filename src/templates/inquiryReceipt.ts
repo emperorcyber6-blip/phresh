@@ -117,7 +117,7 @@ export function renderInquiryReceiptTemplate(data: InquiryTemplateData): string 
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #0B1B3D; border-radius: 8px; padding: 14px 18px; color: #ffffff;">
                 <tr>
                   <td>
-                    <strong style="font-size: 12px; color: #38bdf8; display: block; text-transform: uppercase; margin-bottom: 2px;">⚡ Guaranteed Turnaround</strong>
+                    <strong style="font-size: 12px; color: #38bdf8; display: block; text-transform: uppercase; margin-bottom: 2px;"> Guaranteed Turnaround</strong>
                     <span style="font-size: 12px; color: #cbd5e1;">Our software & print directors review all submissions and will get back to you within 24 hours.</span>
                   </td>
                 </tr>
@@ -132,12 +132,12 @@ export function renderInquiryReceiptTemplate(data: InquiryTemplateData): string 
                 <tr>
                   <td style="padding-right: 8px;">
                     <a href="https://wa.me/256757848094?text=${whatsappMsg}" target="_blank" style="background-color: #1E7E34; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; padding: 12px 20px; border-radius: 8px; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px;">
-                      💬 WhatsApp Inquiries
+                       WhatsApp Inquiries
                     </a>
                   </td>
                   <td style="padding-left: 8px;">
                     <a href="tel:+256702083515" style="background-color: #8B0000; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; padding: 12px 20px; border-radius: 8px; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px;">
-                      📞 Call Direct Line
+                       Call Direct Line
                     </a>
                   </td>
                 </tr>
@@ -164,10 +164,10 @@ export function renderInquiryReceiptTemplate(data: InquiryTemplateData): string 
                 <tr>
                   <td colspan="2" style="padding-top: 16px; border-top: 1px solid #e2e8f0; margin-top: 12px;">
                     <p style="margin: 0; color: #475569; font-size: 11px;">
-                      <strong>📍 Physical Headquarters:</strong> Kasenge - Nakawuka Road, Wakiso District / Kampala, Uganda
+                      <strong> Physical Headquarters:</strong> Kasenge - Nakawuka Road, Wakiso District / Kampala, Uganda
                     </p>
                     <p style="margin: 4px 0 0 0; color: #475569; font-size: 11px;">
-                      <strong>✉️ Official Email:</strong> <a href="mailto:phreshtechmediaservices@gmail.com" style="color: #0B1B3D; font-weight: bold; text-decoration: underline;">phreshtechmediaservices@gmail.com</a>
+                      <strong> Official Email:</strong> <a href="mailto:phreshtechmediaservices@gmail.com" style="color: #0B1B3D; font-weight: bold; text-decoration: underline;">phreshtechmediaservices@gmail.com</a>
                     </p>
                     <p style="margin: 8px 0 0 0; color: #94a3b8; font-size: 10px;">
                       © ${new Date().getFullYear()} Phresh Tech Media Services. All rights reserved.

@@ -155,8 +155,8 @@ export function renderOrderReceiptTemplate(data: OrderReceiptTemplateData): stri
                   </td>
                   <td width="50%" style="vertical-align: top; padding-left: 10px; border-left: 1px solid #e2e8f0;" class="mobile-stack">
                     <span style="font-size: 10px; font-weight: 800; color: #0B1B3D; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Contact Routing</span>
-                    <span style="color: #334155; font-size: 12px; display: block;">✉️ ${customerEmail}</span>
-                    <span style="color: #334155; font-size: 12px; font-family: monospace; display: block;">📞 ${customerPhone}</span>
+                    <span style="color: #334155; font-size: 12px; display: block;"> ${customerEmail}</span>
+                    <span style="color: #334155; font-size: 12px; font-family: monospace; display: block;"> ${customerPhone}</span>
                   </td>
                 </tr>
               </table>
@@ -167,7 +167,7 @@ export function renderOrderReceiptTemplate(data: OrderReceiptTemplateData): stri
           <tr>
             <td style="padding: 0 24px 20px 24px;" class="mobile-padding">
               <div style="font-size: 12px; font-weight: 800; color: #0B1B3D; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
-                📋 Itemized Service & Product Breakdown
+                 Itemized Service & Product Breakdown
               </div>
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden;">
                 <thead>
@@ -212,7 +212,7 @@ export function renderOrderReceiptTemplate(data: OrderReceiptTemplateData): stri
             <td style="padding: 0 24px 20px 24px;" class="mobile-padding">
               <div style="background-color: #fff8f8; border: 1px solid #fed7d7; border-left: 4px solid #8B0000; border-radius: 8px; padding: 14px 16px;">
                 <strong style="color: #8B0000; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px;">
-                  📌 Project Specifications & Custom Notes
+                   Project Specifications & Custom Notes
                 </strong>
                 <p style="color: #334155; font-size: 12px; margin: 0; line-height: 1.5; white-space: pre-wrap;">${specificDetails}</p>
               </div>
@@ -229,12 +229,12 @@ export function renderOrderReceiptTemplate(data: OrderReceiptTemplateData): stri
                 <tr>
                   <td style="padding-right: 8px;" class="mobile-btn">
                     <a href="https://wa.me/256757848094?text=${whatsappMsg}" target="_blank" style="background-color: #1E7E34; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; padding: 12px 20px; border-radius: 8px; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 6px rgba(30,126,52,0.3);">
-                      💬 Connect on WhatsApp
+                       Connect on WhatsApp
                     </a>
                   </td>
                   <td style="padding-left: 8px;" class="mobile-btn">
                     <a href="mailto:phreshtechmediaservices@gmail.com?subject=Regarding%20Order%20${orderId}" style="background-color: #8B0000; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; padding: 12px 20px; border-radius: 8px; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 6px rgba(139,0,0,0.3);">
-                      ✉️ Reply by Email
+                       Reply by Email
                     </a>
                   </td>
                 </tr>
@@ -261,10 +261,10 @@ export function renderOrderReceiptTemplate(data: OrderReceiptTemplateData): stri
                 <tr>
                   <td colspan="2" style="padding-top: 16px; border-top: 1px solid #e2e8f0; margin-top: 12px;">
                     <p style="margin: 0; color: #475569; font-size: 11px;">
-                      <strong>📍 Physical Headquarters:</strong> Kasenge - Nakawuka Road, Wakiso District / Kampala, Uganda
+                      <strong> Physical Headquarters:</strong> Kasenge - Nakawuka Road, Wakiso District / Kampala, Uganda
                     </p>
                     <p style="margin: 4px 0 0 0; color: #475569; font-size: 11px;">
-                      <strong>✉️ Official Email:</strong> <a href="mailto:phreshtechmediaservices@gmail.com" style="color: #0B1B3D; font-weight: bold; text-decoration: underline;">phreshtechmediaservices@gmail.com</a>
+                      <strong> Official Email:</strong> <a href="mailto:phreshtechmediaservices@gmail.com" style="color: #0B1B3D; font-weight: bold; text-decoration: underline;">phreshtechmediaservices@gmail.com</a>
                     </p>
                     <p style="margin: 8px 0 0 0; color: #94a3b8; font-size: 10px;">
                       © ${new Date().getFullYear()} Phresh Tech Media Services. All rights reserved.

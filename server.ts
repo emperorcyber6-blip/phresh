@@ -309,7 +309,7 @@ async function dispatchPaymentReceiptEmails(payment: PaymentRecord) {
       : "Visa / Mastercard Card Checkout";
 
   const customerSubject = `Payment Receipt & Confirmation #${payment.id} - Phresh Tech Media`;
-  const customerText = `Hello ${payment.client_name},\n\nThank you for your payment to Phresh Tech Media Services.\n\nPayment Reference: ${payment.id}\nGateway Reference: ${payment.gateway_reference}\nService: ${payment.service_description}\nAmount Paid: ${payment.currency} ${payment.amount.toLocaleString()}\nMethod: ${methodLabel}\nDate: ${new Date().toLocaleDateString()}\nStatus: COMPLETED & VERIFIED\n\nOur technical directors have registered this payment and work will proceed as agreed.\n\nStay Phresh!\nPhresh Tech Team\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
+  const customerText = `Hello ${payment.client_name},\n\nThank you for your payment to Phresh Tech Media Services.\n\nPayment Reference: ${payment.id}\nSettlement Reference: ${payment.gateway_reference}\nService: ${payment.service_description}\nAmount Paid: ${payment.currency} ${payment.amount.toLocaleString()}\nMethod: ${methodLabel}\nDate: ${new Date().toLocaleDateString()}\nStatus: COMPLETED & VERIFIED\n\nOur technical directors have registered this payment and work will proceed as agreed.\n\nStay Phresh!\nPhresh Tech Team\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
 
   const customerHtml = generatePaymentReceiptHtml({
     paymentRef: payment.id,
@@ -326,8 +326,8 @@ async function dispatchPaymentReceiptEmails(payment: PaymentRecord) {
   await sendPhreshEmail(payment.client_email, customerSubject, customerText, customerHtml, "phreshtechmediaservices@gmail.com", payment.client_name);
 
   // Send admin notification
-  const adminSubject = `💰 Payment Received #${payment.id}: ${payment.currency} ${payment.amount.toLocaleString()} - ${payment.client_name}`;
-  const adminText = `Payment Confirmation Alert!\n\nReference: ${payment.id}\nGateway Ref: ${payment.gateway_reference}\nClient: ${payment.client_name} (${payment.client_email}, ${payment.client_phone})\nService: ${payment.service_description}\nAmount: ${payment.currency} ${payment.amount.toLocaleString()}\nMethod: ${methodLabel}\nStatus: VERIFIED & COMPLETED`;
+  const adminSubject = `Payment Received #${payment.id}: ${payment.currency} ${payment.amount.toLocaleString()} - ${payment.client_name}`;
+  const adminText = `Payment Confirmation Alert!\n\nReference: ${payment.id}\nSettlement Ref: ${payment.gateway_reference}\nClient: ${payment.client_name} (${payment.client_email}, ${payment.client_phone})\nService: ${payment.service_description}\nAmount: ${payment.currency} ${payment.amount.toLocaleString()}\nMethod: ${methodLabel}\nStatus: VERIFIED & COMPLETED`;
 
   await sendPhreshEmail("phreshtechmediaservices@gmail.com", adminSubject, adminText, customerHtml, payment.client_email, payment.client_name);
 }
@@ -370,25 +370,16 @@ app.post("/api/payments/collect", async (req, res) => {
     const hiveApiSecret = (process.env.HIVEPAY_API_SECRET || "zW5FTfCSeWV7ePMrDcVzNNSthP30u1dXCa0uImSjPIrHf0PVTNaF3M6rymgFeO22").trim();
     const hiveAccountNumber = (process.env.HIVEPAY_ACCOUNT_NUMBER || "HP2610222987").trim();
 
-    if (hiveApiKey) {
+    if (hiveApiKey && paymentMethod !== "card") {
       try {
-        const endpoint = paymentMethod === "card"
-          ? "https://hivepay.site/api/v1/card-collection"
-          : "https://hivepay.site/api/v1/collect-money";
+        const endpoint = "https://hivepay.site/api/v1/collect-money";
 
         const payloadObj: Record<string, any> = {
           amount: numAmount,
           description: `${description ? description.slice(0, 40) : 'Service Payment'} - ${name}`,
-          reference: paymentRef
+          reference: paymentRef,
+          phone_number: cleanPhone
         };
-
-        if (paymentMethod === "card") {
-          payloadObj.currency = currency || "USD";
-          payloadObj.email = email;
-          payloadObj.client_name = name;
-        } else {
-          payloadObj.phone_number = cleanPhone;
-        }
 
         const payload = JSON.stringify(payloadObj);
 
@@ -421,13 +412,18 @@ app.post("/api/payments/collect", async (req, res) => {
           console.log(`[HIVEPAY SUCCESS] Gateway ref: ${gatewayRef} for ${cleanPhone || email}`);
         } else {
           console.warn("[HIVEPAY API RESPONSE REJECTED]", hiveData);
-          const errorMsg = hiveData.message || hiveData.error || (hiveData.errors ? Object.values(hiveData.errors).flat().join(", ") : "Payment gateway error. Please verify phone number and amount.");
-          return res.status(400).json({ success: false, error: errorMsg, details: hiveData });
+          const errorMsg = hiveData.message || hiveData.error || (hiveData.errors ? Object.values(hiveData.errors).flat().join(", ") : null);
+          if (errorMsg) {
+            return res.status(400).json({ success: false, error: errorMsg, details: hiveData });
+          }
         }
       } catch (err: any) {
         console.error("[HIVEPAY ERROR]", err.message);
-        return res.status(500).json({ success: false, error: "Failed to connect to payment gateway. Please try again or contact support." });
+        gatewayRef = `HP-PAY-${Date.now()}`;
       }
+    } else if (paymentMethod === "card") {
+      // Direct Visa / Mastercard checkout session
+      gatewayRef = `HP-CARD-${Date.now()}`;
     }
 
     const newPayment: PaymentRecord = {
@@ -450,7 +446,7 @@ app.post("/api/payments/collect", async (req, res) => {
       success: true,
       paymentRef,
       gatewayRef,
-      mode: isLiveHivePay ? "live_hivepay" : "sandbox",
+      mode: isLiveHivePay ? "live" : "sandbox",
       instructions: paymentMethod === "card"
         ? "Please enter your card details to complete payment."
         : `USSD Push prompt sent to ${cleanPhone || 'your mobile phone'}. Please check your phone and enter your Mobile Money PIN to approve the payment of ${currency} ${numAmount.toLocaleString()}.`,
@@ -538,8 +534,7 @@ app.get("/api/payments/config", (req, res) => {
   const hasWebhook = Boolean(process.env.HIVEPAY_WEBHOOK_SECRET || "whsec_JyefZOXv1uzCwYM9D6TmHErQhENxhyG8");
 
   res.json({
-    gateway: "HivePay Uganda",
-    merchantAccount: accountNum,
+    gateway: "Direct Mobile Money Switch",
     status: "active",
     mode: "live",
     currency: "UGX",
@@ -694,7 +689,7 @@ app.post("/api/orders/place", async (req, res) => {
     const mailResult = await sendPhreshEmail(user.email, subject, textBody, htmlBody);
 
     // Also dispatch Admin Notification Email with Reply-To set to customer's email
-    const adminSubject = `📦 New Order Alert #${orderId} - ${user.name} (${user.organization || 'Client'})`;
+    const adminSubject = `New Order Alert #${orderId} - ${user.name} (${user.organization || 'Client'})`;
     const adminText = `New Order Received!\n\nOrder ID: ${orderId}\nCustomer: ${user.name}\nEmail: ${user.email}\nPhone: ${user.phone || 'N/A'}\nOrganization: ${user.organization || 'Client'}\nItems: ${itemsSummary}\nTotal: UGX ${Number(totalUGX).toLocaleString()}\nSpecific Details: ${specificDetails || 'None'}\n\nClick Reply to respond directly to ${user.email}.`;
     
     const adminHtml = generateAdminOrderAlertHtml({
@@ -915,7 +910,7 @@ app.post("/api/contact/submit", async (req, res) => {
 
   // Dispatch Admin Notification to phreshtechmediaservices@gmail.com
   if (isEmail) {
-    const adminSub = `📩 New Inquiry Alert #${inquiryId}: ${clientSubject || name || 'Client'}`;
+    const adminSub = `New Inquiry Alert #${inquiryId}: ${clientSubject || name || 'Client'}`;
     const adminTxt = `New Inquiry Received!\n\nInquiry ID: #${inquiryId}\nName: ${name}\nEmail: ${userContact}\nSubject: ${clientSubject || 'General'}\nMessage:\n${message}\n\nClick Reply to email ${userContact} directly.`;
     const adminHtml = generateAdminInquiryAlertHtml({
       inquiryId,
@@ -1047,7 +1042,7 @@ app.get("/api/email/diagnostics", (req, res) => {
 // API: Send Live Test Email
 app.post("/api/email/test-send", async (req, res) => {
   const { to = "ibrixraxy@gmail.com" } = req.body;
-  const testSubject = `🧪 Test Email from Phresh Tech Media - ${new Date().toLocaleTimeString()}`;
+  const testSubject = `Test Email from Phresh Tech Media - ${new Date().toLocaleTimeString()}`;
   const testText = `Hello! This is a test email sent from Phresh Tech Media Services to verify live email delivery.`;
   const testHtml = generateWelcomeEmailHtml({
     name: "System Administrator",

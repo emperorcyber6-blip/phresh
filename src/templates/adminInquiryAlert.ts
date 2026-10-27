@@ -40,7 +40,7 @@ export function renderAdminInquiryAlertTemplate(data: InquiryTemplateData): stri
                 New Website Lead
               </span>
               <h2 style="color: #ffffff; margin: 8px 0 0 0; font-size: 19px; font-weight: 900;">
-                📩 Inquiry: ${subject}
+                 Inquiry: ${subject}
               </h2>
               <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 12px;">
                 Ref: #${inquiryId} • Received ${date}
@@ -66,7 +66,7 @@ export function renderAdminInquiryAlertTemplate(data: InquiryTemplateData): stri
                 <a href="mailto:${email}?subject=Re:%20${encodeURIComponent(
     subject
   )}%20-%20Phresh%20Tech%20Media" style="background-color: #0B1B3D; color: #ffffff; text-decoration: none; padding: 10px 18px; border-radius: 6px; font-size: 12px; font-weight: bold; text-transform: uppercase; display: inline-block;">
-                  ✉️ Reply Directly to ${name}
+                   Reply Directly to ${name}
                 </a>
               </div>
             </td>
