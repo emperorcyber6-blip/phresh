@@ -4,7 +4,6 @@ import fs from "fs";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import { createServer as createViteServer } from "vite";
 import {
   renderOrderReceiptTemplate as generateOrderReceiptHtml,
   renderAdminOrderAlertTemplate as generateAdminOrderAlertHtml,
@@ -19,7 +18,7 @@ import {
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
@@ -572,7 +571,10 @@ app.post("/api/payments/collect", async (req, res) => {
         });
       }
     } else {
-      gatewayRef = `PTM-CARD-${Date.now()}`;
+      return res.status(400).json({
+        success: false,
+        error: "Direct bank card checkout is currently arranged through our office desk. Please select MTN MoMo or Airtel Money, or call +256 741 145595."
+      });
     }
 
     const newPayment: PaymentRecord = {
@@ -596,9 +598,7 @@ app.post("/api/payments/collect", async (req, res) => {
       success: true,
       paymentRef,
       mode: isLive ? "live" : "card",
-      instructions: paymentMethod === "card"
-        ? "Please complete your card payment."
-        : `Check your phone (${cleanPhone}) and enter your Mobile Money PIN to approve ${currency} ${numAmount.toLocaleString()}.`,
+      instructions: `Check your phone (${cleanPhone}) and enter your Mobile Money PIN to approve ${currency} ${numAmount.toLocaleString()}.`,
       payment: toPublicPayment(newPayment)
     });
   } catch (err: any) {
@@ -640,13 +640,17 @@ app.get("/api/payments/status/:ref", async (req, res) => {
         const st = String(checkData.status || "").toLowerCase();
 
         if (!payment && checkData.reference) {
+          const qName = typeof req.query.name === "string" && req.query.name.trim() ? req.query.name.trim() : "Valued Client";
+          const qEmail = typeof req.query.email === "string" && req.query.email.trim() ? req.query.email.trim() : "phreshtechmediaservices@gmail.com";
+          const qDesc = typeof req.query.desc === "string" && req.query.desc.trim() ? req.query.desc.trim() : "Agreed Phresh Tech Media Services";
+
           payment = {
             id: checkData.reference || ref,
             gateway_reference: checkData.gateway_reference || refToQuery,
-            client_name: "Valued Client",
-            client_email: "phreshtechmediaservices@gmail.com",
+            client_name: qName,
+            client_email: qEmail,
             client_phone: checkData.phone_number || "",
-            service_description: "Agreed Phresh Tech Media Services",
+            service_description: qDesc,
             amount: Number(checkData.amount || 0),
             currency: checkData.currency || "UGX",
             payment_method: String(checkData.network || "").toUpperCase().includes("AIRTEL") ? "airtel_money" : "mtn_momo",
@@ -1352,6 +1356,7 @@ app.get("/google3cf59a0fdc351c65.html", (req, res) => {
 
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",

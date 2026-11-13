@@ -19,16 +19,16 @@ export async function onRequestPost(context: any) {
         ? "Airtel Money" 
         : "Visa / Mastercard Card Checkout";
 
-    const customerSubject = `Payment Receipt & Confirmation #${paymentId} - Phresh Tech Media`;
-    const customerText = `Hello ${clientName || 'Valued Client'},\n\nThank you for your payment to Phresh Tech Media Services.\n\nPayment Reference: ${paymentId}\nGateway Reference: ${gatewayRef || 'N/A'}\nService: ${serviceDescription || 'Phresh Tech Media Services'}\nAmount Paid: ${currency} ${numAmount.toLocaleString()}\nMethod: ${methodLabel}\nDate: ${new Date().toLocaleDateString()}\nStatus: COMPLETED & VERIFIED\n\nOur technical directors have registered this payment and work will proceed as agreed.\n\nStay Phresh!\nPhresh Tech Team\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
+    const customerSubject = `Payment Receipt #${paymentId} - Phresh Tech Media Services`;
+    const customerText = `Hello ${clientName || 'Valued Client'},\n\nThank you for your payment to Phresh Tech Media Services.\n\nReceipt Number: ${paymentId}\nService: ${serviceDescription || 'Phresh Tech Media Services'}\nAmount Paid: ${currency} ${numAmount.toLocaleString()}\nMethod: ${methodLabel}\nDate: ${new Date().toLocaleDateString()}\nStatus: PAID\n\nOur team has recorded your payment and work will proceed as agreed.\n\nWarm regards,\nPhresh Tech Media Services\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
 
     const receiptHtml = renderPaymentReceiptTemplate({
       paymentRef: paymentId,
-      gatewayRef: gatewayRef || 'N/A',
+      gatewayRef: paymentId,
       clientName: clientName || 'Valued Client',
       clientEmail: clientEmail,
       clientPhone: clientPhone || '',
-      serviceDescription: serviceDescription || 'Agreed Phresh Tech Media Services & System Consultation',
+      serviceDescription: serviceDescription || 'Agreed Phresh Tech Media Services',
       amount: numAmount,
       currency,
       paymentMethod: methodLabel
@@ -46,8 +46,8 @@ export async function onRequestPost(context: any) {
 
     // 2. Dispatch Admin Notification
     const adminEmail = (env && env.ADMIN_NOTIFICATION_EMAIL) || 'phreshtechmediaservices@gmail.com';
-    const adminSubject = `💰 Payment Received #${paymentId}: ${currency} ${numAmount.toLocaleString()} - ${clientName}`;
-    const adminText = `Payment Confirmation Alert!\n\nReference: ${paymentId}\nGateway Ref: ${gatewayRef || 'N/A'}\nClient: ${clientName} (${clientEmail}, ${clientPhone || 'N/A'})\nService: ${serviceDescription}\nAmount: ${currency} ${numAmount.toLocaleString()}\nMethod: ${methodLabel}\nStatus: VERIFIED & COMPLETED`;
+    const adminSubject = `Payment Received #${paymentId}: ${currency} ${numAmount.toLocaleString()} - ${clientName}`;
+    const adminText = `Payment Confirmation\n\nReceipt: ${paymentId}\nClient: ${clientName} (${clientEmail}, ${clientPhone || 'N/A'})\nService: ${serviceDescription}\nAmount: ${currency} ${numAmount.toLocaleString()}\nMethod: ${methodLabel}\nStatus: PAID`;
 
     dispatchCloudflareEmail(env, {
       to: adminEmail,

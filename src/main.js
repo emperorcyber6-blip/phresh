@@ -690,10 +690,18 @@ window.handleInitiatePayment = async function(e) {
         currency: paymentPageState.currency,
         description: paymentPageState.serviceDescription.trim() || 'Agreed Phresh Tech Media Services',
         paymentMethod: paymentPageState.paymentMethod
-      })
+      }),
+      signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(25000) : undefined
     });
 
-    const data = await res.json();
+    const rawText = await res.text();
+    let data = {};
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      data = { success: false, error: 'Payment service returned an unexpected response. Please try again.' };
+    }
+
     paymentPageState.isInitiating = false;
 
     if (res.ok && data.success) {
@@ -720,11 +728,23 @@ window.handleInitiatePayment = async function(e) {
         }
       }, 1000);
 
+      const statusParams = new URLSearchParams({
+        name: paymentPageState.clientName.trim(),
+        email: paymentPageState.clientEmail.trim(),
+        desc: paymentPageState.serviceDescription.trim() || 'Agreed Phresh Tech Media Services'
+      }).toString();
+
       paymentPageState.pollTimer = setInterval(async () => {
         try {
-          const statusRes = await fetch(`/api/payments/status/${encodeURIComponent(paymentPageState.paymentRef)}`);
+          const statusRes = await fetch(`/api/payments/status/${encodeURIComponent(paymentPageState.paymentRef)}?${statusParams}`);
           if (statusRes.ok) {
-            const statusData = await statusRes.json();
+            const statusText = await statusRes.text();
+            let statusData = {};
+            try {
+              statusData = JSON.parse(statusText);
+            } catch {
+              return;
+            }
             if (statusData.status === 'COMPLETED') {
               stopPaymentTimers();
               paymentPageState.isWaitingUssdApproval = false;
@@ -743,14 +763,16 @@ window.handleInitiatePayment = async function(e) {
         } catch (err) {
           // ignore transient poll error
         }
-      }, 3000);
+      }, 2000);
     } else {
       paymentPageState.error = data.error || 'Could not send the Mobile Money prompt to your phone. Please check your number and try again.';
       renderApp();
     }
   } catch (err) {
     paymentPageState.isInitiating = false;
-    paymentPageState.error = 'Connection error. Please check your internet connection and try again.';
+    paymentPageState.error = (err && err.name === 'TimeoutError')
+      ? 'The Mobile Money network is taking longer than usual to respond. Please check your phone or try again.'
+      : 'Connection error. Please check your internet connection and try again.';
     renderApp();
   }
 };
@@ -1187,14 +1209,14 @@ function renderDedicatedPaymentPage() {
           </div>
 
           <div class="space-y-2.5">
-            <span class="block text-sm font-semibold text-slate-800">How Would You Like to Pay?</span>
-            <div class="grid sm:grid-cols-3 gap-3">
+            <span class="block text-sm font-semibold text-slate-800">Mobile Money Network</span>
+            <div class="grid sm:grid-cols-2 gap-3">
               <div id="payment-method-card-mtn" onclick="handlePaymentMethodSelect('mtn_momo')" class="flex flex-col p-4 border rounded-xl cursor-pointer transition ${paymentMethod === 'mtn_momo' ? 'border-amber-600 bg-amber-50/60' : 'border-stone-200 bg-white hover:bg-stone-50'}">
                 <div class="flex items-center justify-between mb-1">
                   <span class="text-sm font-bold text-slate-900">MTN MoMo</span>
                   <input type="radio" id="payment-method-mtn" name="payment_method" value="mtn_momo" ${paymentMethod === 'mtn_momo' ? 'checked' : ''} />
                 </div>
-                <span class="text-xs text-slate-600">PIN prompt sent to your MTN line</span>
+                <span class="text-xs text-slate-600">PIN prompt sent to your MTN phone</span>
               </div>
 
               <div id="payment-method-card-airtel" onclick="handlePaymentMethodSelect('airtel_money')" class="flex flex-col p-4 border rounded-xl cursor-pointer transition ${paymentMethod === 'airtel_money' ? 'border-red-600 bg-red-50/50' : 'border-stone-200 bg-white hover:bg-stone-50'}">
@@ -1202,17 +1224,10 @@ function renderDedicatedPaymentPage() {
                   <span class="text-sm font-bold text-slate-900">Airtel Money</span>
                   <input type="radio" id="payment-method-airtel" name="payment_method" value="airtel_money" ${paymentMethod === 'airtel_money' ? 'checked' : ''} />
                 </div>
-                <span class="text-xs text-slate-600">PIN prompt sent to your Airtel line</span>
-              </div>
-
-              <div id="payment-method-card-card" onclick="handlePaymentMethodSelect('card')" class="flex flex-col p-4 border rounded-xl cursor-pointer transition ${paymentMethod === 'card' ? 'border-[#0F213E] bg-slate-50' : 'border-stone-200 bg-white hover:bg-stone-50'}">
-                <div class="flex items-center justify-between mb-1">
-                  <span class="text-sm font-bold text-slate-900">Bank Card</span>
-                  <input type="radio" id="payment-method-card" name="payment_method" value="card" ${paymentMethod === 'card' ? 'checked' : ''} />
-                </div>
-                <span class="text-xs text-slate-600">Visa or Mastercard</span>
+                <span class="text-xs text-slate-600">PIN prompt sent to your Airtel phone</span>
               </div>
             </div>
+            <p class="text-xs text-slate-500">Prefer bank deposit or paying at our Kasenge office? Call +256 741 145595.</p>
           </div>
 
           <button
@@ -1222,7 +1237,7 @@ function renderDedicatedPaymentPage() {
           >
             ${isInitiating ? `
               <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-              <span>Sending Prompt to Your Phone...</span>
+              <span>Sending Prompt to Your Phone (a few seconds)...</span>
             ` : `
               <span>Send Payment Prompt (${escapeHtml(currency)} ${Number(amount || 0).toLocaleString()})</span>
             `}
