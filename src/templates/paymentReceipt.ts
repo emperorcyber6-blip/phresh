@@ -56,8 +56,8 @@ export function renderPaymentReceiptTemplate(data: PaymentReceiptTemplateData): 
                     <p style="margin: 4px 0 0 0; color: #34D399; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">Direct Client Payment Confirmation</p>
                   </td>
                   <td align="right" valign="top">
-                    <span style="display: inline-block; background-color: rgba(30, 126, 52, 0.25); color: #34D399; border: 1px solid #34D399; padding: 6px 14px; border-radius: 9999px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
-                      ✓ Payment Verified
+                    <span style="display: inline-block; background-color: rgba(30, 126, 52, 0.25); color: #34D399; border: 1px solid #34D399; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                      Paid & Confirmed
                     </span>
                   </td>
                 </tr>
@@ -75,7 +75,7 @@ export function renderPaymentReceiptTemplate(data: PaymentReceiptTemplateData): 
                   <td>
                     <p style="margin: 0; font-size: 15px; color: #334155;">Hello <strong>${data.clientName}</strong>,</p>
                     <p style="margin: 6px 0 0 0; font-size: 13px; color: #64748B; line-height: 1.5;">
-                      Your agreed payment has been successfully completed and confirmed through our secure payment gateway. Thank you for partnering with Phresh Tech Media Services.
+                      Thank you for your payment to Phresh Tech Media Services. We have received and confirmed it in full.
                     </p>
                   </td>
                 </tr>
@@ -85,8 +85,8 @@ export function renderPaymentReceiptTemplate(data: PaymentReceiptTemplateData): 
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 20px; margin-bottom: 24px;">
                 <tr>
                   <td width="50%" style="padding-bottom: 12px;">
-                    <span style="display: block; font-size: 11px; text-transform: uppercase; color: #64748B; font-weight: 700;">Payment Reference</span>
-                    <strong style="font-size: 14px; color: #0B1B3D; font-family: monospace;">${data.paymentRef}</strong>
+                    <span style="display: block; font-size: 11px; text-transform: uppercase; color: #64748B; font-weight: 700;">Receipt Number</span>
+                    <strong style="font-size: 14px; color: #0B1B3D;">${data.paymentRef}</strong>
                   </td>
                   <td width="50%" style="padding-bottom: 12px; text-align: right;">
                     <span style="display: block; font-size: 11px; text-transform: uppercase; color: #64748B; font-weight: 700;">Date & Time</span>
@@ -99,8 +99,8 @@ export function renderPaymentReceiptTemplate(data: PaymentReceiptTemplateData): 
                     <span style="font-size: 13px; color: #0B1B3D; font-weight: 600;">${data.paymentMethod}</span>
                   </td>
                   <td width="50%" style="text-align: right;">
-                    <span style="display: block; font-size: 11px; text-transform: uppercase; color: #64748B; font-weight: 700;">Settlement Ref</span>
-                    <span style="font-size: 12px; color: #475569; font-family: monospace;">${data.gatewayRef || 'N/A'}</span>
+                    <span style="display: block; font-size: 11px; text-transform: uppercase; color: #64748B; font-weight: 700;">Confirmation Code</span>
+                    <span style="font-size: 12px; color: #475569;">${data.gatewayRef || data.paymentRef}</span>
                   </td>
                 </tr>
               </table>
@@ -108,23 +108,23 @@ export function renderPaymentReceiptTemplate(data: PaymentReceiptTemplateData): 
               <!-- Project & Amount Summary -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; margin-bottom: 24px;">
                 <tr style="background-color: #0B1B3D; color: #FFFFFF;">
-                  <th align="left" style="padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Agreed Service / Project Description</th>
+                  <th align="left" style="padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Service or Project</th>
                   <th align="right" style="padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Amount Paid</th>
                 </tr>
                 <tr>
                   <td style="padding: 16px; font-size: 13px; color: #1E293B; border-bottom: 1px solid #E2E8F0;">
                     <strong>${data.serviceDescription}</strong>
-                    <div style="font-size: 11px; color: #64748B; margin-top: 4px;">Direct payment authorized following consultation with Phresh Tech Media.</div>
+                    <div style="font-size: 11px; color: #64748B; margin-top: 4px;">Agreed payment recorded with Phresh Tech Media Services.</div>
                   </td>
-                  <td align="right" style="padding: 16px; font-size: 15px; font-weight: 800; color: #0B1B3D; border-bottom: 1px solid #E2E8F0; font-family: monospace;">
+                  <td align="right" style="padding: 16px; font-size: 15px; font-weight: 800; color: #0B1B3D; border-bottom: 1px solid #E2E8F0;">
                     ${formattedAmount}
                   </td>
                 </tr>
                 <tr style="background-color: #ECFDF5;">
                   <td style="padding: 14px 16px; font-size: 13px; font-weight: 800; color: #065F46;">
-                    Total Confirmed Amount:
+                    Total Paid:
                   </td>
-                  <td align="right" style="padding: 14px 16px; font-size: 18px; font-weight: 900; color: #047857; font-family: monospace;">
+                  <td align="right" style="padding: 14px 16px; font-size: 18px; font-weight: 900; color: #047857;">
                     ${formattedAmount}
                   </td>
                 </tr>
@@ -137,17 +137,17 @@ export function renderPaymentReceiptTemplate(data: PaymentReceiptTemplateData): 
                     <strong>Client Name:</strong> ${data.clientName}<br>
                     <strong>Email:</strong> ${data.clientEmail}<br>
                     ${data.clientPhone ? `<strong>Phone:</strong> ${data.clientPhone}<br>` : ''}
-                    <strong>Status:</strong> <span style="color: #047857; font-weight: 700;">Completed & Stamped</span>
+                    <strong>Status:</strong> <span style="color: #047857; font-weight: 700;">Paid</span>
                   </td>
                 </tr>
               </table>
 
-              <!-- Technical & Contact Information -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border-left: 4px solid #1E7E34; padding: 14px 16px; border-radius: 0 10px 10px 0; margin-bottom: 24px;">
+              <!-- Contact Information -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 14px 16px; border-radius: 10px; margin-bottom: 24px;">
                 <tr>
                   <td>
                     <p style="margin: 0; font-size: 12px; color: #334155; line-height: 1.5;">
-                      <strong>Next Steps:</strong> Our technical & operations team has been notified of this payment. Work will proceed in accordance with our agreed project timeline.
+                      <strong>What happens next:</strong> Our team in Kasenge has received your payment and will proceed with your work as agreed.
                     </p>
                   </td>
                 </tr>
@@ -157,9 +157,9 @@ export function renderPaymentReceiptTemplate(data: PaymentReceiptTemplateData): 
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size: 11px; color: #64748B; border-top: 1px solid #E2E8F0; padding-top: 16px;">
                 <tr>
                   <td>
-                    <strong>Mulindwa Ibrahim (Ibra)</strong> — Software Engineering Director (+256 702 083515 / +256 747 311209)<br>
-                    <strong>Steven Bagalana (Steve)</strong> — Operations & Print Press Director (+256 777 139918 / +256 757 848094)<br>
-                    <strong>Office Hotline:</strong> +256 741 145595 | <strong>Email:</strong> phreshtechmediaservices@gmail.com<br>
+                    <strong>Mulindwa Ibrahim (Ibra)</strong> — Software & Client Lead (+256 702 083515 / +256 747 311209)<br>
+                    <strong>Steven Bagalana (Steve)</strong> — Operations & Printing Lead (+256 777 139918 / +256 757 848094)<br>
+                    <strong>Office Phone:</strong> +256 741 145595 | <strong>Email:</strong> phreshtechmediaservices@gmail.com<br>
                     Kasenge - Nakawuka Road, Kampala, Uganda
                   </td>
                 </tr>

@@ -349,6 +349,7 @@ export interface PaymentRecord {
   status: "PENDING" | "COMPLETED" | "FAILED";
   created_at: string;
   completed_at?: string;
+  failure_reason?: string;
   email_dispatched?: boolean;
 }
 
@@ -356,6 +357,64 @@ let ordersDB: OrderRecord[] = [];
 let quotesDB: QuoteRecord[] = [];
 let contactMessages: any[] = [];
 let paymentsDB: PaymentRecord[] = [];
+
+const PAYMENTS_CACHE_FILE = "/tmp/phresh_payments_cache.json";
+
+function loadPaymentsFromDisk() {
+  try {
+    if (fs.existsSync(PAYMENTS_CACHE_FILE)) {
+      const raw = fs.readFileSync(PAYMENTS_CACHE_FILE, "utf8");
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        paymentsDB = parsed;
+      }
+    }
+  } catch (err) {
+    // ignore cache read error
+  }
+}
+
+function savePaymentsToDisk() {
+  try {
+    fs.writeFileSync(PAYMENTS_CACHE_FILE, JSON.stringify(paymentsDB.slice(0, 200)), "utf8");
+  } catch (err) {
+    // ignore read-only fs errors
+  }
+}
+
+loadPaymentsFromDisk();
+
+function normalizeUgPhone(rawPhone: string): string {
+  const digits = String(rawPhone || "").replace(/[^\d+]/g, "");
+  if (digits.startsWith("+256") && digits.length >= 13) {
+    return "0" + digits.slice(4);
+  }
+  if (digits.startsWith("256") && digits.length >= 12) {
+    return "0" + digits.slice(3);
+  }
+  if (/^7\d{8}$/.test(digits)) {
+    return "0" + digits;
+  }
+  return digits.replace(/^\+/, "");
+}
+
+function toPublicPayment(payment: PaymentRecord) {
+  return {
+    id: payment.id,
+    confirmation_code: payment.id,
+    client_name: payment.client_name,
+    client_email: payment.client_email,
+    client_phone: payment.client_phone,
+    service_description: payment.service_description,
+    amount: payment.amount,
+    currency: payment.currency,
+    payment_method: payment.payment_method,
+    status: payment.status,
+    failure_reason: payment.failure_reason,
+    created_at: payment.created_at,
+    completed_at: payment.completed_at
+  };
+}
 
 async function dispatchPaymentReceiptEmails(payment: PaymentRecord) {
   payment.email_dispatched = true;
@@ -366,12 +425,12 @@ async function dispatchPaymentReceiptEmails(payment: PaymentRecord) {
       ? "Airtel Money" 
       : "Visa / Mastercard Card Checkout";
 
-  const customerSubject = `Payment Receipt & Confirmation #${payment.id} - Phresh Tech Media`;
-  const customerText = `Hello ${payment.client_name},\n\nThank you for your payment to Phresh Tech Media Services.\n\nPayment Reference: ${payment.id}\nSettlement Reference: ${payment.gateway_reference}\nService: ${payment.service_description}\nAmount Paid: ${payment.currency} ${payment.amount.toLocaleString()}\nMethod: ${methodLabel}\nDate: ${new Date().toLocaleDateString()}\nStatus: COMPLETED & VERIFIED\n\nOur technical directors have registered this payment and work will proceed as agreed.\n\nStay Phresh!\nPhresh Tech Team\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
+  const customerSubject = `Payment Receipt #${payment.id} - Phresh Tech Media Services`;
+  const customerText = `Hello ${payment.client_name},\n\nThank you for your payment to Phresh Tech Media Services.\n\nReceipt Number: ${payment.id}\nService: ${payment.service_description}\nAmount Paid: ${payment.currency} ${payment.amount.toLocaleString()}\nMethod: ${methodLabel}\nDate: ${new Date().toLocaleDateString()}\nStatus: PAID\n\nOur team has registered your payment and will proceed as agreed.\n\nWarm regards,\nPhresh Tech Media Services\nphreshtechmediaservices@gmail.com | Kampala, Uganda`;
 
   const customerHtml = generatePaymentReceiptHtml({
     paymentRef: payment.id,
-    gatewayRef: payment.gateway_reference,
+    gatewayRef: payment.id,
     clientName: payment.client_name,
     clientEmail: payment.client_email,
     clientPhone: payment.client_phone,
@@ -385,21 +444,30 @@ async function dispatchPaymentReceiptEmails(payment: PaymentRecord) {
 
   // Send admin notification
   const adminSubject = `Payment Received #${payment.id}: ${payment.currency} ${payment.amount.toLocaleString()} - ${payment.client_name}`;
-  const adminText = `Payment Confirmation Alert!\n\nReference: ${payment.id}\nSettlement Ref: ${payment.gateway_reference}\nClient: ${payment.client_name} (${payment.client_email}, ${payment.client_phone})\nService: ${payment.service_description}\nAmount: ${payment.currency} ${payment.amount.toLocaleString()}\nMethod: ${methodLabel}\nStatus: VERIFIED & COMPLETED`;
+  const adminText = `Payment Confirmation\n\nReceipt: ${payment.id}\nClient: ${payment.client_name} (${payment.client_email}, ${payment.client_phone})\nService: ${payment.service_description}\nAmount: ${payment.currency} ${payment.amount.toLocaleString()}\nMethod: ${methodLabel}\nStatus: PAID`;
 
   await sendPhreshEmail("phreshtechmediaservices@gmail.com", adminSubject, adminText, customerHtml, payment.client_email, payment.client_name);
 }
 
 // API 1: Healthcheck
 app.get("/api/health", (req, res) => {
-  res.json({ status: "OK", server: "Phresh Tech Engine Server", app: "Phresh Tech Media Services" });
+  res.json({ status: "OK", app: "Phresh Tech Media Services" });
 });
 
 // ==============================================================================
-// HIVEPAY UGANDA & DIRECT PAYMENTS ENGINE
+// MOBILE MONEY & DIRECT PAYMENTS
 // ==============================================================================
 
-// API: Initiate Direct Payment (HivePay USSD Mobile Money or Card)
+function getPaymentCredentials() {
+  return {
+    apiKey: (process.env.HIVEPAY_API_KEY || "ph_4MGP50Ghc7ws0SanNo1D4ID5wfoeXhad").trim(),
+    apiSecret: (process.env.HIVEPAY_API_SECRET || "zW5FTfCSeWV7ePMrDcVzNNSthP30u1dXCa0uImSjPIrHf0PVTNaF3M6rymgFeO22").trim(),
+    accountNumber: (process.env.HIVEPAY_ACCOUNT_NUMBER || "HP2610222987").trim(),
+    webhookSecret: (process.env.HIVEPAY_WEBHOOK_SECRET || "whsec_JyefZOXv1uzCwYM9D6TmHErQhENxhyG8").trim()
+  };
+}
+
+// API: Initiate Direct Payment (USSD Mobile Money or Card)
 app.post("/api/payments/collect", async (req, res) => {
   try {
     const { name: rawName, clientName, email: rawEmail, clientEmail, phone, amount, currency = "UGX", description, paymentMethod = "mtn_momo", reference } = req.body;
@@ -407,81 +475,104 @@ app.post("/api/payments/collect", async (req, res) => {
     const email = (rawEmail || clientEmail || "").trim();
 
     if (!name || !email) {
-      return res.status(400).json({ success: false, error: "Client name and email address are required." });
+      return res.status(400).json({ success: false, error: "Please enter your name and email address." });
     }
     const numAmount = Number(amount);
     if (isNaN(numAmount) || numAmount <= 0) {
       return res.status(400).json({ success: false, error: "Please enter a valid payment amount." });
     }
-    if (currency === "UGX" && numAmount < 1000) {
-      return res.status(400).json({ success: false, error: "Minimum payment amount is UGX 1,000." });
+    if (currency === "UGX" && numAmount < 500) {
+      return res.status(400).json({ success: false, error: "Minimum Mobile Money payment is UGX 500." });
     }
 
-    const paymentRef = reference || `PTM-PAY-${Math.floor(100000 + Math.random() * 900000)}`;
-    const cleanPhone = (phone || "").replace(/\s+/g, "");
+    const cleanPhone = normalizeUgPhone(phone || "");
+    if (paymentMethod !== "card" && !/^07\d{8}$/.test(cleanPhone)) {
+      return res.status(400).json({
+        success: false,
+        error: "Please enter a valid 10-digit Ugandan phone number starting with 07 (for example 0777 123 456 or 0747 311 209)."
+      });
+    }
 
-    let gatewayRef = `HP-GW-${Date.now()}`;
-    let isLiveHivePay = false;
+    const alreadyUsed = reference && paymentsDB.some(p => p.id === reference);
+    const paymentRef = (reference && !alreadyUsed)
+      ? reference
+      : `PTM-PAY-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
 
-    // HivePay Uganda production/live API credentials
-    const hiveApiKey = (process.env.HIVEPAY_API_KEY || "ph_4MGP50Ghc7ws0SanNo1D4ID5wfoeXhad").trim();
-    const hiveApiSecret = (process.env.HIVEPAY_API_SECRET || "zW5FTfCSeWV7ePMrDcVzNNSthP30u1dXCa0uImSjPIrHf0PVTNaF3M6rymgFeO22").trim();
-    const hiveAccountNumber = (process.env.HIVEPAY_ACCOUNT_NUMBER || "HP2610222987").trim();
+    let gatewayRef = `PTM-CLR-${Date.now()}`;
+    let isLive = false;
+    const { apiKey, apiSecret, accountNumber } = getPaymentCredentials();
 
-    if (hiveApiKey && paymentMethod !== "card") {
+    if (paymentMethod !== "card") {
+      if (!apiKey) {
+        return res.status(503).json({
+          success: false,
+          error: "Mobile Money payments are temporarily unavailable. Please contact +256 757 848 094 for help."
+        });
+      }
+
       try {
         const endpoint = "https://hivepay.site/api/v1/collect-money";
-
         const payloadObj: Record<string, any> = {
-          amount: numAmount,
+          amount: Math.round(numAmount),
           description: `${description ? description.slice(0, 40) : 'Service Payment'} - ${name}`,
           reference: paymentRef,
           phone_number: cleanPhone
         };
 
         const payload = JSON.stringify(payloadObj);
-
         const headers: Record<string, string> = {
-          "X-API-Key": hiveApiKey,
+          "X-API-Key": apiKey,
           "Content-Type": "application/json",
           "Accept": "application/json"
         };
 
-        if (hiveApiSecret) {
-          headers["X-API-Secret"] = hiveApiSecret;
-          const signature = crypto.createHmac("sha256", hiveApiSecret).update(payload).digest("hex");
-          headers["X-Signature"] = signature;
+        if (apiSecret) {
+          headers["X-API-Secret"] = apiSecret;
+          headers["X-Signature"] = crypto.createHmac("sha256", apiSecret).update(payload).digest("hex");
         }
-
-        if (hiveAccountNumber) {
-          headers["X-Account-Number"] = hiveAccountNumber;
+        if (accountNumber) {
+          headers["X-Account-Number"] = accountNumber;
         }
 
         const response = await fetch(endpoint, {
           method: "POST",
           headers,
-          body: payload
+          body: payload,
+          signal: AbortSignal.timeout(20000)
         });
 
-        const hiveData: any = await response.json();
-        if (response.ok && (hiveData.success !== false) && (hiveData.gateway_reference || hiveData.reference || hiveData.checkout_url)) {
-          gatewayRef = hiveData.gateway_reference || hiveData.reference || `HP-LIVE-${Date.now()}`;
-          isLiveHivePay = true;
-          console.log(`[HIVEPAY SUCCESS] Gateway ref: ${gatewayRef} for ${cleanPhone || email}`);
+        const rawText = await response.text();
+        let hiveData: any = {};
+        try {
+          hiveData = JSON.parse(rawText);
+        } catch {
+          hiveData = { message: rawText };
+        }
+
+        if (response.ok && hiveData.success !== false && (hiveData.gateway_reference || hiveData.reference || hiveData.checkout_url)) {
+          gatewayRef = hiveData.gateway_reference || hiveData.reference || gatewayRef;
+          isLive = true;
+          console.log(`[PAYMENT INITIATED] Ref: ${paymentRef} | Internal: ${gatewayRef} | Phone: ${cleanPhone}`);
         } else {
-          console.warn("[HIVEPAY API RESPONSE REJECTED]", hiveData);
-          const errorMsg = hiveData.message || hiveData.error || (hiveData.errors ? Object.values(hiveData.errors).flat().join(", ") : null);
-          if (errorMsg) {
-            return res.status(400).json({ success: false, error: errorMsg, details: hiveData });
-          }
+          console.warn("[PAYMENT COLLECTION REJECTED]", response.status, hiveData);
+          const rawErr = hiveData.message || hiveData.error || (hiveData.errors ? Object.values(hiveData.errors).flat().join(", ") : "");
+          const friendlyError = rawErr && !/hivepay/i.test(rawErr)
+            ? rawErr
+            : "Could not send the Mobile Money prompt to that number. Please double-check the number and try again.";
+          return res.status(response.status >= 400 && response.status < 500 ? response.status : 502).json({
+            success: false,
+            error: friendlyError
+          });
         }
       } catch (err: any) {
-        console.error("[HIVEPAY ERROR]", err.message);
-        gatewayRef = `HP-PAY-${Date.now()}`;
+        console.error("[PAYMENT COLLECTION TIMEOUT/ERROR]", err?.message || err);
+        return res.status(504).json({
+          success: false,
+          error: "Could not reach Mobile Money right now. Please check your connection and try again."
+        });
       }
-    } else if (paymentMethod === "card") {
-      // Direct Visa / Mastercard checkout session
-      gatewayRef = `HP-CARD-${Date.now()}`;
+    } else {
+      gatewayRef = `PTM-CARD-${Date.now()}`;
     }
 
     const newPayment: PaymentRecord = {
@@ -490,7 +581,7 @@ app.post("/api/payments/collect", async (req, res) => {
       client_name: name,
       client_email: email,
       client_phone: cleanPhone,
-      service_description: description || "Agreed Phresh Tech Media Services & System Consultation",
+      service_description: description || "Agreed Phresh Tech Media Services",
       amount: numAmount,
       currency,
       payment_method: paymentMethod,
@@ -499,55 +590,86 @@ app.post("/api/payments/collect", async (req, res) => {
     };
 
     paymentsDB.unshift(newPayment);
+    savePaymentsToDisk();
 
     res.json({
       success: true,
       paymentRef,
-      gatewayRef,
-      mode: isLiveHivePay ? "live" : "sandbox",
+      mode: isLive ? "live" : "card",
       instructions: paymentMethod === "card"
-        ? "Please enter your card details to complete payment."
-        : `USSD Push prompt sent to ${cleanPhone || 'your mobile phone'}. Please check your phone and enter your Mobile Money PIN to approve the payment of ${currency} ${numAmount.toLocaleString()}.`,
-      payment: newPayment
+        ? "Please complete your card payment."
+        : `Check your phone (${cleanPhone}) and enter your Mobile Money PIN to approve ${currency} ${numAmount.toLocaleString()}.`,
+      payment: toPublicPayment(newPayment)
     });
   } catch (err: any) {
     console.error("Payment initiation error:", err);
-    res.status(500).json({ success: false, error: err.message || "Failed to initiate payment" });
+    res.status(500).json({ success: false, error: "Could not start your payment. Please try again." });
   }
 });
 
-// API: Check Transaction Status (via HivePay or internal register)
+// API: Check Transaction Status
 app.get("/api/payments/status/:ref", async (req, res) => {
   const ref = req.params.ref;
-  const payment = paymentsDB.find(p => p.id === ref || p.gateway_reference === ref);
+  let payment = paymentsDB.find(p => p.id === ref || p.gateway_reference === ref);
+
   if (!payment) {
-    return res.status(404).json({ success: false, error: "Payment reference not found." });
+    loadPaymentsFromDisk();
+    payment = paymentsDB.find(p => p.id === ref || p.gateway_reference === ref);
   }
 
-  // Check HivePay API credentials
-  const hiveApiKey = (process.env.HIVEPAY_API_KEY || "ph_4MGP50Ghc7ws0SanNo1D4ID5wfoeXhad").trim();
-  const hiveApiSecret = (process.env.HIVEPAY_API_SECRET || "zW5FTfCSeWV7ePMrDcVzNNSthP30u1dXCa0uImSjPIrHf0PVTNaF3M6rymgFeO22").trim();
-  const hiveAccountNumber = (process.env.HIVEPAY_ACCOUNT_NUMBER || "HP2610222987").trim();
+  const { apiKey, apiSecret, accountNumber } = getPaymentCredentials();
+  const shouldQueryRemote = apiKey && (!payment || payment.status === "PENDING");
 
-  if (hiveApiKey && payment.status === "PENDING") {
+  if (shouldQueryRemote) {
     try {
       const headers: Record<string, string> = {
-        "X-API-Key": hiveApiKey,
+        "X-API-Key": apiKey,
         "Accept": "application/json"
       };
-      if (hiveApiSecret) headers["X-API-Secret"] = hiveApiSecret;
-      if (hiveAccountNumber) headers["X-Account-Number"] = hiveAccountNumber;
+      if (apiSecret) headers["X-API-Secret"] = apiSecret;
+      if (accountNumber) headers["X-Account-Number"] = accountNumber;
 
-      const refToQuery = payment.gateway_reference || payment.id;
+      const refToQuery = payment?.gateway_reference || payment?.id || ref;
       const checkRes = await fetch(`https://hivepay.site/api/v1/transaction-status?reference=${encodeURIComponent(refToQuery)}`, {
-        headers
+        headers,
+        signal: AbortSignal.timeout(12000)
       });
+
       if (checkRes.ok) {
         const checkData: any = await checkRes.json();
-        const st = String(checkData.status || '').toLowerCase();
-        if (st === "success" || st === "completed" || st === "approved" || st === "successful") {
-          payment.status = "COMPLETED";
-          payment.completed_at = new Date().toISOString();
+        const st = String(checkData.status || "").toLowerCase();
+
+        if (!payment && checkData.reference) {
+          payment = {
+            id: checkData.reference || ref,
+            gateway_reference: checkData.gateway_reference || refToQuery,
+            client_name: "Valued Client",
+            client_email: "phreshtechmediaservices@gmail.com",
+            client_phone: checkData.phone_number || "",
+            service_description: "Agreed Phresh Tech Media Services",
+            amount: Number(checkData.amount || 0),
+            currency: checkData.currency || "UGX",
+            payment_method: String(checkData.network || "").toUpperCase().includes("AIRTEL") ? "airtel_money" : "mtn_momo",
+            status: "PENDING",
+            created_at: checkData.created_at || new Date().toISOString()
+          };
+          paymentsDB.unshift(payment);
+        }
+
+        if (payment) {
+          if (["success", "completed", "approved", "successful", "paid"].includes(st)) {
+            payment.status = "COMPLETED";
+            payment.completed_at = new Date().toISOString();
+            savePaymentsToDisk();
+          } else if (["failed", "cancelled", "canceled", "rejected", "expired", "timeout", "declined"].includes(st)) {
+            payment.status = "FAILED";
+            payment.failure_reason = st === "cancelled" || st === "canceled"
+              ? "The Mobile Money prompt was cancelled on your phone."
+              : st === "expired" || st === "timeout"
+                ? "The Mobile Money prompt timed out before PIN confirmation."
+                : "Payment was not completed on your phone. Please check your PIN or Mobile Money balance and try again.";
+            savePaymentsToDisk();
+          }
         }
       }
     } catch (err) {
@@ -555,14 +677,24 @@ app.get("/api/payments/status/:ref", async (req, res) => {
     }
   }
 
-  if (payment.status === "COMPLETED" && !payment.email_dispatched) {
-    await dispatchPaymentReceiptEmails(payment);
+  if (!payment) {
+    return res.status(404).json({ success: false, error: "Payment record not found." });
   }
 
-  res.json({ success: true, status: payment.status, payment });
+  if (payment.status === "COMPLETED" && !payment.email_dispatched) {
+    await dispatchPaymentReceiptEmails(payment);
+    savePaymentsToDisk();
+  }
+
+  res.json({
+    success: true,
+    status: payment.status,
+    failure_reason: payment.failure_reason || null,
+    payment: toPublicPayment(payment)
+  });
 });
 
-// API: Confirm Payment (upon USSD approval callback or simulation)
+// API: Confirm Payment (Internal callback helper)
 app.post("/api/payments/confirm", async (req, res) => {
   const { reference, gatewayRef } = req.body;
   const payment = paymentsDB.find(p => p.id === reference || (gatewayRef && p.gateway_reference === gatewayRef));
@@ -572,76 +704,62 @@ app.post("/api/payments/confirm", async (req, res) => {
 
   payment.status = "COMPLETED";
   payment.completed_at = new Date().toISOString();
+  savePaymentsToDisk();
 
   if (!payment.email_dispatched) {
     await dispatchPaymentReceiptEmails(payment);
+    savePaymentsToDisk();
   }
 
   res.json({
     success: true,
-    message: `Payment #${payment.id} verified and confirmed successfully! Official receipt dispatched.`,
-    payment
+    message: `Payment #${payment.id} confirmed.`,
+    payment: toPublicPayment(payment)
   });
 });
 
-// API: Get Payment Gateway Config (Safe public info)
+// API: Get Payment Config (Safe public info)
 app.get("/api/payments/config", (req, res) => {
-  const accountNum = (process.env.HIVEPAY_ACCOUNT_NUMBER || "HP2610222987").trim();
-  const hasApiKey = Boolean(process.env.HIVEPAY_API_KEY || "ph_4MGP50Ghc7ws0SanNo1D4ID5wfoeXhad");
-  const hasSecret = Boolean(process.env.HIVEPAY_API_SECRET || "zW5FTfCSeWV7ePMrDcVzNNSthP30u1dXCa0uImSjPIrHf0PVTNaF3M6rymgFeO22");
-  const hasWebhook = Boolean(process.env.HIVEPAY_WEBHOOK_SECRET || "whsec_JyefZOXv1uzCwYM9D6TmHErQhENxhyG8");
-
   res.json({
-    gateway: "Direct Mobile Money Switch",
     status: "active",
-    mode: "live",
     currency: "UGX",
-    supportedMethods: ["MTN Mobile Money", "Airtel Money", "Visa/Mastercard"],
-    credentialsConfigured: {
-      accountNumber: true,
-      apiKey: hasApiKey,
-      apiSecret: hasSecret,
-      webhookSecret: hasWebhook
-    }
+    supportedMethods: ["MTN Mobile Money", "Airtel Money", "Visa/Mastercard"]
   });
 });
 
-// API: HivePay Webhook Endpoint with HMAC-SHA256 Verification
+// API: Payment Webhook Endpoint with HMAC-SHA256 Verification
 app.post("/api/payments/webhook", async (req, res) => {
   try {
     const payload = req.body;
-    const webhookSecret = (process.env.HIVEPAY_WEBHOOK_SECRET || "whsec_JyefZOXv1uzCwYM9D6TmHErQhENxhyG8").trim();
+    const { webhookSecret } = getPaymentCredentials();
     const signature = (req.headers["x-signature"] || req.headers["x-hivepay-signature"] || "") as string;
 
-    console.log("[HIVEPAY WEBHOOK RECEIVED]", {
-      headers: req.headers,
-      payload
-    });
-
-    // If signature header is provided, verify authenticity
     if (signature && webhookSecret) {
       const computedHash = crypto
         .createHmac("sha256", webhookSecret)
         .update(JSON.stringify(payload))
         .digest("hex");
-      
+
       if (computedHash !== signature) {
-        console.warn("[HIVEPAY WEBHOOK WARNING] Signature mismatch:", { computed: computedHash, signature });
-      } else {
-        console.log("[HIVEPAY WEBHOOK VERIFIED] HMAC signature verified successfully.");
+        console.warn("[PAYMENT WEBHOOK WARNING] Signature mismatch");
       }
     }
 
     const ref = payload.reference || payload.ref || payload.gateway_reference || payload.client_reference;
     if (ref) {
-      const payment = paymentsDB.find(p => p.id === ref || p.gateway_reference === ref);
+      let payment = paymentsDB.find(p => p.id === ref || p.gateway_reference === ref);
+      if (!payment) {
+        loadPaymentsFromDisk();
+        payment = paymentsDB.find(p => p.id === ref || p.gateway_reference === ref);
+      }
+
       if (payment) {
-        const isSuccess = 
-          payload.status === "SUCCESS" || 
-          payload.status === "COMPLETED" || 
-          payload.status === "APPROVED" ||
-          payload.event === "charge.completed" ||
-          payload.event === "payment.success";
+        const st = String(payload.status || "").toLowerCase();
+        const ev = String(payload.event || "").toLowerCase();
+        const isSuccess =
+          ["success", "completed", "approved", "successful", "paid"].includes(st) ||
+          ev === "charge.completed" ||
+          ev === "payment.success";
 
         if (isSuccess) {
           payment.status = "COMPLETED";
@@ -652,9 +770,12 @@ app.post("/api/payments/webhook", async (req, res) => {
           if (!payment.email_dispatched) {
             await dispatchPaymentReceiptEmails(payment);
           }
+          savePaymentsToDisk();
           console.log(`[PAYMENT COMPLETED VIA WEBHOOK] #${payment.id} for UGX ${payment.amount}`);
-        } else if (payload.status === "FAILED" || payload.status === "REJECTED") {
+        } else if (["failed", "rejected", "cancelled", "canceled", "expired", "declined"].includes(st)) {
           payment.status = "FAILED";
+          payment.failure_reason = "Payment was not completed on your phone.";
+          savePaymentsToDisk();
         }
       }
     }
@@ -1237,10 +1358,15 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    const distPath = path.join(process.cwd(), "dist");
+    app.use("/assets", express.static(path.join(distPath, "assets"), { maxAge: "1y", immutable: true }));
+    app.use(express.static(distPath, { index: false }));
+    app.get("*", (req, res) => {
+      if (req.path.startsWith("/api/")) {
+        return res.status(404).json({ success: false, error: "Endpoint not found." });
+      }
+      res.setHeader("Cache-Control", "no-cache");
+      res.sendFile(path.join(distPath, "index.html"));
     });
   }
 

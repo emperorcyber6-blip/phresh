@@ -1,311 +1,204 @@
 import './index.css';
 
-// Primary Product Showcase Images (Using Uploaded Official Phresh Assets)
-const heroSoftwareImg = '/images/phresh rank core.png';
-const heroEduledgerImg = '/images/phresh eduleager finance managment sysment.png';
-const heroBrandingImg = '/images/school banners.png';
-const heroWebHostingImg = '/images/database systems offered.jpg';
-const receiptBooksImg = '/images/receipt_books.jpg';
+// Authentic Phresh Tech Media Work & Studio Images
+const heroStudioImg = '/images/steve working.png';
+const heroRankCoreImg = '/images/phresh rank core.png';
+const heroBannersImg = '/images/school banners.png';
+const heroReceiptImg = '/images/receipt_books.jpg';
 
-// Official Product Showcase Gallery Array
+// Work Gallery Items (Non-technical, plain human descriptions)
 const PRODUCT_SHOWCASE_GALLERY = [
   {
     id: 'rank-core',
-    title: 'Phresh Rank Core Report Card Engine',
-    subtitle: 'NCDC competence-based marksheets, UNEB grading, offline desktop marks entry, and batch parent PDF report dispatch.',
+    title: 'Phresh Rank Core Report Cards',
+    subtitle: 'Easy mark entry for teachers, accurate grading under the new curriculum, and neat printed report cards ready for parents.',
     category: 'software',
-    badge: 'Flagship Core Engine',
-    badgeBg: 'bg-emerald-700',
+    label: 'Schools',
     img: '/images/phresh rank core.png',
     client: 'Global High School Madudu & Pride College'
   },
   {
     id: 'eduledger',
-    title: 'Phresh EduLedger Finance Management System',
-    subtitle: 'Complete school fees ledger, bursary management, student financial balances, and automated cash receipting.',
+    title: 'Phresh EduLedger Fees Tracker',
+    subtitle: 'Clear records of school tuition, bursaries, student balances, and daily printed receipts for the bursar office.',
     category: 'software',
-    badge: 'School Fee ERP',
-    badgeBg: 'bg-[#0B1B3D]',
+    label: 'School Bursary',
     img: '/images/phresh eduleager finance managment sysment.png',
-    client: 'Educational Institutions'
+    client: 'Primary & Secondary Schools'
   },
   {
     id: 'rent-ledger',
-    title: 'Phresh Rent Ledger Property Management System',
-    subtitle: 'Landlord & estate manager system for tracking tenant rentals, lease terms, rent receipts, and occupancy ledgers.',
+    title: 'Phresh Rent Ledger',
+    subtitle: 'Keep track of tenants, monthly rent balances, lease dates, and payment receipts for apartments and arcades.',
     category: 'software',
-    badge: 'Property ERP',
-    badgeBg: 'bg-indigo-700',
+    label: 'Property & Rentals',
     img: '/images/phresh rent ledger property management sysment.png',
-    client: 'Real Estate & Landlords'
+    client: 'Landlords & Property Managers'
   },
   {
     id: 'biztrack',
-    title: 'Phresh BizTrack Business Management System',
-    subtitle: 'Retail Point of Sale, inventory tracking, wholesale supplier orders, profit/loss tracking, and cashier daily audit.',
+    title: 'Phresh BizTrack Shop & Stock Manager',
+    subtitle: 'Record daily sales at the counter, watch your remaining stock, track supplier orders, and see daily profit clearly.',
     category: 'software',
-    badge: 'Retail & POS System',
-    badgeBg: 'bg-blue-700',
+    label: 'Shops & Retail',
     img: '/images/phresh biztrack bussiness managment system.png',
-    client: 'Commercial Retailers'
+    client: 'Retail Shops & Hardware Stores'
   },
   {
     id: 'church-mgr',
-    title: 'Church Management System',
-    subtitle: 'Tithe recording, congregational membership directory, ministry pledges, event calendar, and financial tracking.',
+    title: 'Church Administration & Giving Records',
+    subtitle: 'Organised member directories, tithe and offering records, pledges, and upcoming church event schedules.',
     category: 'software',
-    badge: 'Church ERP',
-    badgeBg: 'bg-purple-700',
+    label: 'Churches & Ministries',
     img: '/images/church manager.png',
-    client: 'Churches & Religious Orgs'
+    client: 'Churches & Faith Organisations'
   },
   {
     id: 'income-expense',
-    title: 'Income & Expense Major Module',
-    subtitle: 'Comprehensive financial reporting module for categorizing departmental expenses, major income streams, and audit logs.',
+    title: 'Income & Expense Bookkeeping',
+    subtitle: 'Record everyday spending and incoming payments by department so accounts stay clear for audits and board reviews.',
     category: 'software',
-    badge: 'Financial Ledger',
-    badgeBg: 'bg-emerald-800',
+    label: 'Accounts',
     img: '/images/expense income major.png',
-    client: 'Enterprise Accounting'
+    client: 'Organisations & Companies'
   },
   {
     id: 'db-offered',
-    title: 'Phresh Custom Database Systems Suite',
-    subtitle: 'Full lineup of custom database systems tailored for Ugandan schools, real estate, churches, POS, and businesses.',
+    title: 'Custom Record Tools for Ugandan Teams',
+    subtitle: 'Practical record-keeping programs built around how your school, shop, landlord office, or church actually works.',
     category: 'software',
-    badge: 'Database Architecture',
-    badgeBg: 'bg-slate-800',
+    label: 'Record Tools',
     img: '/images/database systems offered.jpg',
-    client: 'Ugandan Enterprises'
+    client: 'Ugandan Businesses'
   },
   {
     id: 'eduledger-desc',
-    title: 'EduLedger Specifications & Features Overview',
-    subtitle: 'Detailed breakdown of EduLedger modules including fee structures, student ledgers, receipt history, and reports.',
+    title: 'Inside the Fees & Bursary Desk',
+    subtitle: 'Fee structures by class, quick parent balance lookups, receipt history, and termly summaries without paper clutter.',
     category: 'software',
-    badge: 'ERP Specification',
-    badgeBg: 'bg-amber-700',
+    label: 'School Finance',
     img: '/images/edu ledger description.jpg',
-    client: 'School Administrators'
+    client: 'School Bursars & Headteachers'
   },
   {
     id: 'graphics-services',
-    title: '3D Graphic Design & Branding Suite',
-    subtitle: 'Vector logos, corporate brand manuals, school crests, marketing collateral, and UI asset kits created in Kampala.',
+    title: 'Logo Design & School Identity Kits',
+    subtitle: 'Memorable logos, school crests, flyers, magazines, and clean promotional graphics crafted at our Kampala studio.',
     category: 'design',
-    badge: 'Graphic Design Studio',
-    badgeBg: 'bg-[#1E7E34]',
+    label: 'Graphic Design',
     img: '/images/graphics services.jpg',
-    client: 'Institutional Branding'
+    client: 'Schools & Businesses'
   },
   {
     id: 'school-banners-1',
-    title: 'Institutional School Banners & Signage',
-    subtitle: 'High-resolution outdoor vinyl banners, graduation backdrops, sports day banners, and custom school signage.',
+    title: 'School Banners & Compound Signposts',
+    subtitle: 'Weather-resistant outdoor vinyl banners, graduation backdrops, sports day banners, and custom school signage.',
     category: 'design',
-    badge: 'School Signage Press',
-    badgeBg: 'bg-[#8B0000]',
+    label: 'Signage & Banners',
     img: '/images/school banners.png',
     client: 'Mpigi Light & Partner Colleges'
   },
   {
     id: 'school-banners-2',
-    title: 'Custom Event & Educational Banners',
-    subtitle: 'Heavy-duty 300gsm laminated banners and custom print promotional materials for events and school admissions.',
+    title: 'Event Backdrops & Admissions Banners',
+    subtitle: 'Bright, durable printed banners for school open days, church conferences, and business storefronts.',
     category: 'design',
-    badge: 'Banner Press House',
-    badgeBg: 'bg-red-700',
+    label: 'Banner Printing',
     img: '/images/schiool banners 1.png',
-    client: 'Event Organizers & Schools'
+    client: 'Event Organisers & Schools'
   },
   {
     id: 'receipt-books',
-    title: 'Serialized Duplicate Carbonless Receipt Books',
-    subtitle: 'Official 100-leaf carbonless duplicate receipt books for schools, churches, hardware stores, and general businesses.',
+    title: 'Numbered Carbonless Receipt Books',
+    subtitle: '100-leaf duplicate carbonless receipt books numbered in sequence for schools, churches, shops, and offices.',
     category: 'print',
-    badge: 'Commercial Print Press',
-    badgeBg: 'bg-[#8B0000]',
+    label: 'Printing Press',
     img: '/images/receipt_books.jpg',
-    client: 'Commercial Accounts'
+    client: 'Schools & Commercial Clients'
   },
   {
     id: 'steve-printing',
-    title: 'Phresh Commercial Print Press Machinery',
-    subtitle: 'State-of-the-art commercial print press equipment operated by Director Steven Bagalana in Kasenge, Kampala.',
+    title: 'Kasenge Commercial Printing Press',
+    subtitle: 'Our in-house printing equipment run by Steven Bagalana in Kasenge for crisp colour, stickers, and stationery.',
     category: 'print',
-    badge: 'Press House Operations',
-    badgeBg: 'bg-slate-900',
+    label: 'Press Studio',
     img: '/images/steve printing.png',
-    client: 'Phresh Press Studio'
+    client: 'Phresh Printing Studio'
+  },
+  {
+    id: 'steve-working',
+    title: 'Hands-On Craft at Our Kasenge Workshop',
+    subtitle: 'Every banner, receipt book, and school setup is checked in person before it reaches your doorstep.',
+    category: 'general',
+    label: 'Our Workshop',
+    img: '/images/steve working.png',
+    client: 'Kasenge - Nakawuka Road'
   },
   {
     id: 'phresh-services-banner',
-    title: 'Phresh Tech Media Services Official Banner',
-    subtitle: 'Complete overview of Phresh software engineering, printing press, web development, and branding capabilities.',
+    title: 'Phresh Tech Media Service Overview',
+    subtitle: 'Everything we do under one roof in Kampala: school and business software, printing, design, and websites.',
     category: 'general',
-    badge: 'Official Master Banner',
-    badgeBg: 'bg-emerald-900',
+    label: 'Overview',
     img: '/images/phresh service banner.png',
-    client: 'Phresh Media HQ'
-  },
-  {
-    id: 'phresh-services-showcase',
-    title: 'Phresh Services Master Catalog',
-    subtitle: 'Visual catalog showcasing all 21 official technology and printing services provided across Uganda.',
-    category: 'general',
-    badge: 'Services Showcase',
-    badgeBg: 'bg-[#0B1B3D]',
-    img: '/images/phresh services.jpg',
-    client: 'Phresh Client Network'
+    client: 'Phresh Tech Media Kampala'
   }
 ];
 
-// Modal State
-let activeImagePreviewModal = null;
-window.openImageModal = function(img, title, subtitle, badge) {
-  activeImagePreviewModal = { img, title, subtitle, badge };
-  renderApp();
-};
-window.closeImageModal = function() {
-  activeImagePreviewModal = null;
-  renderApp();
-};
-
-// Reusable Official WhatsApp Vector Icon SVG
-const WHATSAPP_ICON_SVG = `<svg class="w-4 h-4 fill-current shrink-0 text-white animate-whatsapp-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>`;
-
-// Official Phresh Services Master Pricing Catalog
+// Official Price List (All 21 authentic items & prices preserved)
 const OFFICIAL_PHRESH_SERVICES = [
-  { id: 'rank-core-new', name: 'Phresh Rank core(New Customer) and termly subscription of 100k', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'rank-core-offline', name: 'Phresh Rank Core (Offline) one time payment', priceUGX: 350000, category: 'software', note: 'Phresh Service' },
-  { id: 'church-mgmt', name: 'Church Management System(One time)', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'pos-offline', name: 'Point of sale (offline)', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'pos-online-annual', name: 'Point of sale (Online includes annual payment of 120,000)', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'domain-purchases', name: 'Domain purchases', priceUGX: 25000, category: 'web', note: 'Phresh Service' },
-  { id: 'eduledger', name: 'Phresh Eduledger', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'rent-ledger', name: 'Phresh Rent ledger', priceUGX: 400000, category: 'software', note: 'Phresh Service' },
-  { id: 'pos-online-onetime', name: 'Phresh Point of Sale(online) one time payment', priceUGX: 800000, category: 'software', note: 'Phresh Service' },
-  { id: 'elesson-manager', name: 'Phresh E-lesson manager', priceUGX: 600000, category: 'software', note: 'Phresh Service' },
-  { id: 'graphic-designing', name: 'Graphic Designing', priceUGX: 15000, category: 'design', note: 'Phresh Service' },
-  { id: 'phresh-branding', name: 'Phresh Branding', priceUGX: 10000, category: 'design', note: 'Phresh Service' },
-  { id: 'phresh-nexus', name: 'Phresh-Nexus', priceUGX: 850000, category: 'software', note: 'Phresh Service' },
-  { id: 'system-renewal', name: 'System renewal', priceUGX: 100000, category: 'software', note: 'Phresh Service' },
-  { id: 'system-wholesale', name: 'System whole sale', priceUGX: 1500000, category: 'software', note: 'Phresh Service' },
-  { id: 'minor-branding', name: 'Minor branding', priceUGX: 5000, category: 'design', note: 'Phresh Service' },
-  { id: 'medium-branding', name: 'Medium branding', priceUGX: 15000, category: 'design', note: 'Phresh Service' },
-  { id: 'mega-branding', name: 'Mega branding', priceUGX: 25000, category: 'design', note: 'Phresh Service' },
-  { id: 'receipt-book', name: 'Receipt book (100)', priceUGX: 25000, category: 'print', note: 'Phresh Service' },
-  { id: 'banner-sticker', name: 'Banner/ sticker printing(Per square metre)', priceUGX: 25000, category: 'print', note: 'Phresh Service' },
-  { id: 'rank-core-dual', name: 'Phresh rank core (dual online/ offline) initial deposit', priceUGX: 300000, category: 'software', note: 'Phresh Service' }
+  { id: 'rank-core-new', name: 'Phresh Rank core(New Customer) and termly subscription of 100k', priceUGX: 400000, category: 'software', note: 'Setup + first term support' },
+  { id: 'rank-core-offline', name: 'Phresh Rank Core (Offline) one time payment', priceUGX: 350000, category: 'software', note: 'One-time school license' },
+  { id: 'church-mgmt', name: 'Church Management System(One time)', priceUGX: 400000, category: 'software', note: 'One-time church license' },
+  { id: 'pos-offline', name: 'Point of sale (offline)', priceUGX: 400000, category: 'software', note: 'Shop counter & stock tool' },
+  { id: 'pos-online-annual', name: 'Point of sale (Online includes annual payment of 120,000)', priceUGX: 400000, category: 'software', note: 'Access from anywhere' },
+  { id: 'domain-purchases', name: 'Domain purchases', priceUGX: 25000, category: 'web', note: 'Website name registration' },
+  { id: 'eduledger', name: 'Phresh Eduledger', priceUGX: 400000, category: 'software', note: 'School fees & bursar tool' },
+  { id: 'rent-ledger', name: 'Phresh Rent ledger', priceUGX: 400000, category: 'software', note: 'Rental & tenant tracker' },
+  { id: 'pos-online-onetime', name: 'Phresh Point of Sale(online) one time payment', priceUGX: 800000, category: 'software', note: 'Full lifetime online shop tool' },
+  { id: 'elesson-manager', name: 'Phresh E-lesson manager', priceUGX: 600000, category: 'software', note: 'Lesson & teaching materials' },
+  { id: 'graphic-designing', name: 'Graphic Designing', priceUGX: 15000, category: 'design', note: 'Posters, flyers & layouts' },
+  { id: 'phresh-branding', name: 'Phresh Branding', priceUGX: 10000, category: 'design', note: 'Logo & profile identity' },
+  { id: 'phresh-nexus', name: 'Phresh-Nexus', priceUGX: 850000, category: 'software', note: 'Multi-branch coordination' },
+  { id: 'system-renewal', name: 'System renewal', priceUGX: 100000, category: 'software', note: 'Termly or annual renewal' },
+  { id: 'system-wholesale', name: 'System whole sale', priceUGX: 1500000, category: 'software', note: 'Complete multi-package bundle' },
+  { id: 'minor-branding', name: 'Minor branding', priceUGX: 5000, category: 'design', note: 'Simple badge or touch-up' },
+  { id: 'medium-branding', name: 'Medium branding', priceUGX: 15000, category: 'design', note: 'Flyer & social identity set' },
+  { id: 'mega-branding', name: 'Mega branding', priceUGX: 25000, category: 'design', note: 'Full brand & stationery pack' },
+  { id: 'receipt-book', name: 'Receipt book (100)', priceUGX: 25000, category: 'print', note: '100-leaf duplicate book' },
+  { id: 'banner-sticker', name: 'Banner/ sticker printing(Per square metre)', priceUGX: 25000, category: 'print', note: 'Per square metre' },
+  { id: 'rank-core-dual', name: 'Phresh rank core (dual online/ offline) initial deposit', priceUGX: 300000, category: 'software', note: 'Works both online & offline' }
 ];
 
-// System State
+// Reusable WhatsApp Icon SVG
+const WHATSAPP_ICON_SVG = `<svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>`;
+
+// App State
+const VALID_PAGES = ['home', 'services', 'portfolio', 'about', 'contact', 'payment', 'pay'];
 let currentPage = 'home';
 let isMobileMenuOpen = false;
 let isAuthModalOpen = false;
 let currentUser = null;
+let activeImagePreviewModal = null;
+let isWhatsAppWidgetOpen = false;
+let toastMessage = null;
 
 try {
   const savedUser = localStorage.getItem('phresh_user');
-  if (savedUser) {
-    currentUser = JSON.parse(savedUser);
-  }
+  if (savedUser) currentUser = JSON.parse(savedUser);
 } catch (e) {
   currentUser = null;
 }
 
-// Sub-page & Tab States
-let activeServicePillar = 'graphic-design'; // 'graphic-design' | 'print-copy' | 'database-systems' | 'web-development' | 'tariff-catalog'
-let activePortfolioCategory = 'all'; // 'all' | 'media' | 'engineering'
+// Section Tabs & Filters
+let activeServicePillar = 'tariff-catalog'; // 'tariff-catalog' | 'graphic-design' | 'print-copy' | 'database-systems' | 'web-development' | 'social-media'
+let activePortfolioCategory = 'all'; // 'all' | 'engineering' | 'media'
 let currentHeroSlide = 0;
 let autoSlideTimer = null;
-let tariffCategoryFilter = 'all'; // 'all' | 'software' | 'design' | 'print' | 'web'
+let tariffCategoryFilter = 'all';
 let tariffSearchQuery = '';
 
-// Client Consultation & Dedicated Direct Payment State (Automated Settlement Switch)
-let paymentPageState = {
-  clientName: '',
-  clientEmail: '',
-  clientPhone: '',
-  serviceDescription: '',
-  amount: '',
-  currency: 'UGX', // 'UGX' | 'USD'
-  paymentMethod: 'mtn_momo', // 'mtn_momo' | 'airtel_money' | 'card'
-  isInitiating: false,
-  isWaitingUssdApproval: false,
-  isCompleted: false,
-  paymentRef: '',
-  gatewayRef: '',
-  instructions: '',
-  pollTimer: null,
-  countdownSeconds: 60,
-  countdownTimer: null,
-  error: null,
-  confirmedData: null
-};
-window.paymentPageState = paymentPageState;
-
-window.cancelWaitingUssd = function() {
-  if (paymentPageState.pollTimer) {
-    clearInterval(paymentPageState.pollTimer);
-    paymentPageState.pollTimer = null;
-  }
-  if (paymentPageState.countdownTimer) {
-    clearInterval(paymentPageState.countdownTimer);
-    paymentPageState.countdownTimer = null;
-  }
-  paymentPageState.isWaitingUssdApproval = false;
-  paymentPageState.isInitiating = false;
-  paymentPageState.error = null;
-  renderApp();
-  setTimeout(() => {
-    const el = document.getElementById('payment-client-phone');
-    if (el) el.focus();
-  }, 60);
-};
-
-let toastMessage = null;
-
-// Consultation Action Handlers
-window.consultService = function(serviceName) {
-  contactFormState.subject = `Consultation Request: ${serviceName}`;
-  contactFormState.message = `Hello Phresh Tech Media Services,\n\nI would like to request a consultation and discuss project requirements and pricing for "${serviceName}".\n\nPlease get in touch with me.`;
-  if (window.navigateTo) {
-    window.navigateTo('contact');
-  } else {
-    window.location.hash = 'contact';
-  }
-  showToast(`Consultation inquiry prepared for ${serviceName}`);
-};
-
-window.consultViaWhatsApp = function(serviceName) {
-  const msg = `Hello Phresh Tech Media Services,\nI would like to discuss requirements and agree on pricing for:\n*${serviceName || 'Custom Service'}*.\n\nPlease share your consultation availability.`;
-  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(msg)}`, '_blank');
-};
-
-// Sticky Floating WhatsApp Chat Widget State & Handlers
-let isWhatsAppWidgetOpen = false;
-
-window.toggleWhatsAppWidget = function() {
-  isWhatsAppWidgetOpen = !isWhatsAppWidgetOpen;
-  renderApp();
-};
-
-window.sendWhatsAppInquiry = function(presetText) {
-  const text = presetText || 'Hello Phresh Tech Media Services, I would like to inquire about your services.';
-  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(text)}`, '_blank');
-};
-
-window.sendCustomWhatsAppMsg = function(e) {
-  if (e) e.preventDefault();
-  const input = document.getElementById('whatsapp-floating-input');
-  const msg = input ? input.value.trim() : '';
-  const text = msg || 'Hello Phresh Tech Media Services, I would like to inquire about your services.';
-  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(text)}`, '_blank');
-};
-
-// Secure Contact Form State
+// Contact Form State
 let contactFormState = {
   name: '',
   email: '',
@@ -319,14 +212,188 @@ let contactFormState = {
   errors: {}
 };
 
+// Direct Payment Page State
+let paymentPageState = {
+  clientName: '',
+  clientEmail: '',
+  clientPhone: '',
+  serviceDescription: '',
+  amount: '',
+  currency: 'UGX',
+  paymentMethod: 'mtn_momo',
+  isInitiating: false,
+  isWaitingUssdApproval: false,
+  isCompleted: false,
+  paymentRef: '',
+  instructions: '',
+  pollTimer: null,
+  countdownSeconds: 90,
+  countdownTimer: null,
+  error: null,
+  confirmedData: null
+};
+window.paymentPageState = paymentPageState;
+
+// Hero Showcase Highlights (Grounded human story + authentic photos)
+const HERO_HIGHLIGHTS = [
+  {
+    eyebrow: 'Kasenge Studio · Serving Schools & Businesses Across Uganda',
+    title: 'School software, printing & design made clear for everyday teams.',
+    subtitle: 'From report cards and school fees tracking to crisp banners, receipt books, and websites—we build practical tools and print materials you can count on.',
+    image: heroStudioImg,
+    imageCaption: 'Director Steven Bagalana at our Kasenge printing workshop',
+    primaryCtaText: 'Talk With Us',
+    primaryCtaPage: 'contact'
+  },
+  {
+    eyebrow: 'Phresh Rank Core · Report Cards',
+    title: 'Finish termly report cards in minutes, not weeks.',
+    subtitle: 'Teachers enter marks smoothly, the new curriculum averages calculate cleanly, and printed parent report cards come out ready without late nights.',
+    image: heroRankCoreImg,
+    imageCaption: 'Phresh Rank Core report card workspace',
+    primaryCtaText: 'See School Tools',
+    primaryCtaPage: 'services'
+  },
+  {
+    eyebrow: 'Commercial Printing & Design',
+    title: 'Banners, school crests & duplicate receipt books printed in-house.',
+    subtitle: 'Visit us along Kasenge - Nakawuka Road or send your job on WhatsApp for crisp vinyl banners, stickers, logos, and numbered receipt books.',
+    image: heroBannersImg,
+    imageCaption: 'Institutional banners printed in Kampala',
+    primaryCtaText: 'View Price List',
+    primaryCtaPage: 'services'
+  },
+  {
+    eyebrow: 'Bursar & Stationery',
+    title: 'Keep school fees, rent & receipt books well organised.',
+    subtitle: 'Pair EduLedger fees tracking with custom 100-leaf duplicate receipt books so every shilling paid is clear for both staff and parents.',
+    image: heroReceiptImg,
+    imageCaption: '100-leaf duplicate carbonless receipt books',
+    primaryCtaText: 'Order Receipt Books',
+    primaryCtaPage: 'contact'
+  }
+];
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function showToast(msg) {
+  toastMessage = msg;
+  renderApp();
+  setTimeout(() => {
+    toastMessage = null;
+    renderApp();
+  }, 4000);
+}
+
+// Modal Helpers
+window.openImageModal = function(img, title, subtitle, label) {
+  activeImagePreviewModal = { img, title, subtitle, label };
+  renderApp();
+};
+window.closeImageModal = function() {
+  activeImagePreviewModal = null;
+  renderApp();
+};
+
+window.openAuthModal = function() {
+  isAuthModalOpen = true;
+  renderApp();
+};
+window.closeAuthModal = function() {
+  isAuthModalOpen = false;
+  renderApp();
+};
+
+window.handleClientAuthSubmit = async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('auth-client-name')?.value;
+  const email = document.getElementById('auth-client-email')?.value;
+  const phone = document.getElementById('auth-client-phone')?.value;
+  const org = document.getElementById('auth-client-org')?.value;
+
+  if (!name || !email) {
+    showToast('Please enter your name and email address.');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone, organization: org })
+    });
+    const data = await res.json();
+    if (data.success) {
+      currentUser = data.user;
+      localStorage.setItem('phresh_user', JSON.stringify(currentUser));
+      isAuthModalOpen = false;
+      showToast(`Signed in as ${email}.`);
+    }
+  } catch (err) {
+    currentUser = { name, email, phone: phone || '+256 700 000000', organization: org || 'Client' };
+    localStorage.setItem('phresh_user', JSON.stringify(currentUser));
+    isAuthModalOpen = false;
+    showToast(`Signed in as ${email}.`);
+  }
+  renderApp();
+};
+
+window.logoutClient = function() {
+  currentUser = null;
+  try {
+    localStorage.removeItem('phresh_user');
+  } catch (e) {
+    // ignore
+  }
+  showToast('Signed out.');
+  renderApp();
+};
+
+// WhatsApp & Consultation Actions
+window.toggleWhatsAppWidget = function() {
+  isWhatsAppWidgetOpen = !isWhatsAppWidgetOpen;
+  renderApp();
+};
+
+window.sendWhatsAppInquiry = function(presetText) {
+  const text = presetText || 'Hello Phresh Tech Media Services, I would like to ask about your services.';
+  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(text)}`, '_blank');
+};
+
+window.sendCustomWhatsAppMsg = function(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById('whatsapp-floating-input');
+  const msg = input ? input.value.trim() : '';
+  const text = msg || 'Hello Phresh Tech Media Services, I would like to ask about your services.';
+  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(text)}`, '_blank');
+};
+
+window.consultService = function(serviceName) {
+  contactFormState.subject = `Inquiry: ${serviceName}`;
+  contactFormState.message = `Hello Phresh Tech Media Services,\n\nI would like to ask about "${serviceName}" and discuss pricing and timelines.\n\nPlease get in touch.`;
+  window.navigateTo('contact');
+  showToast(`Ready to inquire about ${serviceName}`);
+};
+
+window.consultViaWhatsApp = function(serviceName) {
+  const msg = `Hello Phresh Tech Media Services,\nI would like to discuss:\n*${serviceName || 'Your Services'}*\n\nPlease share your availability.`;
+  window.open(`https://wa.me/256757848094?text=${encodeURIComponent(msg)}`, '_blank');
+};
+
+// Contact Form Handlers (Preserve focus while typing)
 window.handleContactFieldChange = function(field, value) {
   contactFormState[field] = value;
   if (contactFormState.errors && contactFormState.errors[field]) {
     delete contactFormState.errors[field];
     const errEl = document.getElementById(`contact-error-${field}`);
-    if (errEl) {
-      errEl.style.display = 'none';
-    }
+    if (errEl) errEl.style.display = 'none';
   }
 };
 
@@ -348,7 +415,7 @@ window.resetContactForm = function() {
 
 window.validateAndSubmitContactForm = async function(e) {
   if (e) e.preventDefault();
-  
+
   if (contactFormState.honeypot) {
     contactFormState.submittedSuccess = true;
     renderApp();
@@ -359,19 +426,16 @@ window.validateAndSubmitContactForm = async function(e) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!contactFormState.name || contactFormState.name.trim().length < 2) {
-    errors.name = "Please enter your full name.";
+    errors.name = 'Please enter your full name.';
   }
-
   if (!contactFormState.email || !emailRegex.test(contactFormState.email.trim())) {
-    errors.email = "Please enter a valid email address.";
+    errors.email = 'Please enter a valid email address.';
   }
-
   if (!contactFormState.subject || contactFormState.subject.trim().length < 3) {
-    errors.subject = "Please enter a subject.";
+    errors.subject = 'Please add a short subject.';
   }
-
   if (!contactFormState.message || contactFormState.message.trim().length < 8) {
-    errors.message = "Please describe your message (min 8 chars).";
+    errors.message = 'Please write a few words about what you need.';
   }
 
   if (Object.keys(errors).length > 0) {
@@ -394,157 +458,119 @@ window.validateAndSubmitContactForm = async function(e) {
   };
 
   try {
-    const res = await fetch('/api/contact/submit', {
+    await fetch('/api/contact/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    const data = await res.json();
     contactFormState.isSubmitting = false;
     contactFormState.submittedSuccess = true;
     contactFormState.submittedData = {
       ...payload,
       refId: 'PTM-' + Math.floor(100000 + Math.random() * 900000),
-      dispatchedFrom: data.emailDispatchedFrom || 'phreshtechmediaservices@gmail.com',
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
     };
-    showToast(`Inquiry sent! Confirmation email dispatched to ${payload.email}`);
+    showToast(`Message sent. A copy has been emailed to ${payload.email}.`);
   } catch (err) {
     contactFormState.isSubmitting = false;
     contactFormState.submittedSuccess = true;
     contactFormState.submittedData = {
       ...payload,
       refId: 'PTM-' + Math.floor(100000 + Math.random() * 900000),
-      dispatchedFrom: 'phreshtechmediaservices@gmail.com',
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
     };
-    showToast(`Inquiry recorded for ${payload.email}`);
+    showToast(`Your message was saved.`);
   }
 
   renderApp();
 };
 
-function showToast(msg) {
-  toastMessage = msg;
-  renderApp();
-  setTimeout(() => {
-    toastMessage = null;
-    renderApp();
-  }, 4000);
+// ==========================================
+// DEDICATED PAYMENT HANDLERS
+// ==========================================
+function stopPaymentTimers() {
+  if (paymentPageState.pollTimer) {
+    clearInterval(paymentPageState.pollTimer);
+    paymentPageState.pollTimer = null;
+  }
+  if (paymentPageState.countdownTimer) {
+    clearInterval(paymentPageState.countdownTimer);
+    paymentPageState.countdownTimer = null;
+  }
 }
 
-window.openAuthModal = function() {
-  isAuthModalOpen = true;
+window.cancelWaitingUssd = function() {
+  stopPaymentTimers();
+  paymentPageState.isWaitingUssdApproval = false;
+  paymentPageState.isInitiating = false;
+  paymentPageState.paymentRef = ''; // Always issue a fresh reference when user changes details or phone number
+  paymentPageState.error = null;
   renderApp();
+  setTimeout(() => {
+    const el = document.getElementById('payment-client-phone');
+    if (el) el.focus();
+  }, 60);
 };
 
-window.closeAuthModal = function() {
-  isAuthModalOpen = false;
-  renderApp();
-};
-
-window.handleClientAuthSubmit = async function(e) {
-  e.preventDefault();
-  const name = document.getElementById('auth-client-name')?.value;
-  const email = document.getElementById('auth-client-email')?.value;
-  const phone = document.getElementById('auth-client-phone')?.value;
-  const org = document.getElementById('auth-client-org')?.value;
-
-  if (!name || !email) {
-    alert('Please enter your Name and Email address.');
-    return;
+function detectUgNetwork(phoneStr) {
+  const cleaned = String(phoneStr || '').replace(/[\s\-()]/g, '');
+  if (/^(070|074|075|\+?25670|\+?25674|\+?25675)/.test(cleaned)) {
+    return 'airtel_money';
   }
-
-  try {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, phone, organization: org })
-    });
-    const data = await res.json();
-    if (data.success) {
-      currentUser = data.user;
-      localStorage.setItem('phresh_user', JSON.stringify(currentUser));
-      isAuthModalOpen = false;
-      showToast(`Signed in as ${email}. Welcome email sent to your inbox.`);
-    }
-  } catch (err) {
-    currentUser = { name, email, phone: phone || '+256 700 000000', organization: org || 'General Client' };
-    localStorage.setItem('phresh_user', JSON.stringify(currentUser));
-    isAuthModalOpen = false;
-    showToast(`Signed in as ${email}.`);
+  if (/^(076|077|078|079|\+?25676|\+?25677|\+?25678|\+?25679)/.test(cleaned)) {
+    return 'mtn_momo';
   }
-  renderApp();
-};
+  return null;
+}
 
-window.logoutClient = function() {
-  currentUser = null;
-  try {
-    localStorage.removeItem('phresh_user');
-  } catch (e) {
-    // ignore
-  }
-  showToast('Signed out successfully.');
-  renderApp();
-};
-
-// ==========================================
-// DEDICATED DIRECT PAYMENT HANDLERS
-// ==========================================
 window.handlePaymentFieldChange = function(field, val) {
   paymentPageState[field] = val;
-  
-  // Clear any existing error banner smoothly without rebuilding DOM
+
   if (paymentPageState.error) {
     paymentPageState.error = null;
     const errBanner = document.getElementById('payment-error-banner');
     if (errBanner) errBanner.classList.add('hidden');
   }
 
-  // Auto-detect mobile network from phone number without re-rendering the DOM!
   if (field === 'clientPhone') {
-    const cleaned = String(val).replace(/\s+/g, '');
-    const badgeEl = document.getElementById('payment-phone-network-badge');
+    const detected = detectUgNetwork(val);
+    const noteEl = document.getElementById('payment-phone-network-note');
     const mtnRadio = document.getElementById('payment-method-mtn');
     const airtelRadio = document.getElementById('payment-method-airtel');
     const mtnCard = document.getElementById('payment-method-card-mtn');
     const airtelCard = document.getElementById('payment-method-card-airtel');
+    const cardCard = document.getElementById('payment-method-card-card');
 
-    if (/^(077|078|076|074|\+25677|\+25678|\+25676|\+25674)/.test(cleaned)) {
+    if (detected === 'mtn_momo') {
       paymentPageState.paymentMethod = 'mtn_momo';
-      if (badgeEl) badgeEl.innerHTML = `<span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">MTN MoMo Detected</span>`;
+      if (noteEl) noteEl.innerHTML = `<span class="text-xs font-semibold text-amber-800">MTN Mobile Money number</span>`;
       if (mtnRadio) mtnRadio.checked = true;
-      if (mtnCard) mtnCard.className = "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/30";
-      if (airtelCard) airtelCard.className = "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
-    } else if (/^(075|070|\+25675|\+25670)/.test(cleaned)) {
+      if (mtnCard) mtnCard.className = "flex flex-col p-4 border rounded-xl cursor-pointer transition border-amber-600 bg-amber-50/60";
+      if (airtelCard) airtelCard.className = "flex flex-col p-4 border rounded-xl cursor-pointer transition border-stone-200 bg-white hover:bg-stone-50";
+      if (cardCard) cardCard.className = "flex flex-col p-4 border rounded-xl cursor-pointer transition border-stone-200 bg-white hover:bg-stone-50";
+    } else if (detected === 'airtel_money') {
       paymentPageState.paymentMethod = 'airtel_money';
-      if (badgeEl) badgeEl.innerHTML = `<span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-300">Airtel Money Detected</span>`;
+      if (noteEl) noteEl.innerHTML = `<span class="text-xs font-semibold text-red-700">Airtel Money number</span>`;
       if (airtelRadio) airtelRadio.checked = true;
-      if (airtelCard) airtelCard.className = "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-red-500 bg-red-50/50 ring-2 ring-red-500/30";
-      if (mtnCard) mtnCard.className = "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
+      if (airtelCard) airtelCard.className = "flex flex-col p-4 border rounded-xl cursor-pointer transition border-red-600 bg-red-50/50";
+      if (mtnCard) mtnCard.className = "flex flex-col p-4 border rounded-xl cursor-pointer transition border-stone-200 bg-white hover:bg-stone-50";
+      if (cardCard) cardCard.className = "flex flex-col p-4 border rounded-xl cursor-pointer transition border-stone-200 bg-white hover:bg-stone-50";
     } else {
-      if (badgeEl) badgeEl.innerHTML = `<span class="text-[10px] text-slate-400">MTN or Airtel Uganda</span>`;
+      if (noteEl) noteEl.innerHTML = `<span class="text-xs text-slate-500">MTN or Airtel Uganda</span>`;
     }
   }
-
-  // NOTE: We intentionally DO NOT call renderApp() here so cursor focus and keyboards remain active.
+  // Never call renderApp() on input so focus and keyboard stay active
 };
 
 window.setPaymentPresetAmount = function(amt) {
   paymentPageState.amount = String(amt);
   paymentPageState.currency = 'UGX';
   const amtInput = document.getElementById('payment-amount-input');
-  if (amtInput) {
-    amtInput.value = amt;
-  }
+  if (amtInput) amtInput.value = amt;
   const currSelect = document.getElementById('payment-currency-select');
-  if (currSelect) {
-    currSelect.value = 'UGX';
-  }
+  if (currSelect) currSelect.value = 'UGX';
   const currLabel = document.getElementById('payment-currency-symbol');
-  if (currLabel) {
-    currLabel.innerText = 'UGX';
-  }
+  if (currLabel) currLabel.innerText = 'UGX';
   if (paymentPageState.error) {
     paymentPageState.error = null;
     const errBanner = document.getElementById('payment-error-banner');
@@ -566,40 +592,37 @@ window.handlePaymentMethodSelect = function(method) {
   if (cardRadio) cardRadio.checked = (method === 'card');
 
   if (mtnCard) {
-    mtnCard.className = method === 'mtn_momo' 
-      ? "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/30"
-      : "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
+    mtnCard.className = method === 'mtn_momo'
+      ? "flex flex-col p-4 border rounded-xl cursor-pointer transition border-amber-600 bg-amber-50/60"
+      : "flex flex-col p-4 border rounded-xl cursor-pointer transition border-stone-200 bg-white hover:bg-stone-50";
   }
   if (airtelCard) {
     airtelCard.className = method === 'airtel_money'
-      ? "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-red-500 bg-red-50/50 ring-2 ring-red-500/30"
-      : "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
+      ? "flex flex-col p-4 border rounded-xl cursor-pointer transition border-red-600 bg-red-50/50"
+      : "flex flex-col p-4 border rounded-xl cursor-pointer transition border-stone-200 bg-white hover:bg-stone-50";
   }
   if (cardCard) {
     cardCard.className = method === 'card'
-      ? "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-blue-500 bg-blue-50/50 ring-2 ring-blue-500/30"
-      : "relative flex flex-col p-4 border rounded-2xl cursor-pointer transition border-slate-200 bg-slate-50 hover:bg-slate-100";
+      ? "flex flex-col p-4 border rounded-xl cursor-pointer transition border-[#0F213E] bg-slate-50"
+      : "flex flex-col p-4 border rounded-xl cursor-pointer transition border-stone-200 bg-white hover:bg-stone-50";
   }
 };
 
 window.handlePaymentCurrencySelect = function(curr) {
   paymentPageState.currency = curr;
   const currLabel = document.getElementById('payment-currency-symbol');
-  if (currLabel) {
-    currLabel.innerText = curr;
-  }
+  if (currLabel) currLabel.innerText = curr;
 };
 
 window.handleInitiatePayment = async function(e) {
   if (e) e.preventDefault();
 
-  // Read latest input values directly from DOM
   const nameInput = document.getElementById('payment-client-name');
   const emailInput = document.getElementById('payment-client-email');
   const phoneInput = document.getElementById('payment-client-phone');
   const descInput = document.getElementById('payment-service-desc');
   const amountInput = document.getElementById('payment-amount-input');
-  
+
   if (nameInput) paymentPageState.clientName = nameInput.value;
   if (emailInput) paymentPageState.clientEmail = emailInput.value;
   if (phoneInput) paymentPageState.clientPhone = phoneInput.value;
@@ -621,34 +644,36 @@ window.handleInitiatePayment = async function(e) {
   }
 
   if (!paymentPageState.clientName || paymentPageState.clientName.trim().length < 2) {
-    showPaymentFormError("Please enter your full name or company name.");
+    showPaymentFormError('Please enter your name or school / business name.');
     return;
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!paymentPageState.clientEmail || !emailRegex.test(paymentPageState.clientEmail.trim())) {
-    showPaymentFormError("Please enter a valid email address to receive your official payment receipt.");
+    showPaymentFormError('Please enter a valid email address so we can send your receipt.');
     return;
   }
 
   if (paymentPageState.paymentMethod !== 'card') {
-    if (!paymentPageState.clientPhone || paymentPageState.clientPhone.trim().length < 9) {
-      showPaymentFormError("Please enter your mobile phone number (e.g. 0777123456 or 0757848094) for USSD prompt delivery.");
+    const cleanedPhone = String(paymentPageState.clientPhone || '').replace(/[\s\-()]/g, '');
+    if (cleanedPhone.length < 9) {
+      showPaymentFormError('Please enter your Mobile Money phone number (for example 0777 123 456 or 0747 311 209).');
       return;
     }
   }
 
   const amountNum = parseFloat(String(paymentPageState.amount).replace(/,/g, ''));
   if (isNaN(amountNum) || amountNum <= 0) {
-    showPaymentFormError("Please enter the agreed payment amount.");
+    showPaymentFormError('Please enter the agreed payment amount.');
     return;
   }
-
   if (paymentPageState.currency === 'UGX' && amountNum < 500) {
-    showPaymentFormError("Minimum payment amount is UGX 500.");
+    showPaymentFormError('Minimum Mobile Money payment is UGX 500.');
     return;
   }
 
+  stopPaymentTimers();
+  paymentPageState.paymentRef = ''; // Always create a fresh transaction reference on submit
   paymentPageState.error = null;
   paymentPageState.isInitiating = true;
   renderApp();
@@ -664,122 +689,74 @@ window.handleInitiatePayment = async function(e) {
         amount: amountNum,
         currency: paymentPageState.currency,
         description: paymentPageState.serviceDescription.trim() || 'Agreed Phresh Tech Media Services',
-        paymentMethod: paymentPageState.paymentMethod,
-        reference: paymentPageState.paymentRef || undefined
+        paymentMethod: paymentPageState.paymentMethod
       })
     });
 
     const data = await res.json();
     paymentPageState.isInitiating = false;
 
-    if (data.success) {
+    if (res.ok && data.success) {
       paymentPageState.paymentRef = data.paymentRef;
-      paymentPageState.gatewayRef = data.gatewayRef;
       paymentPageState.instructions = data.instructions;
       paymentPageState.isWaitingUssdApproval = true;
-      paymentPageState.countdownSeconds = 60;
+      paymentPageState.countdownSeconds = 90;
       renderApp();
 
-      // Start countdown timer
-      if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
       paymentPageState.countdownTimer = setInterval(() => {
         if (paymentPageState.countdownSeconds > 0) {
           paymentPageState.countdownSeconds -= 1;
           const cdEl = document.getElementById('ussd-countdown-display');
-          if (cdEl) {
-            cdEl.innerText = `${paymentPageState.countdownSeconds}s`;
-          }
+          if (cdEl) cdEl.innerText = `${paymentPageState.countdownSeconds}s`;
         } else {
-          clearInterval(paymentPageState.countdownTimer);
-          paymentPageState.countdownTimer = null;
+          if (paymentPageState.countdownTimer) {
+            clearInterval(paymentPageState.countdownTimer);
+            paymentPageState.countdownTimer = null;
+          }
           const statusText = document.getElementById('auto-status-indicator-text');
           if (statusText) {
-            statusText.innerText = "Prompt session expired. You may change details or try again.";
+            statusText.innerText = 'Still waiting on phone confirmation. If you did not see the prompt, tap Change Details below and try again.';
           }
         }
       }, 1000);
 
-      // Automated real-time polling to verify gateway settlement upon PIN entry
-      if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
       paymentPageState.pollTimer = setInterval(async () => {
         try {
-          const statusRes = await fetch(`/api/payments/status/${paymentPageState.paymentRef}`);
+          const statusRes = await fetch(`/api/payments/status/${encodeURIComponent(paymentPageState.paymentRef)}`);
           if (statusRes.ok) {
             const statusData = await statusRes.json();
             if (statusData.status === 'COMPLETED') {
-              if (paymentPageState.pollTimer) {
-                clearInterval(paymentPageState.pollTimer);
-                paymentPageState.pollTimer = null;
-              }
-              if (paymentPageState.countdownTimer) {
-                clearInterval(paymentPageState.countdownTimer);
-                paymentPageState.countdownTimer = null;
-              }
+              stopPaymentTimers();
               paymentPageState.isWaitingUssdApproval = false;
               paymentPageState.isCompleted = true;
               paymentPageState.confirmedData = statusData.payment;
-              showToast(`Payment #${paymentPageState.paymentRef} verified successfully!`);
+              showToast(`Payment #${paymentPageState.paymentRef} received.`);
               renderApp();
             } else if (statusData.status === 'FAILED') {
-              if (paymentPageState.pollTimer) {
-                clearInterval(paymentPageState.pollTimer);
-                paymentPageState.pollTimer = null;
-              }
-              if (paymentPageState.countdownTimer) {
-                clearInterval(paymentPageState.countdownTimer);
-                paymentPageState.countdownTimer = null;
-              }
+              stopPaymentTimers();
               paymentPageState.isWaitingUssdApproval = false;
-              paymentPageState.error = "Payment authorization was declined or cancelled on handset. Please try again.";
+              paymentPageState.paymentRef = '';
+              paymentPageState.error = statusData.failure_reason || 'Payment was declined or cancelled on your phone. Please try again.';
               renderApp();
             }
           }
-        } catch (e) {
+        } catch (err) {
           // ignore transient poll error
         }
-      }, 2500);
+      }, 3000);
     } else {
-      paymentPageState.error = data.error || "Unable to initiate payment transaction.";
+      paymentPageState.error = data.error || 'Could not send the Mobile Money prompt to your phone. Please check your number and try again.';
       renderApp();
     }
   } catch (err) {
     paymentPageState.isInitiating = false;
-    paymentPageState.error = "Connection error. Please check your internet and try again.";
+    paymentPageState.error = 'Connection error. Please check your internet connection and try again.';
     renderApp();
   }
 };
 
-// Automated Status Verification Helper
-window.checkPaymentStatusNow = async function() {
-  if (!paymentPageState.paymentRef) return;
-  try {
-    const res = await fetch(`/api/payments/status/${paymentPageState.paymentRef}`);
-    if (res.ok) {
-      const data = await res.json();
-      if (data.status === 'COMPLETED') {
-        if (paymentPageState.pollTimer) clearInterval(paymentPageState.pollTimer);
-        if (paymentPageState.countdownTimer) clearInterval(paymentPageState.countdownTimer);
-        paymentPageState.isWaitingUssdApproval = false;
-        paymentPageState.isCompleted = true;
-        paymentPageState.confirmedData = data.payment;
-        showToast(`Payment verified!`);
-        renderApp();
-      }
-    }
-  } catch (e) {
-    // ignore
-  }
-};
-
 window.resetPaymentPage = function() {
-  if (paymentPageState.pollTimer) {
-    clearInterval(paymentPageState.pollTimer);
-    paymentPageState.pollTimer = null;
-  }
-  if (paymentPageState.countdownTimer) {
-    clearInterval(paymentPageState.countdownTimer);
-    paymentPageState.countdownTimer = null;
-  }
+  stopPaymentTimers();
   paymentPageState = {
     clientName: '',
     clientEmail: '',
@@ -792,10 +769,9 @@ window.resetPaymentPage = function() {
     isWaitingUssdApproval: false,
     isCompleted: false,
     paymentRef: '',
-    gatewayRef: '',
     instructions: '',
     pollTimer: null,
-    countdownSeconds: 60,
+    countdownSeconds: 90,
     countdownTimer: null,
     error: null,
     confirmedData: null
@@ -808,70 +784,7 @@ window.printPaymentReceipt = function() {
   window.print();
 };
 
-// Valid Multi-Page Routes
-const VALID_PAGES = ['home', 'services', 'portfolio', 'about', 'contact', 'payment', 'pay'];
-
-// Hero Showcase Slides
-const HERO_SLIDES = [
-  {
-    title: 'We Turn Your Ideas Into Reality',
-    highlight: 'Phresh Rank Core, Print Press & Web Hosting',
-    subtitle: 'Uganda’s premier technology partner empowering schools with Phresh Rank Core report card engines, commercial print press, and web hosting.',
-    badge: 'Phresh Tech Media Services',
-    image: heroSoftwareImg,
-    ctaText: 'Discuss Your Project',
-    ctaPage: 'contact',
-    stats: [
-      { number: '50+', label: 'Partner Institutions' },
-      { number: '5 Pillars', label: 'Tech & Media Solutions' },
-      { number: 'Kasenge', label: 'Nakawuka Rd Kampala' }
-    ]
-  },
-  {
-    title: 'Automated Educational ERP & UNEB Grading',
-    highlight: 'Phresh Rank Core Flagship Engine',
-    subtitle: 'The #1 NCDC competence-based report card software trusted by Global High School Madudu, Pride College Lungala, Mpigi Light College, and St. Andrews College Moyo.',
-    badge: 'Smart Educational Software',
-    image: heroEduledgerImg,
-    ctaText: 'Explore System Engineering',
-    ctaPage: 'services',
-    stats: [
-      { number: '100k+', label: 'Reports Generated' },
-      { number: '0%', label: 'Arithmetic Errors' },
-      { number: 'Instant', label: 'PDF Report Cards' }
-    ]
-  },
-  {
-    title: 'Custom Brand Identity & 3D Vector Logos',
-    highlight: 'Graphic Design, School Crests & Banners',
-    subtitle: 'Distinctive visual identities, school crests, corporate brand manuals, and UI/UX asset kits engineered in Kampala.',
-    badge: 'Graphic Design Studio',
-    image: heroBrandingImg,
-    ctaText: 'Start Branding Project',
-    ctaPage: 'contact',
-    stats: [
-      { number: '3D Vector', label: 'Ultra High Definition' },
-      { number: 'Full Brand', label: 'Identity Guidelines' },
-      { number: '100+', label: 'Crests & Logos' }
-    ]
-  },
-  {
-    title: 'Institutional Portals & Managed cPanel Hosting',
-    highlight: 'High Speed SSD Web Design & SSL',
-    subtitle: 'School web portals with online admission forms, cPanel SSD cloud hosting, free SSL certificates, and speed optimization.',
-    badge: 'Web Design & Managed Hosting',
-    image: heroWebHostingImg,
-    ctaText: 'Launch Your Portal',
-    ctaPage: 'services',
-    stats: [
-      { number: '99.9%', label: 'Uptime SLA' },
-      { number: 'Free SSL', label: 'Security Included' },
-      { number: 'cPanel', label: 'SSD Speed' }
-    ]
-  }
-];
-
-// Parse route and optional prefilled query parameters from location.hash
+// Router & Navigation
 function parseHashRoute() {
   const rawHash = window.location.hash.replace(/^#/, '');
   const [routePart, queryPart] = rawHash.split('?');
@@ -881,7 +794,6 @@ function parseHashRoute() {
     currentPage = page;
   }
 
-  // If entering payment page via direct link with query params: #pay?amount=...&desc=...
   if (queryPart && (page === 'payment' || page === 'pay')) {
     try {
       const params = new URLSearchParams(queryPart);
@@ -893,41 +805,15 @@ function parseHashRoute() {
       if (params.get('currency')) paymentPageState.currency = params.get('currency').toUpperCase();
       if (params.get('method')) paymentPageState.paymentMethod = params.get('method');
     } catch (e) {
-      // Ignore query param parse failure
+      // ignore
     }
   }
 }
 
-// Initialize Application & Multi-Page Router
-function initApp() {
-  parseHashRoute();
-
-  window.addEventListener('hashchange', () => {
-    const prevPage = currentPage;
-    parseHashRoute();
-    if (currentPage !== prevPage) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    renderApp();
-  });
-
-  renderApp();
-  startHeroAutoSlide();
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
-} else {
-  initApp();
-}
-
-// Navigation Handler & Section Smooth Scroll
 window.navigateTo = function(pageName, subPillar = null) {
   if (!VALID_PAGES.includes(pageName)) return;
   currentPage = pageName;
-  if (subPillar) {
-    activeServicePillar = subPillar;
-  }
+  if (subPillar) activeServicePillar = subPillar;
   window.location.hash = pageName;
   isMobileMenuOpen = false;
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -936,29 +822,25 @@ window.navigateTo = function(pageName, subPillar = null) {
 
 window.scrollToSection = function(sectionId, pageName = null) {
   isMobileMenuOpen = false;
-
-  const performScroll = () => {
-    const targetEl = document.getElementById(sectionId);
-    if (targetEl) {
-      const headerOffset = 84;
-      const elementPosition = targetEl.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({
-        top: Math.max(0, offsetPosition),
-        behavior: 'smooth'
-      });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
   if (pageName && pageName !== currentPage) {
     currentPage = pageName;
     window.location.hash = pageName;
     renderApp();
-    setTimeout(performScroll, 60);
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      }
+    }, 60);
   } else {
-    performScroll();
+    const el = document.getElementById(sectionId);
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 };
 
@@ -967,1657 +849,26 @@ window.toggleMobileMenu = function() {
   renderApp();
 };
 
-// Listen to scroll to adjust header shadow dynamically
-window.addEventListener('scroll', () => {
-  const headerEl = document.getElementById('main-header');
-  if (headerEl) {
-    if (window.scrollY > 20) {
-      headerEl.classList.add('shadow-md', 'bg-white/95', 'border-slate-300/80');
-      headerEl.classList.remove('bg-white/80', 'border-slate-200/60');
-    } else {
-      headerEl.classList.remove('shadow-md', 'bg-white/95', 'border-slate-300/80');
-      headerEl.classList.add('bg-white/80', 'border-slate-200/60');
-    }
-  }
-});
-
-// Hero Slider Controls
-function startHeroAutoSlide() {
-  if (autoSlideTimer) clearInterval(autoSlideTimer);
-  autoSlideTimer = setInterval(() => {
-    currentHeroSlide = (currentHeroSlide + 1) % HERO_SLIDES.length;
-    renderHeroSlideContent();
-  }, 6000);
-}
-
 window.setHeroSlide = function(idx) {
   currentHeroSlide = idx;
   startHeroAutoSlide();
-  renderHeroSlideContent();
+  renderHeroHighlight();
 };
 
-// Main App Render Loop
-function renderApp() {
-  const root = document.getElementById('root');
-  if (!root) return;
-
-  root.innerHTML = `
-    <!-- Navigation Header (Sticky with Glassmorphic Backdrop Blur) -->
-    <header id="main-header" class="bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/60 shadow-xs transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        
-        <!-- Site Branding -->
-        <a href="#home" onclick="scrollToSection('hero-section', 'home')" class="flex items-center gap-3 group focus:outline-none">
-          <div class="relative flex items-center justify-center">
-            <img src="/logo.svg" alt="Phresh Tech Media Services" class="h-11 w-auto object-contain group-hover:scale-105 transition-transform" referrerPolicy="no-referrer" />
-            <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full shadow-xs animate-pulse"></span>
-          </div>
-          <div class="hidden sm:block">
-            <div class="flex items-center gap-2">
-              <span class="block text-lg font-black tracking-tight text-[#0B1B3D] leading-none">
-                PHRESH TECH
-              </span>
-              <span class="text-[9px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded border border-emerald-300/60 leading-none">
-                Direct
-              </span>
-            </div>
-            <span class="block text-xs font-extrabold tracking-widest text-[#1E7E34] uppercase mt-0.5">
-              MEDIA SERVICES • KAMPALA
-            </span>
-          </div>
-        </a>
-
-        <!-- Desktop Links with Smooth Scroll -->
-        <nav class="hidden lg:flex items-center gap-1 text-xs font-extrabold uppercase tracking-wider text-slate-700">
-          <button onclick="scrollToSection('hero-section', 'home')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'home' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
-            Home
-          </button>
-          <button onclick="scrollToSection('services-catalog-section', 'services')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'services' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
-            Services
-          </button>
-          <button onclick="scrollToSection('portfolio-section', 'portfolio')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'portfolio' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
-            Portfolio
-          </button>
-          <button onclick="scrollToSection('about-section', 'about')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'about' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
-            About
-          </button>
-          <button onclick="scrollToSection('contact-section', 'contact')" class="px-3.5 py-2 rounded-xl transition ${currentPage === 'contact' ? 'text-[#1E7E34] bg-emerald-50/90 border border-emerald-200/80 shadow-xs' : 'hover:text-[#1E7E34] hover:bg-slate-50/80'}">
-            Contact
-          </button>
-          <button onclick="navigateTo('pay')" class="px-3 py-2 rounded-xl transition flex items-center gap-1.5 ${currentPage === 'pay' || currentPage === 'payment' ? 'text-white bg-emerald-700 shadow-xs' : 'text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200'}">
-            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-            <span>Direct Pay</span>
-          </button>
-        </nav>
-
-        <!-- Right Quick Actions -->
-        <div class="hidden sm:flex items-center gap-2.5">
-          <button onclick="navigateTo('pay')" title="Direct Client Pay" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold px-3 py-2.5 rounded-xl shadow-xs transition flex items-center gap-1.5">
-            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-            <span>Pay Online</span>
-          </button>
-          <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media,%20I%20would%20like%20to%20inquire%20about%20your%20services." target="_blank" title="WhatsApp: +256 757 848 094" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl shadow-xs transition flex items-center gap-2 group">
-            ${WHATSAPP_ICON_SVG}
-            <span>WhatsApp</span>
-          </a>
-          <button onclick="scrollToSection('contact-section', 'contact')" class="bg-[#8B0000] hover:bg-red-800 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-xs transition uppercase tracking-wider">
-            Discuss Your Project
-          </button>
-        </div>
-
-        <!-- Mobile Hamburger Toggle -->
-        <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 text-slate-700 bg-slate-100/90 rounded-xl hover:bg-slate-200 transition">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16m-7 6h7"></path>
-          </svg>
-        </button>
-
-      </div>
-
-      <!-- Mobile Navigation Drawer -->
-      ${isMobileMenuOpen ? `
-        <div class="lg:hidden border-t border-slate-200 bg-white/95 backdrop-blur-xl px-4 py-4 space-y-2 text-xs font-extrabold uppercase animate-fade-in shadow-xl">
-          <button onclick="scrollToSection('hero-section', 'home')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
-            <span>Home</span>
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          </button>
-          <button onclick="scrollToSection('featured-services-section', 'home')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Service Highlights</span>
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          </button>
-          <button onclick="scrollToSection('services-catalog-section', 'services')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
-            <span>Services & Solutions</span>
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          </button>
-          <button onclick="scrollToSection('portfolio-section', 'portfolio')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
-            <span>Portfolio & Case Studies</span>
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          </button>
-          <button onclick="scrollToSection('about-section', 'about')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
-            <span>About Us</span>
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          </button>
-          <button onclick="scrollToSection('contact-section', 'contact')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-slate-800 flex items-center justify-between">
-            <span>Contact Us</span>
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          </button>
-          <button onclick="navigateTo('payment')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 text-emerald-800 font-bold flex items-center justify-between">
-            <span>Client Direct Payment</span>
-            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          </button>
-          <a href="https://wa.me/256757848094" target="_blank" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl shadow-xs transition flex items-center justify-center gap-2">
-            ${WHATSAPP_ICON_SVG}
-            <span>WhatsApp Us (+256 757 848 094)</span>
-          </a>
-        </div>
-      ` : ''}
-    </header>
-
-    <!-- Main Active Page Body -->
-    <main class="flex-1">
-      ${renderActivePage()}
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-[#08132B] text-white border-t border-white/10 pt-16 pb-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
-          <div class="space-y-4">
-            <div class="flex items-center gap-3">
-              <img src="/logo.svg" alt="Phresh Tech Media Services" class="h-12 w-auto bg-white p-1 rounded-xl shadow-md" referrerPolicy="no-referrer" />
-              <div>
-                <span class="font-black text-base text-white block leading-none">Phresh Tech Media</span>
-                <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Services Uganda</span>
-              </div>
-            </div>
-            <p class="text-xs text-gray-300 leading-relaxed">
-              Leading Ugandan technology and media services company providing software engineering, commercial printing press, graphic design, web hosting, and digital marketing.
-            </p>
-            <div class="text-xs text-emerald-400 font-mono font-bold">
-              Kasenge - Nakawuka Road, Kampala / Wakiso
-            </div>
-          </div>
-
-          <div class="space-y-3 text-xs">
-            <h4 class="font-black text-white uppercase tracking-wider text-xs">Our 5 Operational Pillars</h4>
-            <ul class="space-y-2 text-gray-300">
-              <li><button onclick="navigateTo('services', 'graphic-design')" class="hover:text-emerald-400 transition">Graphic Design & Brand Identity</button></li>
-              <li><button onclick="navigateTo('services', 'print-copy')" class="hover:text-emerald-400 transition">Commercial Printing & Copying</button></li>
-              <li><button onclick="navigateTo('services', 'database-systems')" class="hover:text-emerald-400 transition">Custom Database Engineering</button></li>
-              <li><button onclick="navigateTo('services', 'web-development')" class="hover:text-emerald-400 transition">Web Design & Managed Hosting</button></li>
-              <li><button onclick="navigateTo('services', 'social-media')" class="hover:text-emerald-400 transition">Social Media Management</button></li>
-            </ul>
-          </div>
-
-          <div class="space-y-3 text-xs">
-            <h4 class="font-black text-white uppercase tracking-wider text-xs">Direct Leadership & Office Contacts</h4>
-            <div class="space-y-2 text-gray-300">
-              <p class="p-2.5 bg-white/5 rounded-xl border border-white/10">
-                <strong class="text-white block">Mulindwa Ibrahim (Ibra)</strong>
-                <span class="text-emerald-400 text-[11px]">Software Engineering Director</span><br />
-                <a href="tel:+256702083515" class="hover:underline font-mono">+256 702 083515</a> | <a href="tel:+256747311209" class="hover:underline font-mono">+256 747 311209</a>
-              </p>
-              <p class="p-2.5 bg-white/5 rounded-xl border border-white/10">
-                <strong class="text-white block">Steven Bagalana (Steve)</strong>
-                <span class="text-amber-400 text-[11px]">Operations & Print Director</span><br />
-                <a href="tel:+256777139918" class="hover:underline font-mono">+256 777 139918</a> | <a href="tel:+256757848094" class="hover:underline font-mono">+256 757 848094</a>
-              </p>
-              <p class="p-2.5 bg-white/5 rounded-xl border border-white/10">
-                <strong class="text-white block">Kasenge Office Desk</strong>
-                <span class="text-sky-400 text-[11px]">General Inquiries & Consultations</span><br />
-                <a href="tel:+256741145595" class="hover:underline font-mono">+256 741 145595</a>
-              </p>
-            </div>
-          </div>
-
-          <div class="space-y-3 text-xs">
-            <h4 class="font-black text-white uppercase tracking-wider text-xs">Direct WhatsApp & Inquiries</h4>
-            <p class="text-gray-300">Fast responsive consultation directly with company directors:</p>
-            <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs p-3 rounded-xl text-center shadow transition">
-              ${WHATSAPP_ICON_SVG}
-              <span>WhatsApp +256 757 848 094</span>
-            </a>
-            <p class="text-gray-400 text-[11px]">
-              Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="text-emerald-400 underline">phreshtechmediaservices@gmail.com</a>
-            </p>
-          </div>
-
-        </div>
-
-        <div class="pt-8 border-t border-white/10 text-center text-xs text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© ${new Date().getFullYear()} Phresh Tech Media Services (phreshtechmedia.com). All Rights Reserved.</p>
-          <div class="flex flex-wrap items-center justify-center gap-4">
-            <button onclick="navigateTo('services')" class="hover:text-emerald-400">Services Catalog</button>
-            <button onclick="navigateTo('portfolio')" class="hover:text-emerald-400">Case Studies</button>
-            <button onclick="navigateTo('contact')" class="hover:text-emerald-400">Contact Us</button>
-            <button onclick="navigateTo('payment')" class="hover:text-emerald-400 text-emerald-400 font-bold">Client Direct Payment</button>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Sticky Floating Action Bar & Modals -->
-    ${renderFloatingWhatsAppWidget()}
-    ${renderToastNotification()}
-    ${renderAuthModal()}
-    ${renderImagePreviewModal()}
-  `;
-
-  // Render sub-slide content if on home page
-  if (currentPage === 'home') {
-    renderHeroSlideContent();
-  }
-}
-
-// ==========================================
-// IMAGE PREVIEW LIGHTBOX MODAL
-// ==========================================
-function renderImagePreviewModal() {
-  if (!activeImagePreviewModal) return '';
-  return `
-    <div class="fixed inset-0 z-[110] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fade-in" onclick="closeImageModal()">
-      <div class="relative max-w-5xl w-full bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden shadow-2xl space-y-4 p-4 sm:p-6" onclick="event.stopPropagation()">
-        
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-          <div class="flex items-center gap-3">
-            <span class="${activeImagePreviewModal.badgeBg || 'bg-emerald-600'} text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-white/20">
-              ${activeImagePreviewModal.badge || 'Official System Screenshot'}
-            </span>
-            <h3 class="text-base sm:text-xl font-black text-white">${activeImagePreviewModal.title}</h3>
-          </div>
-          <button onclick="closeImageModal()" class="w-10 h-10 bg-slate-800 hover:bg-slate-700 text-white rounded-full flex items-center justify-center text-lg font-bold transition">
-            ✕
-          </button>
-        </div>
-
-        <div class="relative bg-black rounded-2xl overflow-hidden max-h-[75vh] flex items-center justify-center">
-          <img src="${activeImagePreviewModal.img}" alt="${activeImagePreviewModal.title}" class="max-h-[72vh] w-auto max-w-full object-contain mx-auto" referrerPolicy="no-referrer" />
-        </div>
-
-        ${activeImagePreviewModal.subtitle ? `
-          <div class="pt-2 text-xs text-slate-300 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <p class="leading-relaxed">${activeImagePreviewModal.subtitle}</p>
-            <button onclick="closeImageModal(); navigateTo('contact');" class="bg-[#1E7E34] hover:bg-emerald-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex-shrink-0">
-              Inquire About This System →
-            </button>
-          </div>
-        ` : ''}
-
-      </div>
-    </div>
-  `;
-}
-
-// ==========================================
-// STICKY FLOATING WHATSAPP CHAT WIDGET RENDERER
-// ==========================================
-function renderFloatingWhatsAppWidget() {
-  return `
-    <div class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end gap-3 pointer-events-none">
-      
-      ${isWhatsAppWidgetOpen ? `
-        <!-- Floating Interactive WhatsApp Chat Box Card -->
-        <div class="pointer-events-auto w-80 sm:w-96 bg-slate-900 border border-emerald-500/40 rounded-3xl shadow-2xl overflow-hidden animate-fade-in text-white mb-1 space-y-0">
-          
-          <!-- Card Header -->
-          <div class="bg-gradient-to-r from-[#1E7E34] via-[#155d26] to-[#0B1B3D] p-4 flex items-center justify-between border-b border-white/10">
-            <div class="flex items-center gap-3">
-              <div class="relative w-10 h-10 rounded-full bg-emerald-700 border-2 border-white/40 flex items-center justify-center overflow-hidden shrink-0">
-                <span class="text-white text-base font-black">P</span>
-                <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <h4 class="font-extrabold text-sm text-white">Phresh Tech Media Support</h4>
-                  <span class="bg-emerald-400/20 text-emerald-300 text-[9px] font-black uppercase px-2 py-0.5 rounded-full border border-emerald-400/30">Online</span>
-                </div>
-                <p class="text-[11px] text-emerald-100/90 font-medium">Direct Line • +256 757 848 094</p>
-              </div>
-            </div>
-            <button onclick="toggleWhatsAppWidget()" class="w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center text-sm font-bold transition">
-              ✕
-            </button>
-          </div>
-
-          <!-- Chat Content Body -->
-          <div class="p-4 bg-slate-950/90 space-y-3 text-xs">
-            
-            <!-- Welcome Bubble -->
-            <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-xs p-3.5 space-y-1 text-slate-200">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Director Ibrahim & Steven</span>
-                <span class="text-[9px] text-slate-400">Kampala, UG</span>
-              </div>
-              <p class="leading-relaxed">
-                Hello! Welcome to Phresh Tech Media. How can we help your school, business, or project today?
-              </p>
-            </div>
-
-            <!-- Quick Inquiry Buttons -->
-            <div class="space-y-1.5 pt-1">
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">Select Quick Inquiry Topic:</p>
-              
-              <div class="grid grid-cols-1 gap-1.5">
-                <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I need an inquiry/quote for Phresh Rank Core School Report Card Engine.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
-                  <span class="font-medium text-xs">Phresh Rank Core Report Cards</span>
-                  <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
-                </button>
-
-                <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I would like to inquire about EduLedger School Fees ERP System.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
-                  <span class="font-medium text-xs">EduLedger Fee Management ERP</span>
-                  <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
-                </button>
-
-                <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I would like to order Duplicate Carbonless Receipt Books or School Banners.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
-                  <span class="font-medium text-xs">Receipt Books, Banners & Press</span>
-                  <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
-                </button>
-
-                <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I need a custom database system / website build.')" class="w-full text-left bg-slate-800 hover:bg-emerald-900/60 hover:border-emerald-500/50 border border-slate-700/70 text-slate-200 hover:text-white px-3 py-2 rounded-xl transition flex items-center justify-between group">
-                  <span class="font-medium text-xs">Custom Software & Web Systems</span>
-                  <span class="text-emerald-400 text-xs group-hover:translate-x-0.5 transition-transform">→</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Custom Message Form -->
-            <form onsubmit="sendCustomWhatsAppMsg(event)" class="pt-2 border-t border-slate-800 space-y-2">
-              <label for="whatsapp-floating-input" class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block px-1">Or Type Custom Message:</label>
-              <div class="flex items-center gap-2">
-                <input id="whatsapp-floating-input" type="text" placeholder="e.g. I need 5 receipt books delivered in Kampala..." class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition" />
-                <button type="submit" class="bg-[#1E7E34] hover:bg-emerald-600 text-white font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1 shrink-0 transition shadow-sm">
-                  <span>Send</span>
-                  <span>→</span>
-                </button>
-              </div>
-            </form>
-
-            <!-- Direct Link Button -->
-            <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media,%20I%20have%20an%20inquiry%20about%20your%20services." target="_blank" class="block w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 rounded-xl shadow transition text-xs mt-2">
-              Open Direct Chat (+256 757 848094)
-            </a>
-
-          </div>
-
-        </div>
-      ` : ''}
-
-      <!-- Sticky Floating Button Launcher Group -->
-      <div class="pointer-events-auto flex items-center gap-3">
-        
-        <!-- Sticky Floating WhatsApp Button -->
-        <button onclick="toggleWhatsAppWidget()" title="Contact Phresh Tech Media on WhatsApp" class="relative group bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-full shadow-2xl border border-emerald-400/50 flex items-center gap-2.5 transition-all duration-300 transform hover:scale-105 active:scale-95 ring-4 ring-emerald-500/20">
-          
-          <!-- Pulsing Status Ring Indicator -->
-          <span class="absolute -top-1 -right-1 flex h-4 w-4">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-slate-900"></span>
-          </span>
-
-          ${WHATSAPP_ICON_SVG}
-
-          <span class="text-xs sm:text-sm font-extrabold tracking-tight text-white whitespace-nowrap">
-            ${isWhatsAppWidgetOpen ? 'Close Chat' : 'WhatsApp Chat'}
-          </span>
-
-          <!-- Tooltip Hint on hover for desktop -->
-          <span class="absolute right-0 -top-10 bg-slate-900 text-white text-[10px] font-extrabold px-3 py-1.5 rounded-lg shadow-lg border border-slate-700 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none hidden sm:block">
-            Online • Tap to Chat (+256 757 848 094)
-          </span>
-
-        </button>
-
-      </div>
-
-    </div>
-  `;
-}
-function renderToastNotification() {
-  if (!toastMessage) return '';
-  return `
-    <div class="fixed top-20 right-6 z-[100] bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-emerald-500/50 flex items-center gap-3 animate-fade-in text-xs font-semibold">
-      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-      <span>${toastMessage}</span>
-    </div>
-  `;
-}
-
-function renderAuthModal() {
-  if (!isAuthModalOpen) return '';
-
-  return `
-    <div class="fixed inset-0 z-[95] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-      <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
-        
-        <div class="bg-gradient-to-r from-[#0B1B3D] to-[#08132B] p-6 text-white relative">
-          <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-          </button>
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold">
-              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-            </div>
-            <div>
-              <h3 class="font-black text-lg text-white">Sign In to Your Account</h3>
-              <p class="text-xs text-emerald-400">Manage orders, quotes, and communications</p>
-            </div>
-          </div>
-        </div>
-
-        <form onsubmit="handleClientAuthSubmit(event)" class="p-6 space-y-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Full Name *</label>
-            <input type="text" id="auth-client-name" required value="${currentUser?.name || ''}" placeholder="e.g. Mugisha Alex" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-600" />
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
-            <input type="email" id="auth-client-email" required value="${currentUser?.email || ''}" placeholder="e.g. client@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-600" />
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number (Optional)</label>
-            <input type="tel" id="auth-client-phone" value="${currentUser?.phone || ''}" placeholder="+256 700 000000" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-600" />
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Institution / School / Organization</label>
-            <input type="text" id="auth-client-org" value="${currentUser?.organization || ''}" placeholder="e.g. Kasenge Primary School" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-600" />
-          </div>
-
-          <button type="submit" class="w-full bg-[#1E7E34] hover:bg-emerald-700 text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg transition flex items-center justify-center gap-2">
-            <span>Sign In</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-          </button>
-        </form>
-
-      </div>
-    </div>
-  `;
-}
-
-// ==========================================
-// DEDICATED DIRECT PAYMENT PAGE
-// ==========================================
-function renderDedicatedPaymentPage() {
-  const {
-    clientName,
-    clientEmail,
-    clientPhone,
-    serviceDescription,
-    amount,
-    currency,
-    paymentMethod,
-    isInitiating,
-    isWaitingUssdApproval,
-    isCompleted,
-    paymentRef,
-    gatewayRef,
-    instructions,
-    countdownSeconds,
-    error,
-    confirmedData
-  } = paymentPageState;
-
-  // Case 1: Payment Successfully Verified & Completed (Official Stamped Receipt)
-  if (isCompleted && confirmedData) {
-    const formattedAmount = `${confirmedData.currency || currency} ${Number(confirmedData.amount || amount).toLocaleString()}`;
-    const methodLabel = paymentMethod === 'mtn_momo'
-      ? 'MTN Mobile Money (Uganda)'
-      : paymentMethod === 'airtel_money'
-        ? 'Airtel Money (Uganda)'
-        : 'Visa / Mastercard Card Settlement';
-
-    return `
-      <div id="payment-receipt-view" class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-100 min-h-[85vh] flex items-center justify-center">
-        <div id="printable-receipt-card" class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in">
-          
-          <!-- Stamped Top Banner -->
-          <div class="bg-gradient-to-r from-[#0B1B3D] via-[#152e61] to-[#08132B] p-6 sm:p-8 text-white relative border-b-4 border-emerald-500">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div class="flex items-center gap-3.5">
-                <img src="/logo.svg" alt="Phresh Tech Media" class="h-12 w-auto bg-white p-1 rounded-xl shadow-md" referrerPolicy="no-referrer" />
-                <div>
-                  <h2 class="text-xl font-black tracking-tight text-white leading-none">PHRESH TECH MEDIA</h2>
-                  <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400 mt-1 block">Official Verified Payment Receipt</span>
-                </div>
-              </div>
-              <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-xs">
-                <span>Verified & Paid</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Receipt Details Card -->
-          <div class="p-6 sm:p-8 space-y-6">
-            
-            <div class="text-center py-2 space-y-1 border-b border-slate-100 pb-4">
-              <span class="text-xs uppercase tracking-wider text-slate-500 font-bold">Total Confirmed Settlement</span>
-              <div class="text-3xl sm:text-4xl font-black text-emerald-700 font-mono tracking-tight">${formattedAmount}</div>
-              <p class="text-xs text-slate-600">Paid by <strong class="text-slate-900">${confirmedData.client_name || clientName}</strong></p>
-            </div>
-
-            <!-- Transaction Data Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
-              <div>
-                <span class="text-[10px] uppercase font-bold text-slate-500 block">Payment Reference</span>
-                <span class="font-mono font-black text-slate-900 text-sm">${confirmedData.id || paymentRef}</span>
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-slate-500 block">Clearing Reference</span>
-                <span class="font-mono font-bold text-slate-700">${confirmedData.gateway_reference || gatewayRef || 'PTM-SETTLED'}</span>
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-slate-500 block">Payment Method</span>
-                <span class="font-bold text-slate-900">${methodLabel}</span>
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-slate-500 block">Settlement Account</span>
-                <span class="font-mono font-bold text-slate-700">Phresh Tech Media Official</span>
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-slate-500 block">Date & Timestamp</span>
-                <span class="text-slate-700 font-medium">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-slate-500 block">Client Contact</span>
-                <span class="text-slate-700 font-medium">${confirmedData.client_email || clientEmail}</span>
-              </div>
-            </div>
-
-            <!-- Agreed Service Description -->
-            <div class="border border-slate-200 rounded-2xl p-4 bg-white space-y-1 text-xs">
-              <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider block">Agreed Service / Project Description</span>
-              <p class="text-slate-900 font-bold text-sm leading-relaxed">${confirmedData.service_description || serviceDescription || 'Agreed Technical Services & Consultation'}</p>
-              <span class="text-[11px] text-slate-500 block pt-1">Direct project settlement following consultation with Phresh Tech Media directors.</span>
-            </div>
-
-            <!-- Automated Confirmation Alert -->
-            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-xs text-emerald-900 space-y-1">
-              <div class="flex items-center gap-2 font-bold text-emerald-950">
-                <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 000-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                <span>Official Receipt Dispatched</span>
-              </div>
-              <p class="text-emerald-800 text-[11px] leading-relaxed">
-                An official PDF-styled receipt copy has been recorded for <strong>${confirmedData.client_email || clientEmail}</strong> and our finance department at <strong>phreshtechmediaservices@gmail.com</strong>.
-              </p>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
-              <button onclick="printPaymentReceipt()" class="w-full sm:w-1/2 bg-[#0B1B3D] hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                <span>Print Official Receipt</span>
-              </button>
-              
-              <a href="https://wa.me/256757848094?text=${encodeURIComponent(`Hello Phresh Tech Media, I have completed payment of ${formattedAmount} for Reference: ${confirmedData.id || paymentRef}. Please confirm next steps.`)}" target="_blank" class="w-full sm:w-1/2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm text-center">
-                ${WHATSAPP_ICON_SVG}
-                <span>Notify via WhatsApp</span>
-              </a>
-            </div>
-
-            <div class="text-center pt-2">
-              <button onclick="resetPaymentPage(); navigateTo('home');" class="text-xs text-slate-500 hover:text-slate-800 underline font-semibold">
-                ← Return to Phresh Tech Media Homepage
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    `;
-  }
-
-  // Case 2: Interactive USSD Prompt Overlay / Waiting State
-  if (isWaitingUssdApproval) {
-    const formattedAmount = `${currency} ${Number(amount || 0).toLocaleString()}`;
-    const networkName = paymentMethod === 'mtn_momo' ? 'MTN Mobile Money' : 'Airtel Money';
-    const isMtn = paymentMethod === 'mtn_momo';
-
-    return `
-      <div class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-100 min-h-[85vh] flex items-center justify-center">
-        <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in">
-          
-          <!-- Top Header -->
-          <div class="bg-[#0B1B3D] text-white p-6 border-b-4 ${isMtn ? 'border-amber-400' : 'border-red-500'} text-center space-y-2 relative overflow-hidden">
-            <div class="w-16 h-16 bg-white/10 border-2 border-white/20 rounded-2xl mx-auto flex items-center justify-center shadow-inner animate-pulse">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-            </div>
-            <h2 class="text-xl font-black">USSD Prompt Dispatched</h2>
-            <p class="text-xs text-slate-300">Awaiting your Mobile Money PIN entry on your handset</p>
-          </div>
-
-          <!-- Body -->
-          <div class="p-6 sm:p-8 space-y-5 text-center text-xs">
-            
-            <div class="${isMtn ? 'bg-amber-50 border-amber-200 text-amber-950' : 'bg-red-50 border-red-200 text-red-950'} border rounded-2xl p-5 space-y-2.5">
-              <div class="flex items-center justify-center gap-2">
-                <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isMtn ? 'bg-amber-400 text-slate-900' : 'bg-red-600 text-white'}">
-                  ${networkName}
-                </span>
-                <span class="text-[11px] font-bold text-slate-600 font-mono">Direct Carrier Settlement</span>
-              </div>
-              <p class="text-slate-800 leading-relaxed text-xs">
-                A prompt has been dispatched to <strong class="text-slate-950 font-mono text-sm">${clientPhone}</strong>. Please enter your PIN on your handset screen to authorize:
-              </p>
-              <div class="text-3xl font-black text-[#0B1B3D] font-mono tracking-tight">${formattedAmount}</div>
-              <div class="text-[11px] text-slate-500 font-mono">Reference: ${paymentRef}</div>
-            </div>
-
-            <!-- Countdown and Live Status Indicator -->
-            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-left">
-              <div class="flex items-center justify-between text-xs font-bold text-slate-700">
-                <span class="flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                  <span id="auto-status-indicator-text">Awaiting PIN authorization on handset...</span>
-                </span>
-                <span id="ussd-countdown-display" class="font-mono text-emerald-700 font-black text-sm">${countdownSeconds || 60}s</span>
-              </div>
-              <p class="text-[11px] text-slate-500 leading-relaxed">
-                Payment verifies automatically in real time once your PIN is entered. This screen will update on its own without requiring any manual button.
-              </p>
-            </div>
-
-            <!-- Real-Time Automated Verification Radar Card -->
-            <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-4 flex items-center justify-center gap-3">
-              <svg class="animate-spin w-5 h-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <div class="text-left">
-                <div class="text-xs font-bold text-emerald-950">Automated Network Verification Active</div>
-                <div class="text-[11px] text-emerald-700">Listening to carrier transaction confirmation stream...</div>
-              </div>
-            </div>
-
-            <!-- Change Details or Try Another Number Button -->
-            <div class="pt-1">
-              <button type="button" onclick="cancelWaitingUssd()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 rounded-xl text-xs transition flex items-center justify-center gap-2 border border-slate-200 shadow-xs">
-                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
-                <span>Change Details or Try Another Number</span>
-              </button>
-            </div>
-
-            <div class="text-[10px] text-slate-400 border-t border-slate-100 pt-3 flex items-center justify-between">
-              <span>Direct Settlement Switch</span>
-              <span>256-Bit SSL Encrypted</span>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    `;
-  }
-
-  // Case 3: Standard Dedicated Direct Payment Intake Form
-  const isAirtelDetected = /^(075|070|\+25675|\+25670)/.test(String(clientPhone || '').replace(/\s+/g, ''));
-  const isMtnDetected = /^(077|078|076|074|\+25677|\+25678|\+25676|\+25674)/.test(String(clientPhone || '').replace(/\s+/g, ''));
-
-  return `
-    <div id="payment-page-section" class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 min-h-[85vh]">
-      <div class="max-w-3xl mx-auto space-y-8">
-        
-        <!-- Header Banner -->
-        <div class="bg-gradient-to-r from-[#0B1B3D] via-[#152e61] to-[#08132B] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="space-y-2">
-            <div class="flex items-center gap-2">
-              <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-emerald-400/30">
-                Official Client Payment Portal
-              </span>
-              <span class="text-xs text-slate-300 font-bold">• Direct Official Settlement</span>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Direct Project & Service Settlement</h1>
-            <p class="text-xs text-slate-300 leading-relaxed max-w-xl">
-              Pay securely for agreed software licenses, commercial printing jobs, and IT services following consultation with Phresh Tech Media directors. Dispatches an instant USSD PIN prompt directly to your phone.
-            </p>
-          </div>
-          <img src="/logo.svg" alt="Phresh Tech Media" class="h-14 w-auto bg-white p-2 rounded-2xl shadow-md self-start md:self-auto shrink-0" referrerPolicy="no-referrer" />
-        </div>
-
-        <!-- Error Alert -->
-        <div id="payment-error-banner" class="${error ? 'flex' : 'hidden'} p-4 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-700 font-bold items-center gap-2 animate-fade-in shadow-xs">
-          <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-          <span id="payment-error-text">${error || ''}</span>
-        </div>
-
-        <!-- Main Payment Form Card -->
-        <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-          
-          <form onsubmit="handleInitiatePayment(event)" class="space-y-6 text-xs" novalidate>
-            
-            <!-- Step 1: Client Information -->
-            <div class="space-y-4">
-              <div class="border-b border-slate-100 pb-2 flex items-center justify-between">
-                <span class="text-xs font-black uppercase text-[#0B1B3D] tracking-wider">1. Client Contact Details</span>
-                <span class="text-[11px] text-slate-400">For official receipt & VAT record</span>
-              </div>
-
-              <div class="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label class="block font-bold text-slate-800 mb-1">Your Full Name / Organization <span class="text-red-500">*</span></label>
-                  <input 
-                    id="payment-client-name"
-                    type="text" 
-                    required 
-                    value="${clientName}" 
-                    oninput="handlePaymentFieldChange('clientName', this.value)" 
-                    placeholder="e.g. Director Denis Mukasa / Global High School" 
-                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition"
-                  />
-                </div>
-
-                <div>
-                  <label class="block font-bold text-slate-800 mb-1">Email Address <span class="text-red-500">*</span></label>
-                  <input 
-                    id="payment-client-email"
-                    type="email" 
-                    required 
-                    value="${clientEmail}" 
-                    oninput="handlePaymentFieldChange('clientEmail', this.value)" 
-                    placeholder="e.g. denis@organization.org" 
-                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
-                  <span>
-                    Mobile Money Handset Phone Number <span class="text-red-500">*</span>
-                  </span>
-                  <span id="payment-phone-network-badge">
-                    ${isMtnDetected ? `
-                      <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">MTN MoMo Detected</span>
-                    ` : isAirtelDetected ? `
-                      <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-300">Airtel Money Detected</span>
-                    ` : `
-                      <span class="text-[10px] text-slate-400">MTN or Airtel Uganda</span>
-                    `}
-                  </span>
-                </label>
-                <div class="relative">
-                  <input 
-                    id="payment-client-phone"
-                    type="tel" 
-                    required 
-                    value="${clientPhone}" 
-                    oninput="handlePaymentFieldChange('clientPhone', this.value)" 
-                    placeholder="e.g. 0777123456 or 0757848094" 
-                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition font-mono"
-                  />
-                  <span class="absolute right-3 top-3 text-[10px] font-bold uppercase text-slate-400">UG (+256)</span>
-                </div>
-                <span class="text-[10px] text-slate-500 mt-1 block">The phone that will receive the live USSD PIN prompt directly on screen.</span>
-              </div>
-            </div>
-
-            <!-- Step 2: Agreed Service & Amount -->
-            <div class="space-y-4 pt-2">
-              <div class="border-b border-slate-100 pb-2 flex items-center justify-between">
-                <span class="text-xs font-black uppercase text-[#0B1B3D] tracking-wider">2. Agreed Service & Payment Amount</span>
-                <span class="text-[11px] text-emerald-700 font-bold">Consultation-first settlement</span>
-              </div>
-
-              <div>
-                <label class="block font-bold text-slate-800 mb-1">Service or Project Description <span class="text-red-500">*</span></label>
-                <input 
-                  id="payment-service-desc"
-                  type="text" 
-                  required 
-                  value="${serviceDescription}" 
-                  oninput="handlePaymentFieldChange('serviceDescription', this.value)" 
-                  placeholder="e.g. Phresh Rank Core License, 5 Carbonless Receipt Books, Web Portal Setup..." 
-                  class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition"
-                />
-              </div>
-
-              <div class="grid sm:grid-cols-12 gap-4">
-                <div class="sm:col-span-8">
-                  <label class="block font-bold text-slate-800 mb-1">
-                    Agreed Payment Amount <span class="text-red-500">*</span>
-                  </label>
-                  <div class="relative flex items-center">
-                    <span id="payment-currency-symbol" class="absolute left-3.5 font-mono font-black text-slate-600 text-sm">${currency}</span>
-                    <input 
-                      id="payment-amount-input"
-                      type="number" 
-                      min="500" 
-                      step="any" 
-                      required 
-                      value="${amount}" 
-                      oninput="handlePaymentFieldChange('amount', this.value)" 
-                      placeholder="e.g. 350000" 
-                      class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-16 pr-4 py-3.5 text-base font-black text-[#0B1B3D] focus:outline-none focus:border-emerald-600 focus:bg-white transition font-mono shadow-xs"
-                    />
-                  </div>
-                </div>
-
-                <div class="sm:col-span-4">
-                  <label class="block font-bold text-slate-800 mb-1">Currency</label>
-                  <select 
-                    id="payment-currency-select"
-                    onchange="handlePaymentCurrencySelect(this.value)" 
-                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-emerald-600 shadow-xs"
-                  >
-                    <option value="UGX" ${currency === 'UGX' ? 'selected' : ''}>UGX (Uganda Shillings)</option>
-                    <option value="USD" ${currency === 'USD' ? 'selected' : ''}>USD (US Dollars)</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Quick Presets -->
-              <div class="space-y-1.5 pt-1">
-                <span class="text-[10px] font-bold uppercase text-slate-400">Quick Agreed Tier Presets:</span>
-                <div class="flex flex-wrap gap-2">
-                  <button type="button" onclick="setPaymentPresetAmount(50000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
-                    UGX 50,000
-                  </button>
-                  <button type="button" onclick="setPaymentPresetAmount(150000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
-                    UGX 150,000
-                  </button>
-                  <button type="button" onclick="setPaymentPresetAmount(350000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
-                    UGX 350,000
-                  </button>
-                  <button type="button" onclick="setPaymentPresetAmount(500000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
-                    UGX 500,000
-                  </button>
-                  <button type="button" onclick="setPaymentPresetAmount(1200000)" class="px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-700 transition">
-                    UGX 1,200,000
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Step 3: Payment Method Selection -->
-            <div class="space-y-4 pt-2">
-              <div class="border-b border-slate-100 pb-2">
-                <span class="text-xs font-black uppercase text-[#0B1B3D] tracking-wider block">3. Select Payment Method</span>
-                <span class="text-[11px] text-slate-500">Instant USSD prompt sent directly to your phone</span>
-              </div>
-
-              <div class="grid sm:grid-cols-3 gap-3">
-                
-                <!-- MTN MoMo -->
-                <div id="payment-method-card-mtn" onclick="handlePaymentMethodSelect('mtn_momo')" class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'mtn_momo' ? 'border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
-                  <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-black text-slate-900">MTN MoMo</span>
-                    <input type="radio" id="payment-method-mtn" name="payment_method" value="mtn_momo" ${paymentMethod === 'mtn_momo' ? 'checked' : ''} class="text-amber-500 focus:ring-amber-400" />
-                  </div>
-                  <span class="text-[10px] text-slate-500">Interactive USSD push directly to MTN phone.</span>
-                </div>
-
-                <!-- Airtel Money -->
-                <div id="payment-method-card-airtel" onclick="handlePaymentMethodSelect('airtel_money')" class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'airtel_money' ? 'border-red-500 bg-red-50/50 ring-2 ring-red-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
-                  <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-black text-slate-900">Airtel Money</span>
-                    <input type="radio" id="payment-method-airtel" name="payment_method" value="airtel_money" ${paymentMethod === 'airtel_money' ? 'checked' : ''} class="text-red-500 focus:ring-red-400" />
-                  </div>
-                  <span class="text-[10px] text-slate-500">Instant PIN prompt to Airtel Uganda mobile line.</span>
-                </div>
-
-                <!-- Visa/Mastercard -->
-                <div id="payment-method-card-card" onclick="handlePaymentMethodSelect('card')" class="relative flex flex-col p-4 border rounded-2xl cursor-pointer transition ${paymentMethod === 'card' ? 'border-blue-500 bg-blue-50/50 ring-2 ring-blue-500/30' : 'border-slate-200 bg-slate-50 hover:bg-slate-100'}">
-                  <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-black text-slate-900">Card Checkout</span>
-                    <input type="radio" id="payment-method-card" name="payment_method" value="card" ${paymentMethod === 'card' ? 'checked' : ''} class="text-blue-500 focus:ring-blue-400" />
-                  </div>
-                  <span class="text-[10px] text-slate-500">Visa & Mastercard direct card settlement.</span>
-                </div>
-
-              </div>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="pt-4 space-y-3">
-              <button 
-                type="submit" 
-                ${isInitiating ? 'disabled' : ''} 
-                class="w-full bg-[#1E7E34] hover:bg-emerald-700 disabled:opacity-50 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:shadow-emerald-900/30 transition flex items-center justify-center gap-2"
-              >
-                ${isInitiating ? `
-                  <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                  <span>Dispatching USSD Prompt...</span>
-                ` : `
-                  <span>Proceed to Payment (${currency} ${Number(amount || 0).toLocaleString()}) →</span>
-                `}
-              </button>
-
-              <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-100">
-                <span class="flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                  Bank-Grade 256-Bit SSL Encrypted
-                </span>
-                <span>Phresh Tech Media Services Uganda</span>
-              </div>
-            </div>
-
-          </form>
-
-        </div>
-
-      </div>
-    </div>
-  `;
-}
-
-// Router Page Selector
-function renderActivePage() {
-  switch (currentPage) {
-    case 'home':
-      return renderHomePage();
-    case 'services':
-      return renderServicesPage();
-    case 'portfolio':
-      return renderPortfolioPage();
-    case 'about':
-      return renderAboutPage();
-    case 'contact':
-      return renderContactPage();
-    case 'payment':
-    case 'pay':
-      return renderDedicatedPaymentPage();
-    default:
-      return renderHomePage();
-  }
-}
-
-// ==========================================
-// FEATURED SERVICES 3-COLUMN GRID COMPONENT
-// ==========================================
-function renderFeaturedServicesThreeGrid() {
-  return `
-    <section id="featured-services-section" class="py-16 bg-slate-900 text-white relative overflow-hidden border-y border-slate-800">
-      <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-transparent to-blue-500/5 pointer-events-none"></div>
-
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 relative z-10">
-        
-        <!-- Header -->
-        <div class="text-center max-w-3xl mx-auto space-y-3">
-          <span class="text-xs font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/80 px-3.5 py-1 rounded-full border border-emerald-500/30 inline-block">
-            Featured Service Highlights
-          </span>
-          <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
-            Specialized Technology & Design Capabilities
-          </h2>
-          <p class="text-slate-300 text-sm leading-relaxed">
-            Engineered for high performance and visual impact across Custom Web Application Development, Database Systems, and Professional Graphic Design.
-          </p>
-        </div>
-
-        <!-- 3-Column Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-
-          <!-- Card 1: Custom Web & Software Development -->
-          <div class="bg-slate-950/80 border border-slate-800 hover:border-emerald-500/50 rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col justify-between space-y-6 transition-all group duration-300 hover:shadow-emerald-950/40">
-            <div class="space-y-5">
-              <div class="flex items-center justify-between">
-                <div class="w-12 h-12 bg-emerald-500/20 border border-emerald-400/30 text-emerald-400 rounded-2xl flex items-center justify-center font-mono font-black text-sm group-hover:scale-110 transition-transform">
-                  APPS
-                </div>
-                <span class="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950 border border-emerald-800/50 px-2.5 py-1 rounded-full uppercase">
-                  Full-Stack Architecture
-                </span>
-              </div>
-
-              <div>
-                <h3 class="text-xl font-black text-white group-hover:text-emerald-400 transition-colors">
-                  Custom Web & Software Development
-                </h3>
-                <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                  Tailored web applications, cloud APIs, custom enterprise admin portals, and automated business workflows.
-                </p>
-              </div>
-
-              <div class="pt-2 border-t border-slate-800/80 space-y-2">
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Full-Stack Web & Cloud Application Architecture</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Automated Gmail & SMTP Dispatchers</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>REST API Integrations & Webhooks</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Session Security & Role-Based Auth</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-3 pt-4 border-t border-slate-800">
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-slate-400 font-medium">Starting Estimate:</span>
-                <span class="font-mono font-black text-emerald-400">From UGX 400,000</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <button onclick="consultService('Custom Web & Software Development')" class="flex-1 bg-[#1E7E34] hover:bg-emerald-600 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
-                  <span>Discuss Web Project →</span>
-                </button>
-                <button onclick="consultViaWhatsApp('Custom Web & Software Development')" title="Discuss via WhatsApp" class="bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-xl transition shadow flex items-center justify-center">
-                  ${WHATSAPP_ICON_SVG}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2: MySQL Database Systems -->
-          <div class="bg-slate-950/80 border border-slate-800 hover:border-blue-500/50 rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col justify-between space-y-6 transition-all group duration-300 hover:shadow-blue-950/40">
-            <div class="space-y-5">
-              <div class="flex items-center justify-between">
-                <div class="w-12 h-12 bg-blue-500/20 border border-blue-400/30 text-blue-400 rounded-2xl flex items-center justify-center font-mono font-black text-sm group-hover:scale-110 transition-transform">
-                  SQL
-                </div>
-                <span class="text-[10px] font-mono font-bold text-blue-400 bg-blue-950 border border-blue-800/50 px-2.5 py-1 rounded-full uppercase">
-                  Relational Data
-                </span>
-              </div>
-
-              <div>
-                <h3 class="text-xl font-black text-white group-hover:text-blue-400 transition-colors">
-                  MySQL Database Systems
-                </h3>
-                <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                  High-capacity relational database schemas designed for school grading, ERP record tracking, and secure financial ledgers.
-                </p>
-              </div>
-
-              <div class="pt-2 border-t border-slate-800/80 space-y-2">
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>MySQL 8.x Relational Schema Architecture</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Phresh Rank Core & Eduledger Data Engines</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Zero Data-Loss Indexing & ACID Compliance</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Automated Transaction Logs & Backups</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-3 pt-4 border-t border-slate-800">
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-slate-400 font-medium">Rank Core Base:</span>
-                <span class="font-mono font-black text-blue-400">UGX 350,000</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <button onclick="consultService('MySQL Database Systems & Phresh Rank Core')" class="flex-1 bg-blue-700 hover:bg-blue-600 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
-                  <span>Schedule System Audit →</span>
-                </button>
-                <button onclick="consultViaWhatsApp('MySQL Database Systems & Phresh Rank Core')" title="Discuss via WhatsApp" class="bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-xl transition shadow flex items-center justify-center">
-                  ${WHATSAPP_ICON_SVG}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3: Professional Graphic Design -->
-          <div class="bg-slate-950/80 border border-slate-800 hover:border-amber-500/50 rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col justify-between space-y-6 transition-all group duration-300 hover:shadow-amber-950/40">
-            <div class="space-y-5">
-              <div class="flex items-center justify-between">
-                <div class="w-12 h-12 bg-amber-500/20 border border-amber-400/30 text-amber-400 rounded-2xl flex items-center justify-center font-mono font-black text-sm group-hover:scale-110 transition-transform">
-                  ART
-                </div>
-                <span class="text-[10px] font-mono font-bold text-amber-400 bg-amber-950 border border-amber-800/50 px-2.5 py-1 rounded-full uppercase">
-                  Visual Branding
-                </span>
-              </div>
-
-              <div>
-                <h3 class="text-xl font-black text-white group-hover:text-amber-400 transition-colors">
-                  Professional Graphic Design
-                </h3>
-                <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                  Creative branding identity, corporate logos, marketing collateral, vector artwork, and commercial print press graphics.
-                </p>
-              </div>
-
-              <div class="pt-2 border-t border-slate-800/80 space-y-2">
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Phresh Branding & Logo Systems</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Minor (5k), Medium (15k) & Mega (25k) Branding</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Print-Ready High-Res Vector Outputs (AI/PDF)</span>
-                </div>
-                <div class="flex items-center gap-2 text-xs text-slate-300">
-                  <svg class="w-4 h-4 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  <span>Banners, Stickers & Receipt Book Visuals</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-3 pt-4 border-t border-slate-800">
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-slate-400 font-medium">Standard Service:</span>
-                <span class="font-mono font-black text-amber-400">UGX 15,000</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <button onclick="consultService('Professional Graphic Design & Visual Branding')" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white text-xs font-black py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
-                  <span>Start Branding Project →</span>
-                </button>
-                <button onclick="consultViaWhatsApp('Professional Graphic Design & Visual Branding')" title="Discuss via WhatsApp" class="bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-xl transition shadow flex items-center justify-center">
-                  ${WHATSAPP_ICON_SVG}
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-// ==========================================
-// 1. HOME PAGE RENDERER
-// ==========================================
-function renderHomePage() {
-  return `
-    <!-- Full-Bleed Background Hero Section with Slide Show -->
-    <div id="hero-section" class="relative text-white overflow-hidden py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10 min-h-[620px] flex flex-col justify-between">
-      
-      <!-- Background Slideshow Layer -->
-      <div id="hero-bg-slides" class="absolute inset-0 z-0">
-        ${HERO_SLIDES.map((s, idx) => `
-          <div class="hero-bg-slide absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentHeroSlide === idx ? 'opacity-100' : 'opacity-0 pointer-events-none'}">
-            <img src="${s.image}" alt="${s.title}" class="w-full h-full object-cover object-center transform scale-105" referrerPolicy="no-referrer" />
-          </div>
-        `).join('')}
-        <!-- Dark Gradient Overlays for High Text Legibility -->
-        <div class="absolute inset-0 bg-gradient-to-r from-[#061024]/95 via-[#0B1B3D]/85 to-[#08132B]/75 backdrop-blur-[1px]"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-[#061024] via-transparent to-[#061024]/70"></div>
-      </div>
-
-      <!-- Hero Slide Text Content -->
-      <div id="hero-slide-content" class="max-w-7xl mx-auto w-full relative z-10 my-auto py-6">
-        <!-- Rendered dynamically via renderHeroSlideContent() -->
-      </div>
-
-      <!-- Slide Indicator Controls & Bottom Bar -->
-      <div class="max-w-7xl mx-auto w-full relative z-10 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/15 pt-4">
-        <div id="hero-slide-indicators" class="flex items-center gap-2">
-          ${HERO_SLIDES.map((s, idx) => `
-            <button onclick="setHeroSlide(${idx})" class="h-3 rounded-full transition-all flex items-center gap-2 px-1 ${currentHeroSlide === idx ? 'w-12 bg-emerald-400 text-slate-900 font-black text-[10px]' : 'w-3 bg-white/30 hover:bg-white/60'}" title="${s.badge}">
-              ${currentHeroSlide === idx ? `<span class="truncate pl-1">0${idx+1}</span>` : ''}
-            </button>
-          `).join('')}
-        </div>
-        <div class="flex items-center gap-3 text-xs font-mono text-gray-300">
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Kasenge - Nakawuka Road Headquarters, Kampala</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- 5-Pillar Service Grid -->
-    <section class="py-16 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        <div class="text-center max-w-3xl mx-auto space-y-3">
-          <span class="text-xs font-black uppercase tracking-widest text-[#1E7E34]">Our Core Pillars of Excellence</span>
-          <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">5 Operational Pillars for Business Growth</h2>
-          <p class="text-slate-600 text-sm">
-            Phresh Tech Media Services combines full-stack database engineering with a state-of-the-art commercial printing press house in Kampala.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
-          <!-- Pillar 1 -->
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all space-y-4 flex flex-col justify-between group">
-            <div class="space-y-3">
-              <div class="w-12 h-12 bg-emerald-100 text-[#1E7E34] rounded-2xl flex items-center justify-center text-sm font-black tracking-wider group-hover:scale-110 transition-transform">
-                GD
-              </div>
-              <h3 class="text-xl font-black text-slate-900">Graphic Design & Branding</h3>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Graphic designing (UGX 15k), Phresh Branding (UGX 10k), Minor (5k), Medium (15k) & Mega Branding (25k).
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-slate-500">From UGX 5,000</span>
-              <button onclick="navigateTo('services', 'graphic-design')" class="text-[#1E7E34] font-black text-xs hover:underline flex items-center gap-1">
-                Explore Pillar →
-              </button>
-            </div>
-          </div>
-
-          <!-- Pillar 2 -->
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all space-y-4 flex flex-col justify-between group">
-            <div class="space-y-3">
-              <div class="w-12 h-12 bg-red-100 text-[#8B0000] rounded-2xl flex items-center justify-center text-sm font-black tracking-wider group-hover:scale-110 transition-transform">
-                PR
-              </div>
-              <h3 class="text-xl font-black text-slate-900">Commercial Printing & Press</h3>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Receipt book 100 leaves (UGX 25k), Banner/sticker printing per sq m (UGX 25k) & high-speed copying.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-slate-500">UGX 25,000 / unit</span>
-              <button onclick="navigateTo('services', 'print-copy')" class="text-[#8B0000] font-black text-xs hover:underline flex items-center gap-1">
-                Explore Pillar →
-              </button>
-            </div>
-          </div>
-
-          <!-- Pillar 3 -->
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all space-y-4 flex flex-col justify-between group">
-            <div class="space-y-3">
-              <div class="w-12 h-12 bg-blue-100 text-blue-800 rounded-2xl flex items-center justify-center text-sm font-black tracking-wider group-hover:scale-110 transition-transform">
-                DB
-              </div>
-              <h3 class="text-xl font-black text-slate-900">Custom Database & ERP Systems</h3>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Phresh Rank Core (UGX 350k/400k), Eduledger (400k), Rent Ledger (400k), Church System (400k) & POS Systems.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-slate-500">From UGX 350,000</span>
-              <button onclick="navigateTo('services', 'database-systems')" class="text-blue-800 font-black text-xs hover:underline flex items-center gap-1">
-                Explore Pillar →
-              </button>
-            </div>
-          </div>
-
-          <!-- Pillar 4 -->
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all space-y-4 flex flex-col justify-between group">
-            <div class="space-y-3">
-              <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center text-sm font-black tracking-wider group-hover:scale-110 transition-transform">
-                WEB
-              </div>
-              <h3 class="text-xl font-black text-slate-900">Web Design & Domain Purchases</h3>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Official domain purchases (UGX 25k), institutional school web portals, and custom cloud hosting solutions.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-slate-500">Domain UGX 25,000</span>
-              <button onclick="navigateTo('services', 'web-development')" class="text-amber-800 font-black text-xs hover:underline flex items-center gap-1">
-                Explore Pillar →
-              </button>
-            </div>
-          </div>
-
-          <!-- Pillar 5 -->
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all space-y-4 flex flex-col justify-between group md:col-span-2 lg:col-span-1">
-            <div class="space-y-3">
-              <div class="w-12 h-12 bg-purple-100 text-purple-800 rounded-2xl flex items-center justify-center text-sm font-black tracking-wider group-hover:scale-110 transition-transform">
-                ENT
-              </div>
-              <h3 class="text-xl font-black text-slate-900">Phresh Enterprise Suite</h3>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Phresh E-lesson manager (UGX 600k), Phresh-Nexus (UGX 850k), System Renewal (UGX 100k) & System Wholesale (UGX 1.5M).
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-slate-500">Full Catalog</span>
-              <button onclick="navigateTo('services', 'tariff-catalog')" class="text-purple-800 font-black text-xs hover:underline flex items-center gap-1">
-                Official Price Tariff →
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- 3-Column Highlight Grid: Custom Web Apps, Database Systems, Graphic Design -->
-    ${renderFeaturedServicesThreeGrid()}
-
-    <!-- Authentic Product Systems & Press Gallery Showcase -->
-    ${renderHomeProductShowcase()}
-
-    <!-- Client Testimonials & Live Stats Counter -->
-    <section class="py-16 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
-        <!-- Stats Counter Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center shadow-sm">
-            <span class="block text-3xl sm:text-4xl font-black text-[#1E7E34]">50+</span>
-            <span class="text-xs text-slate-600 font-bold uppercase tracking-wider mt-1 block">Partner Schools</span>
-          </div>
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center shadow-sm">
-            <span class="block text-3xl sm:text-4xl font-black text-[#8B0000]">100k+</span>
-            <span class="text-xs text-slate-600 font-bold uppercase tracking-wider mt-1 block">Report Cards Issued</span>
-          </div>
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center shadow-sm">
-            <span class="block text-3xl sm:text-4xl font-black text-[#0B1B3D]">100%</span>
-            <span class="text-xs text-slate-600 font-bold uppercase tracking-wider mt-1 block">Offline Backup Sync</span>
-          </div>
-          <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center shadow-sm">
-            <span class="block text-3xl sm:text-4xl font-black text-emerald-600">24/7</span>
-            <span class="text-xs text-slate-600 font-bold uppercase tracking-wider mt-1 block">Kasenge Support Desk</span>
-          </div>
-        </div>
-
-        <!-- Testimonials -->
-        <div class="space-y-6">
-          <div class="text-center space-y-2">
-            <span class="text-xs font-black uppercase tracking-widest text-[#1E7E34]">Client Testimonials</span>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Trusted Across Educational Institutions</h2>
-          </div>
-
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
-              <div class="flex items-center gap-1 text-amber-400 text-sm">★★★★★</div>
-              <p class="text-xs text-slate-700 italic leading-relaxed">
-                "Phresh Rank Core eliminated weeks of manual grade calculation for our students. Teachers enter marks smoothly, and parent report cards are generated cleanly in under 10 minutes."
-              </p>
-              <div class="border-t border-slate-100 pt-3">
-                <span class="block font-black text-slate-900 text-xs">Global High School Madudu</span>
-                <span class="text-[10px] text-slate-500">Academic Registrar's Desk</span>
-              </div>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
-              <div class="flex items-center gap-1 text-amber-400 text-sm">★★★★★</div>
-              <p class="text-xs text-slate-700 italic leading-relaxed">
-                "Our academic department relies on Phresh Rank Core daily for student marksheets, NCDC competence descriptors, and instant parent PDF report card batch printing."
-              </p>
-              <div class="border-t border-slate-100 pt-3">
-                <span class="block font-black text-slate-900 text-xs">Pride College Lungala</span>
-                <span class="text-[10px] text-slate-500">Director of Studies (DOS)</span>
-              </div>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
-              <div class="flex items-center gap-1 text-amber-400 text-sm">★★★★★</div>
-              <p class="text-xs text-slate-700 italic leading-relaxed">
-                "Phresh Rank Core coupled with EduLedger gives our school total control over student academic rankings, marksheets, fee ledgers, and official report cards."
-              </p>
-              <div class="border-t border-slate-100 pt-3">
-                <span class="block font-black text-slate-900 text-xs">Mpigi Light College</span>
-                <span class="text-[10px] text-slate-500">Bursary & DOS Office</span>
-              </div>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
-              <div class="flex items-center gap-1 text-amber-400 text-sm">★★★★★</div>
-              <p class="text-xs text-slate-700 italic leading-relaxed">
-                "Phresh Rank Core's 100% offline desktop engine guarantees zero downtime during end-of-term report card generation. It is the most reliable school marks system in Uganda."
-              </p>
-              <div class="border-t border-slate-100 pt-3">
-                <span class="block font-black text-slate-900 text-xs">St. Andrews College Moyo</span>
-                <span class="text-[10px] text-slate-500">Headteacher's Desk</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  `;
-}
-
-// Render Hero Banner Content Over Background Slideshow
-function renderHeroSlideContent() {
-  const container = document.getElementById('hero-slide-content');
-  const slide = HERO_SLIDES[currentHeroSlide];
-
-  if (container && slide) {
-    container.innerHTML = `
-      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full">
-        <!-- Main Hero Typography & Call-To-Action Column -->
-        <div class="lg:col-span-7 space-y-6">
-          <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-sm backdrop-blur-md">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span>${slide.badge}</span>
-          </div>
-
-          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white drop-shadow-md">
-            ${slide.title} <br />
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300">
-              ${slide.highlight}
-            </span>
-          </h1>
-
-          <p class="text-gray-200 text-sm sm:text-base max-w-2xl leading-relaxed font-normal drop-shadow-xs">
-            ${slide.subtitle}
-          </p>
-
-          <div class="flex flex-wrap items-center gap-4 pt-2">
-            <button onclick="navigateTo('${slide.ctaPage}')" class="bg-[#8B0000] hover:bg-red-800 text-white font-extrabold px-7 py-4 rounded-xl text-xs uppercase tracking-wider shadow-2xl hover:shadow-red-900/50 transition transform hover:-translate-y-0.5">
-              ${slide.ctaText} →
-            </button>
-            <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-4 rounded-xl text-xs transition flex items-center gap-2 shadow-xl hover:shadow-emerald-900/50 transform hover:-translate-y-0.5">
-              ${WHATSAPP_ICON_SVG}
-              <span>WhatsApp Us Direct</span>
-            </a>
-          </div>
-
-          <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-white/15 text-xs">
-            ${slide.stats.map(st => `
-              <div class="bg-slate-900/60 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 shadow-sm">
-                <span class="block text-xl font-black text-emerald-400 font-mono">${st.number}</span>
-                <span class="text-gray-300 text-[11px] font-medium leading-tight block mt-0.5">${st.label}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-
-        <!-- Right Glassmorphic Spotlight Card Over Background -->
-        <div class="lg:col-span-5 hidden lg:block">
-          <div class="bg-slate-900/75 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-white/20 shadow-2xl space-y-6 relative overflow-hidden group">
-            <div class="absolute -top-10 -right-10 w-36 h-36 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
-            
-            <div class="flex items-center justify-between border-b border-white/10 pb-4">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold">
-                  PT
-                </div>
-                <div>
-                  <h4 class="font-extrabold text-sm text-white">${slide.badge}</h4>
-                  <span class="text-[10px] text-emerald-400 font-mono">Verified Solution</span>
-                </div>
-              </div>
-              <span class="bg-white/10 text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase border border-white/10">
-                Slide 0${currentHeroSlide + 1}/0${HERO_SLIDES.length}
-              </span>
-            </div>
-
-            <div class="space-y-3">
-              <span class="text-xs font-mono text-emerald-300 uppercase tracking-wider block font-bold">FEATURED CAPABILITY</span>
-              <h3 class="text-lg font-black text-white leading-snug">${slide.title}</h3>
-              <p class="text-xs text-gray-300 leading-relaxed">${slide.subtitle}</p>
-            </div>
-
-            <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs">
-              <button onclick="navigateTo('contact')" class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1.5 transition">
-                <span>Inquire About This Service</span>
-                <span>→</span>
-              </button>
-              <button onclick="openImageModal('${slide.image}', '${slide.title.replace(/'/g, "\\'")}', '${slide.subtitle.replace(/'/g, "\\'")}', '${slide.badge}')" class="text-xs text-gray-300 hover:text-white font-bold flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/10 transition">
-                <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
-                <span>Enlarge Screen</span>
-              </button>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    `;
-  }
-
-  // Update background slide visibility
-  const bgContainer = document.getElementById('hero-bg-slides');
-  if (bgContainer) {
-    const slideDivs = bgContainer.querySelectorAll('.hero-bg-slide');
-    slideDivs.forEach((div, idx) => {
-      if (idx === currentHeroSlide) {
-        div.classList.remove('opacity-0', 'pointer-events-none');
-        div.classList.add('opacity-100');
-      } else {
-        div.classList.remove('opacity-100');
-        div.classList.add('opacity-0', 'pointer-events-none');
-      }
-    });
-  }
-
-  // Update slide indicators active state
-  const indicatorContainer = document.getElementById('hero-slide-indicators');
-  if (indicatorContainer) {
-    indicatorContainer.innerHTML = HERO_SLIDES.map((s, idx) => `
-      <button onclick="setHeroSlide(${idx})" class="h-3 rounded-full transition-all flex items-center gap-2 px-1 ${currentHeroSlide === idx ? 'w-12 bg-emerald-400 text-slate-900 font-black text-[10px]' : 'w-3 bg-white/30 hover:bg-white/60'}" title="${s.badge}">
-        ${currentHeroSlide === idx ? `<span class="truncate pl-1">0${idx+1}</span>` : ''}
-      </button>
-    `).join('');
-  }
-}
-
-// ==========================================
-// 2. SERVICES & SOLUTIONS PAGE RENDERER
-// ==========================================
-function renderServicesPage() {
-  return `
-    <div id="services-catalog-section" class="bg-gradient-to-b from-[#0B1B3D] to-[#08132B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-      <div class="max-w-7xl mx-auto space-y-3">
-        <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Uganda Commercial Catalogue</span>
-        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Services & Operational Pillars</h1>
-        <p class="text-gray-300 text-sm max-w-2xl">
-          Explore complete specifications across Graphic Design, Commercial Printing, Custom Database Systems, Web Development, and Social Media Marketing.
-        </p>
-      </div>
-    </div>
-
-    <section class="py-12 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
-        <!-- Nav Tabs -->
-        <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-4 text-xs font-bold">
-          <button onclick="switchServicePillar('tariff-catalog')" class="px-4 py-2.5 rounded-xl transition ${activeServicePillar === 'tariff-catalog' ? 'bg-emerald-700 text-white shadow' : 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'}">
-            Official Master Price Tariff (21 Phresh Services)
-          </button>
-          <button onclick="switchServicePillar('graphic-design')" class="px-4 py-2.5 rounded-xl transition ${activeServicePillar === 'graphic-design' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Graphic Design & Branding
-          </button>
-          <button onclick="switchServicePillar('print-copy')" class="px-4 py-2.5 rounded-xl transition ${activeServicePillar === 'print-copy' ? 'bg-[#8B0000] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Printing & Photocopying
-          </button>
-          <button onclick="switchServicePillar('database-systems')" class="px-4 py-2.5 rounded-xl transition ${activeServicePillar === 'database-systems' ? 'bg-[#1E7E34] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Custom Database Systems
-          </button>
-          <button onclick="switchServicePillar('web-development')" class="px-4 py-2.5 rounded-xl transition ${activeServicePillar === 'web-development' ? 'bg-amber-700 text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Web Design & Hosting
-          </button>
-          <button onclick="switchServicePillar('social-media')" class="px-4 py-2.5 rounded-xl transition ${activeServicePillar === 'social-media' ? 'bg-purple-800 text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Social Media Marketing
-          </button>
-        </div>
-
-        <!-- Active Pillar Content Body -->
-        <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-8">
-          ${renderPillarDetailContent()}
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 3-Column Highlight Grid: Custom Web Apps, Database Systems, Graphic Design -->
-    ${renderFeaturedServicesThreeGrid()}
-  `;
+function startHeroAutoSlide() {
+  if (autoSlideTimer) clearInterval(autoSlideTimer);
+  autoSlideTimer = setInterval(() => {
+    if (currentPage === 'home') {
+      currentHeroSlide = (currentHeroSlide + 1) % HERO_HIGHLIGHTS.length;
+      renderHeroHighlight();
+    }
+  }, 7500);
 }
 
 window.switchServicePillar = function(pillar) {
   activeServicePillar = pillar;
   renderApp();
 };
-
-function renderTariffCatalog() {
-  const filtered = OFFICIAL_PHRESH_SERVICES.filter(item => {
-    const matchesCat = tariffCategoryFilter === 'all' || item.category === tariffCategoryFilter;
-    const matchesSearch = !tariffSearchQuery || 
-      item.name.toLowerCase().includes(tariffSearchQuery.toLowerCase()) || 
-      item.note.toLowerCase().includes(tariffSearchQuery.toLowerCase());
-    return matchesCat && matchesSearch;
-  });
-
-  return `
-    <div class="space-y-6">
-      <div class="border-b border-slate-100 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">Official Uganda Tariff Schedule</span>
-          <h2 class="text-2xl font-black text-slate-900 mt-2">Phresh Services Official Master Price Directory</h2>
-          <p class="text-xs text-slate-500 mt-1">Verified rates directly provided by Phresh Tech Media Services. All prices in Uganda Shillings (UGX).</p>
-        </div>
-        <button onclick="navigateTo('contact')" class="bg-[#0B1B3D] hover:bg-[#152e61] text-white font-bold text-xs px-5 py-3 rounded-xl shadow transition">
-          Contact Us for Order →
-        </button>
-      </div>
-
-      <!-- Search & Category Filters -->
-      <div class="flex flex-col sm:flex-row gap-3 justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
-        <div class="flex flex-wrap gap-1.5 text-xs font-bold w-full sm:w-auto">
-          <button onclick="setTariffCategory('all')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'all' ? 'bg-[#0B1B3D] text-white' : 'bg-white text-slate-700 hover:bg-slate-200'}">All (21 Items)</button>
-          <button onclick="setTariffCategory('software')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'software' ? 'bg-[#0B1B3D] text-white' : 'bg-white text-slate-700 hover:bg-slate-200'}">Software Systems</button>
-          <button onclick="setTariffCategory('design')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'design' ? 'bg-[#0B1B3D] text-white' : 'bg-white text-slate-700 hover:bg-slate-200'}">Branding & Design</button>
-          <button onclick="setTariffCategory('print')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'print' ? 'bg-[#0B1B3D] text-white' : 'bg-white text-slate-700 hover:bg-slate-200'}">Printing Press</button>
-          <button onclick="setTariffCategory('web')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'web' ? 'bg-[#0B1B3D] text-white' : 'bg-white text-slate-700 hover:bg-slate-200'}">Domains & Web</button>
-        </div>
-        <div class="w-full sm:w-64">
-          <input type="text" placeholder="Search service name..." value="${tariffSearchQuery}" oninput="setTariffSearch(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-emerald-600" />
-        </div>
-      </div>
-
-      <!-- Price Table Directory -->
-      <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-100 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
-            <tr>
-              <th class="p-3.5">#</th>
-              <th class="p-3.5">Service Name</th>
-              <th class="p-3.5">Category</th>
-              <th class="p-3.5">Official Rate (UGX)</th>
-              <th class="p-3.5">Details / Notes</th>
-              <th class="p-3.5 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody id="tariff-table-tbody" class="divide-y divide-slate-200 font-medium text-slate-800">
-            ${filtered.map((item, idx) => `
-              <tr class="hover:bg-emerald-50/40 transition">
-                <td class="p-3.5 font-mono text-slate-400">${idx + 1}</td>
-                <td class="p-3.5 font-bold text-slate-900">${item.name}</td>
-                <td class="p-3.5 uppercase text-[10px] font-black text-slate-500">
-                  <span class="px-2 py-0.5 bg-slate-100 rounded-md border border-slate-200">${item.category}</span>
-                </td>
-                <td class="p-3.5 font-mono font-black text-emerald-700 text-sm">
-                  UGX ${item.priceUGX.toLocaleString()}
-                </td>
-                <td class="p-3.5 text-slate-500">${item.note}</td>
-                <td class="p-3.5 text-right">
-                  <button onclick="consultService('${item.name.replace(/'/g, "\\'")}')" class="bg-[#0B1B3D] hover:bg-[#152e61] text-white font-bold text-[11px] px-3.5 py-1.5 rounded-lg shadow-xs transition whitespace-nowrap">
-                    Discuss Service →
-                  </button>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-}
 
 window.setTariffCategory = function(cat) {
   tariffCategoryFilter = cat;
@@ -2639,6 +890,660 @@ window.setTariffSearch = function(query) {
   renderApp();
 };
 
+window.filterPortfolio = function(cat) {
+  activePortfolioCategory = cat;
+  renderApp();
+};
+
+function initApp() {
+  parseHashRoute();
+  window.addEventListener('hashchange', () => {
+    const prevPage = currentPage;
+    parseHashRoute();
+    if (currentPage !== prevPage) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    renderApp();
+  });
+  renderApp();
+  startHeroAutoSlide();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
+
+// ==========================================
+// DEDICATED PAYMENT PAGE VIEW
+// ==========================================
+function renderDedicatedPaymentPage() {
+  const {
+    clientName,
+    clientEmail,
+    clientPhone,
+    serviceDescription,
+    amount,
+    currency,
+    paymentMethod,
+    isInitiating,
+    isWaitingUssdApproval,
+    isCompleted,
+    paymentRef,
+    countdownSeconds,
+    error,
+    confirmedData
+  } = paymentPageState;
+
+  // 1. Confirmed Payment Receipt View
+  if (isCompleted && confirmedData) {
+    const formattedAmount = `${confirmedData.currency || currency} ${Number(confirmedData.amount || amount).toLocaleString()}`;
+    const methodLabel = paymentMethod === 'mtn_momo'
+      ? 'MTN Mobile Money'
+      : paymentMethod === 'airtel_money'
+        ? 'Airtel Money'
+        : 'Card Payment';
+
+    return `
+      <section id="payment-receipt-view" class="py-12 px-4 sm:px-6 lg:px-8 min-h-[80vh] flex items-center justify-center">
+        <div id="printable-receipt-card" class="max-w-xl w-full bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden animate-fade-in">
+          <div class="bg-[#0F213E] px-6 py-6 sm:px-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200">
+            <div class="flex items-center gap-3">
+              <img src="/logo.svg" alt="Phresh Tech Media Services" class="h-11 w-auto bg-white p-1.5 rounded-lg" referrerPolicy="no-referrer" />
+              <div>
+                <h2 class="text-lg font-bold tracking-tight text-white">Phresh Tech Media Services</h2>
+                <p class="text-xs text-emerald-300 font-medium">Official Payment Receipt</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Paid & Confirmed</span>
+          </div>
+
+          <div class="p-6 sm:p-8 space-y-6">
+            <div class="border-b border-stone-200 pb-5">
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Amount Paid</p>
+              <div class="text-3xl font-bold text-[#0F213E] tabular-nums mt-1">${escapeHtml(formattedAmount)}</div>
+              <p class="text-sm text-slate-600 mt-1">Received from <strong class="text-slate-900">${escapeHtml(confirmedData.client_name || clientName)}</strong></p>
+            </div>
+
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm border-b border-stone-200 pb-5">
+              <div>
+                <dt class="text-xs text-slate-500">Receipt Number</dt>
+                <dd class="font-semibold text-slate-900 tabular-nums mt-0.5">${escapeHtml(confirmedData.id || paymentRef)}</dd>
+              </div>
+              <div>
+                <dt class="text-xs text-slate-500">Payment Method</dt>
+                <dd class="font-semibold text-slate-900 mt-0.5">${escapeHtml(methodLabel)}</dd>
+              </div>
+              <div>
+                <dt class="text-xs text-slate-500">Date</dt>
+                <dd class="text-slate-800 mt-0.5">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</dd>
+              </div>
+              <div>
+                <dt class="text-xs text-slate-500">Email</dt>
+                <dd class="text-slate-800 mt-0.5 break-all">${escapeHtml(confirmedData.client_email || clientEmail)}</dd>
+              </div>
+            </dl>
+
+            <div class="space-y-1">
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Service or Project</p>
+              <p class="text-sm font-semibold text-slate-900">${escapeHtml(confirmedData.service_description || serviceDescription || 'Agreed Service')}</p>
+              <p class="text-xs text-slate-600 pt-1">
+                A copy of this receipt has been recorded for your email and our office at phreshtechmediaservices@gmail.com.
+              </p>
+            </div>
+
+            <div class="pt-2 flex flex-col sm:flex-row gap-3">
+              <button onclick="printPaymentReceipt()" class="flex-1 bg-[#0F213E] hover:bg-slate-800 text-white font-semibold py-3 rounded-xl text-sm transition flex items-center justify-center gap-2">
+                <span>Print Receipt</span>
+              </button>
+              <a href="https://wa.me/256757848094?text=${encodeURIComponent(`Hello Phresh Tech Media, I have completed payment of ${formattedAmount} (Receipt ${confirmedData.id || paymentRef}).`)}" target="_blank" class="flex-1 bg-[#1E7E34] hover:bg-emerald-800 text-white font-semibold py-3 rounded-xl text-sm transition flex items-center justify-center gap-2">
+                ${WHATSAPP_ICON_SVG}
+                <span>Message Us on WhatsApp</span>
+              </a>
+            </div>
+
+            <div class="text-center pt-1">
+              <button onclick="resetPaymentPage(); navigateTo('home');" class="text-xs text-slate-600 hover:text-slate-900 underline">
+                Return to Home
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // 2. Waiting for Phone PIN Approval (100% Automatic Confirmation)
+  if (isWaitingUssdApproval) {
+    const formattedAmount = `${currency} ${Number(amount || 0).toLocaleString()}`;
+    const networkName = paymentMethod === 'mtn_momo' ? 'MTN Mobile Money' : 'Airtel Money';
+
+    return `
+      <section class="py-14 px-4 sm:px-6 lg:px-8 min-h-[80vh] flex items-center justify-center">
+        <div class="max-w-md w-full bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden animate-fade-in">
+          <div class="bg-[#0F213E] text-white px-6 py-6 text-center space-y-1.5">
+            <p class="text-xs font-semibold uppercase tracking-wider text-emerald-300">${escapeHtml(networkName)}</p>
+            <h2 class="text-2xl font-bold text-white">Check Your Phone</h2>
+            <p class="text-xs text-slate-300">Enter your Mobile Money PIN to approve this payment</p>
+          </div>
+
+          <div class="p-6 sm:p-8 space-y-5 text-center">
+            <div class="space-y-1">
+              <p class="text-sm text-slate-600">
+                Prompt sent to <strong class="text-slate-900 tabular-nums">${escapeHtml(clientPhone)}</strong>
+              </p>
+              <div class="text-3xl font-bold text-[#0F213E] tabular-nums">${escapeHtml(formattedAmount)}</div>
+              <p class="text-xs text-slate-500">Reference: ${escapeHtml(paymentRef)}</p>
+            </div>
+
+            <div class="border border-stone-200 bg-[#FAF9F6] rounded-xl p-4 text-left space-y-2">
+              <div class="flex items-center justify-between text-xs font-semibold text-slate-800">
+                <span class="flex items-center gap-2">
+                  <svg class="animate-spin w-4 h-4 text-[#1E7E34] shrink-0" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                  </svg>
+                  <span id="auto-status-indicator-text">Waiting for PIN entry on your phone...</span>
+                </span>
+                <span id="ussd-countdown-display" class="tabular-nums text-[#1E7E34] font-bold">${countdownSeconds || 90}s</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                This page updates on its own as soon as your Mobile Money payment goes through. There is no button to press here after entering your PIN.
+              </p>
+            </div>
+
+            <button type="button" onclick="cancelWaitingUssd()" class="w-full bg-stone-100 hover:bg-stone-200 text-slate-800 font-semibold py-3 rounded-xl text-sm transition border border-stone-200">
+              Change Details or Try Another Number
+            </button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // 3. Payment Intake Form
+  const detectedNet = detectUgNetwork(clientPhone);
+
+  return `
+    <section id="payment-page-section" class="py-12 px-4 sm:px-6 lg:px-8 min-h-[80vh]">
+      <div class="max-w-2xl mx-auto space-y-8">
+        <div class="space-y-2 border-b border-stone-200 pb-6">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Client Payment · Phresh Tech Media</p>
+          <h1 class="text-3xl sm:text-4xl font-bold text-[#0F213E]">Pay for Your Project or Order</h1>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Use this page to settle an agreed invoice for school software, printing, or design work. We send a Mobile Money prompt straight to your phone.
+          </p>
+        </div>
+
+        <div id="payment-error-banner" class="${error ? 'flex' : 'hidden'} p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-800 items-start gap-2.5">
+          <svg class="w-4 h-4 text-red-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
+          <span id="payment-error-text">${escapeHtml(error || '')}</span>
+        </div>
+
+        <form onsubmit="handleInitiatePayment(event)" class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6" novalidate>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="payment-client-name" class="block text-sm font-semibold text-slate-800 mb-1.5">Your Full Name or School <span class="text-red-600">*</span></label>
+              <input
+                id="payment-client-name"
+                type="text"
+                required
+                value="${escapeHtml(clientName)}"
+                oninput="handlePaymentFieldChange('clientName', this.value)"
+                placeholder="e.g. Denis Mukasa / Global High"
+                class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+              />
+            </div>
+
+            <div>
+              <label for="payment-client-email" class="block text-sm font-semibold text-slate-800 mb-1.5">Email Address <span class="text-red-600">*</span></label>
+              <input
+                id="payment-client-email"
+                type="email"
+                required
+                value="${escapeHtml(clientEmail)}"
+                oninput="handlePaymentFieldChange('clientEmail', this.value)"
+                placeholder="name@example.com"
+                class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="payment-client-phone" class="block text-sm font-semibold text-slate-800">Mobile Money Phone Number <span class="text-red-600">*</span></label>
+              <span id="payment-phone-network-note">
+                ${detectedNet === 'mtn_momo'
+                  ? `<span class="text-xs font-semibold text-amber-800">MTN Mobile Money number</span>`
+                  : detectedNet === 'airtel_money'
+                    ? `<span class="text-xs font-semibold text-red-700">Airtel Money number</span>`
+                    : `<span class="text-xs text-slate-500">MTN or Airtel Uganda</span>`}
+              </span>
+            </div>
+            <input
+              id="payment-client-phone"
+              type="tel"
+              required
+              value="${escapeHtml(clientPhone)}"
+              oninput="handlePaymentFieldChange('clientPhone', this.value)"
+              placeholder="0777 123 456 or 0747 311 209"
+              class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 tabular-nums focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+            />
+            <p class="text-xs text-slate-500 mt-1">Make sure the phone is nearby so you can enter your PIN when prompted.</p>
+          </div>
+
+          <div>
+            <label for="payment-service-desc" class="block text-sm font-semibold text-slate-800 mb-1.5">What Are You Paying For? <span class="text-red-600">*</span></label>
+            <input
+              id="payment-service-desc"
+              type="text"
+              required
+              value="${escapeHtml(serviceDescription)}"
+              oninput="handlePaymentFieldChange('serviceDescription', this.value)"
+              placeholder="e.g. Phresh Rank Core renewal, 5 receipt books, banner printing..."
+              class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+            />
+          </div>
+
+          <div class="grid sm:grid-cols-12 gap-4">
+            <div class="sm:col-span-8">
+              <label for="payment-amount-input" class="block text-sm font-semibold text-slate-800 mb-1.5">Agreed Amount <span class="text-red-600">*</span></label>
+              <div class="relative flex items-center">
+                <span id="payment-currency-symbol" class="absolute left-3.5 font-semibold text-slate-500 text-sm">${escapeHtml(currency)}</span>
+                <input
+                  id="payment-amount-input"
+                  type="number"
+                  min="500"
+                  step="any"
+                  required
+                  value="${escapeHtml(amount)}"
+                  oninput="handlePaymentFieldChange('amount', this.value)"
+                  placeholder="350000"
+                  class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl pl-16 pr-4 py-2.5 text-base font-bold text-[#0F213E] tabular-nums focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+                />
+              </div>
+            </div>
+
+            <div class="sm:col-span-4">
+              <label for="payment-currency-select" class="block text-sm font-semibold text-slate-800 mb-1.5">Currency</label>
+              <select
+                id="payment-currency-select"
+                onchange="handlePaymentCurrencySelect(this.value)"
+                class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#1E7E34]"
+              >
+                <option value="UGX" ${currency === 'UGX' ? 'selected' : ''}>UGX</option>
+                <option value="USD" ${currency === 'USD' ? 'selected' : ''}>USD</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            ${[50000, 150000, 350000, 400000, 1000000].map(amt => `
+              <button type="button" onclick="setPaymentPresetAmount(${amt})" class="px-3 py-1.5 rounded-lg border border-stone-200 bg-[#FAF9F6] hover:bg-stone-100 text-xs font-semibold text-slate-700 tabular-nums transition">
+                UGX ${amt.toLocaleString()}
+              </button>
+            `).join('')}
+          </div>
+
+          <div class="space-y-2.5">
+            <span class="block text-sm font-semibold text-slate-800">How Would You Like to Pay?</span>
+            <div class="grid sm:grid-cols-3 gap-3">
+              <div id="payment-method-card-mtn" onclick="handlePaymentMethodSelect('mtn_momo')" class="flex flex-col p-4 border rounded-xl cursor-pointer transition ${paymentMethod === 'mtn_momo' ? 'border-amber-600 bg-amber-50/60' : 'border-stone-200 bg-white hover:bg-stone-50'}">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-bold text-slate-900">MTN MoMo</span>
+                  <input type="radio" id="payment-method-mtn" name="payment_method" value="mtn_momo" ${paymentMethod === 'mtn_momo' ? 'checked' : ''} />
+                </div>
+                <span class="text-xs text-slate-600">PIN prompt sent to your MTN line</span>
+              </div>
+
+              <div id="payment-method-card-airtel" onclick="handlePaymentMethodSelect('airtel_money')" class="flex flex-col p-4 border rounded-xl cursor-pointer transition ${paymentMethod === 'airtel_money' ? 'border-red-600 bg-red-50/50' : 'border-stone-200 bg-white hover:bg-stone-50'}">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-bold text-slate-900">Airtel Money</span>
+                  <input type="radio" id="payment-method-airtel" name="payment_method" value="airtel_money" ${paymentMethod === 'airtel_money' ? 'checked' : ''} />
+                </div>
+                <span class="text-xs text-slate-600">PIN prompt sent to your Airtel line</span>
+              </div>
+
+              <div id="payment-method-card-card" onclick="handlePaymentMethodSelect('card')" class="flex flex-col p-4 border rounded-xl cursor-pointer transition ${paymentMethod === 'card' ? 'border-[#0F213E] bg-slate-50' : 'border-stone-200 bg-white hover:bg-stone-50'}">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-bold text-slate-900">Bank Card</span>
+                  <input type="radio" id="payment-method-card" name="payment_method" value="card" ${paymentMethod === 'card' ? 'checked' : ''} />
+                </div>
+                <span class="text-xs text-slate-600">Visa or Mastercard</span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            ${isInitiating ? 'disabled' : ''}
+            class="w-full bg-[#1E7E34] hover:bg-emerald-800 disabled:opacity-60 text-white font-bold py-3.5 rounded-xl text-sm transition flex items-center justify-center gap-2"
+          >
+            ${isInitiating ? `
+              <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+              <span>Sending Prompt to Your Phone...</span>
+            ` : `
+              <span>Send Payment Prompt (${escapeHtml(currency)} ${Number(amount || 0).toLocaleString()})</span>
+            `}
+          </button>
+
+          <p class="text-xs text-slate-500 text-center">
+            Need help before paying? Call our office on <a href="tel:+256741145595" class="underline text-slate-700 font-medium">+256 741 145595</a> or message <a href="https://wa.me/256757848094" target="_blank" class="underline text-[#1E7E34] font-medium">WhatsApp</a>.
+          </p>
+        </form>
+      </div>
+    </section>
+  `;
+}
+
+// ==========================================
+// 1. HOME PAGE RENDERER (Human, Grounded, Zero Technical Talk)
+// ==========================================
+function renderHomePage() {
+  return `
+    <!-- Editorial Split Hero -->
+    <section id="hero-section" class="border-b border-stone-200 bg-[#FAF9F6]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div id="hero-highlight-container"></div>
+
+        <!-- Subtle Story Switcher -->
+        <div class="mt-8 pt-6 border-t border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div id="hero-slide-controls" class="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-600">
+            ${HERO_HIGHLIGHTS.map((h, idx) => `
+              <button onclick="setHeroSlide(${idx})" class="pb-1 transition border-b-2 ${currentHeroSlide === idx ? 'border-[#1E7E34] text-[#0F213E]' : 'border-transparent hover:text-[#0F213E]'}">
+                0${idx + 1}. ${idx === 0 ? 'Overview' : idx === 1 ? 'Report Cards' : idx === 2 ? 'Printing & Banners' : 'Fees & Receipts'}
+              </button>
+            `).join('')}
+          </div>
+          <p class="text-xs text-slate-500">Kasenge - Nakawuka Road, Kampala</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- What We Help You With (Warm, Non-Technical Overview) -->
+    <section class="py-16 bg-white border-b border-stone-200">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div class="max-w-2xl space-y-2">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">What We Do</p>
+          <h2 class="text-3xl sm:text-4xl font-bold text-[#0F213E]">Practical services under one roof in Kampala</h2>
+          <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+            Whether you run a school, a retail shop, a church, or rental apartments, we keep the daily paperwork, printing, and online presence simple.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="p-6 rounded-2xl border border-stone-200 bg-[#FAF9F6] flex flex-col justify-between space-y-5">
+            <div class="space-y-2">
+              <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Schools & Records</p>
+              <h3 class="text-xl font-bold text-[#0F213E]">School & Business Tools</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Phresh Rank Core report cards, EduLedger school fees tracking, Rent Ledger for landlords, BizTrack shop sales, and church records.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-stone-200 flex items-center justify-between text-sm">
+              <span class="font-semibold text-slate-700 tabular-nums">From UGX 350,000</span>
+              <button onclick="navigateTo('services', 'database-systems')" class="font-semibold text-[#1E7E34] hover:underline">View tools →</button>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-stone-200 bg-[#FAF9F6] flex flex-col justify-between space-y-5">
+            <div class="space-y-2">
+              <p class="text-xs font-semibold uppercase tracking-wider text-[#9B1C1C]">In-House Press</p>
+              <h3 class="text-xl font-bold text-[#0F213E]">Printing & Receipt Books</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Numbered 100-leaf duplicate receipt books for schools and businesses, plus bright outdoor vinyl banners and stickers printed to size.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-stone-200 flex items-center justify-between text-sm">
+              <span class="font-semibold text-slate-700 tabular-nums">UGX 25,000 / unit</span>
+              <button onclick="navigateTo('services', 'print-copy')" class="font-semibold text-[#9B1C1C] hover:underline">Order printing →</button>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-stone-200 bg-[#FAF9F6] flex flex-col justify-between space-y-5">
+            <div class="space-y-2">
+              <p class="text-xs font-semibold uppercase tracking-wider text-[#0F213E]">Studio Design</p>
+              <h3 class="text-xl font-bold text-[#0F213E]">Logos, Crests & Websites</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Logos, school badges, event flyers, website names (.com, .ug, .sc.ug), and clean websites that introduce your organisation well.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-stone-200 flex items-center justify-between text-sm">
+              <span class="font-semibold text-slate-700 tabular-nums">Design from UGX 5,000</span>
+              <button onclick="navigateTo('services', 'graphic-design')" class="font-semibold text-[#0F213E] hover:underline">See design rates →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Selected Work Preview -->
+    <section class="py-16 bg-[#FAF9F6] border-b border-stone-200">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div class="space-y-1.5">
+            <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Our Work</p>
+            <h2 class="text-3xl font-bold text-[#0F213E]">Recent projects & workshop prints</h2>
+            <p class="text-sm text-slate-600">Click any photo below to view a larger image or ask about ordering something similar.</p>
+          </div>
+          <button onclick="navigateTo('portfolio')" class="text-sm font-semibold text-[#0F213E] border border-stone-300 bg-white hover:bg-stone-50 px-4 py-2.5 rounded-xl transition self-start sm:self-auto">
+            See all ${PRODUCT_SHOWCASE_GALLERY.length} examples →
+          </button>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          ${PRODUCT_SHOWCASE_GALLERY.slice(0, 8).map(item => `
+            <article class="bg-white border border-stone-200 rounded-2xl overflow-hidden flex flex-col group hover:border-stone-300 transition">
+              <div class="h-48 bg-stone-100 relative overflow-hidden cursor-pointer" onclick="openImageModal('${item.img}', '${escapeHtml(item.title)}', '${escapeHtml(item.subtitle)}', '${escapeHtml(item.label)}')">
+                <img src="${item.img}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300" referrerPolicy="no-referrer" />
+              </div>
+              <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                <div class="space-y-1">
+                  <p class="text-xs font-medium text-slate-500">${escapeHtml(item.label)} · ${escapeHtml(item.client)}</p>
+                  <h3 class="font-bold text-[#0F213E] text-sm leading-snug">${escapeHtml(item.title)}</h3>
+                  <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${escapeHtml(item.subtitle)}</p>
+                </div>
+                <div class="pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
+                  <button onclick="openImageModal('${item.img}', '${escapeHtml(item.title)}', '${escapeHtml(item.subtitle)}', '${escapeHtml(item.label)}')" class="text-slate-600 hover:text-slate-900 font-medium">Enlarge</button>
+                  <button onclick="consultService('${escapeHtml(item.title)}')" class="text-[#9B1C1C] font-semibold hover:underline">Ask about this →</button>
+                </div>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    </section>
+
+    <!-- Honest Words From Partner Schools -->
+    <section class="py-16 bg-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-stone-200 pb-8">
+          <div class="space-y-2 max-w-xl">
+            <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Trusted By Schools</p>
+            <h2 class="text-3xl font-bold text-[#0F213E]">Over 50 partner schools across Uganda</h2>
+            <p class="text-sm text-slate-600">Headteachers, directors of studies, and bursars use our tools every term.</p>
+          </div>
+          <div class="flex flex-wrap gap-8 text-left">
+            <div>
+              <span class="block text-2xl font-bold text-[#0F213E] tabular-nums">50+</span>
+              <span class="text-xs text-slate-500">Partner Schools</span>
+            </div>
+            <div>
+              <span class="block text-2xl font-bold text-[#1E7E34] tabular-nums">100,000+</span>
+              <span class="text-xs text-slate-500">Report Cards Issued</span>
+            </div>
+            <div>
+              <span class="block text-2xl font-bold text-[#9B1C1C]">Kasenge</span>
+              <span class="text-xs text-slate-500">Local Support Desk</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <blockquote class="p-5 rounded-2xl border border-stone-200 bg-[#FAF9F6] flex flex-col justify-between space-y-4">
+            <p class="text-xs text-slate-700 leading-relaxed">
+              "Phresh Rank Core saved us weeks of adding up marks by hand. Teachers enter results easily and parent report cards come out neat in minutes."
+            </p>
+            <footer class="border-t border-stone-200 pt-3">
+              <strong class="block text-xs font-bold text-[#0F213E]">Global High School Madudu</strong>
+              <span class="text-xs text-slate-500">Registrar's Office</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="p-5 rounded-2xl border border-stone-200 bg-[#FAF9F6] flex flex-col justify-between space-y-4">
+            <p class="text-xs text-slate-700 leading-relaxed">
+              "Our staff rely on Phresh Rank Core every term for marksheets, competence comments, and printing class report cards without stress."
+            </p>
+            <footer class="border-t border-stone-200 pt-3">
+              <strong class="block text-xs font-bold text-[#0F213E]">Pride College Lungala</strong>
+              <span class="text-xs text-slate-500">Director of Studies</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="p-5 rounded-2xl border border-stone-200 bg-[#FAF9F6] flex flex-col justify-between space-y-4">
+            <p class="text-xs text-slate-700 leading-relaxed">
+              "Using Phresh Rank Core together with EduLedger gave our school clear marksheets, neat report cards, and organised tuition records."
+            </p>
+            <footer class="border-t border-stone-200 pt-3">
+              <strong class="block text-xs font-bold text-[#0F213E]">Mpigi Light College</strong>
+              <span class="text-xs text-slate-500">Bursar & DOS Office</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="p-5 rounded-2xl border border-stone-200 bg-[#FAF9F6] flex flex-col justify-between space-y-4">
+            <p class="text-xs text-slate-700 leading-relaxed">
+              "Working offline means even when internet is slow at the end of term, we finish our report cards on time without delays."
+            </p>
+            <footer class="border-t border-stone-200 pt-3">
+              <strong class="block text-xs font-bold text-[#0F213E]">St. Andrews College Moyo</strong>
+              <span class="text-xs text-slate-500">Headteacher's Office</span>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderHeroHighlight() {
+  const container = document.getElementById('hero-highlight-container');
+  const controls = document.getElementById('hero-slide-controls');
+  const slide = HERO_HIGHLIGHTS[currentHeroSlide] || HERO_HIGHLIGHTS[0];
+
+  if (container && slide) {
+    container.innerHTML = `
+      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center animate-fade-in">
+        <div class="lg:col-span-6 space-y-5">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">${escapeHtml(slide.eyebrow)}</p>
+          <h1 class="text-3xl sm:text-5xl font-bold text-[#0F213E] leading-[1.12] tracking-tight">
+            ${escapeHtml(slide.title)}
+          </h1>
+          <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">
+            ${escapeHtml(slide.subtitle)}
+          </p>
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button onclick="navigateTo('${slide.primaryCtaPage}')" class="bg-[#0F213E] hover:bg-slate-800 text-white font-semibold px-6 py-3 rounded-xl text-sm transition">
+              ${escapeHtml(slide.primaryCtaText)}
+            </button>
+            <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="bg-white hover:bg-stone-100 text-[#1E7E34] border border-stone-300 font-semibold px-5 py-3 rounded-xl text-sm transition flex items-center gap-2">
+              ${WHATSAPP_ICON_SVG}
+              <span>Chat on WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <figure class="bg-white border border-stone-200 rounded-2xl p-2 shadow-xs">
+            <img src="${slide.image}" alt="${escapeHtml(slide.title)}" class="w-full h-72 sm:h-88 object-cover rounded-xl cursor-pointer" onclick="openImageModal('${slide.image}', '${escapeHtml(slide.title)}', '${escapeHtml(slide.subtitle)}', '${escapeHtml(slide.eyebrow)}')" referrerPolicy="no-referrer" />
+            <figcaption class="px-3 py-2 text-xs text-slate-500 flex items-center justify-between">
+              <span>${escapeHtml(slide.imageCaption)}</span>
+              <button onclick="openImageModal('${slide.image}', '${escapeHtml(slide.title)}', '${escapeHtml(slide.subtitle)}', '${escapeHtml(slide.eyebrow)}')" class="font-semibold text-[#0F213E] hover:underline">View larger</button>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    `;
+  }
+
+  if (controls) {
+    controls.innerHTML = HERO_HIGHLIGHTS.map((h, idx) => `
+      <button onclick="setHeroSlide(${idx})" class="pb-1 transition border-b-2 ${currentHeroSlide === idx ? 'border-[#1E7E34] text-[#0F213E]' : 'border-transparent hover:text-[#0F213E]'}">
+        0${idx + 1}. ${idx === 0 ? 'Overview' : idx === 1 ? 'Report Cards' : idx === 2 ? 'Printing & Banners' : 'Fees & Receipts'}
+      </button>
+    `).join('');
+  }
+}
+
+// ==========================================
+// 2. SERVICES & PRICE LIST PAGE
+// ==========================================
+function renderTariffCatalog() {
+  const filtered = OFFICIAL_PHRESH_SERVICES.filter(item => {
+    const matchesCat = tariffCategoryFilter === 'all' || item.category === tariffCategoryFilter;
+    const matchesSearch = !tariffSearchQuery ||
+      item.name.toLowerCase().includes(tariffSearchQuery.toLowerCase()) ||
+      item.note.toLowerCase().includes(tariffSearchQuery.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
+
+  return `
+    <div class="space-y-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-stone-200 pb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-[#0F213E]">Complete Price Directory</h2>
+          <p class="text-sm text-slate-600 mt-1">Clear prices in Uganda Shillings (UGX). Tap any item to inquire or place an order.</p>
+        </div>
+        <button onclick="navigateTo('contact')" class="bg-[#0F213E] hover:bg-slate-800 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition self-start md:self-auto">
+          Talk About an Order →
+        </button>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 justify-between items-center bg-[#FAF9F6] p-3.5 rounded-xl border border-stone-200">
+        <div class="flex flex-wrap gap-1.5 text-xs font-semibold w-full sm:w-auto">
+          <button onclick="setTariffCategory('all')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'all' ? 'bg-[#0F213E] text-white' : 'bg-white text-slate-700 border border-stone-200 hover:bg-stone-100'}">All (${OFFICIAL_PHRESH_SERVICES.length})</button>
+          <button onclick="setTariffCategory('software')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'software' ? 'bg-[#0F213E] text-white' : 'bg-white text-slate-700 border border-stone-200 hover:bg-stone-100'}">School & Business</button>
+          <button onclick="setTariffCategory('design')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'design' ? 'bg-[#0F213E] text-white' : 'bg-white text-slate-700 border border-stone-200 hover:bg-stone-100'}">Design</button>
+          <button onclick="setTariffCategory('print')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'print' ? 'bg-[#0F213E] text-white' : 'bg-white text-slate-700 border border-stone-200 hover:bg-stone-100'}">Printing</button>
+          <button onclick="setTariffCategory('web')" class="px-3 py-1.5 rounded-lg transition ${tariffCategoryFilter === 'web' ? 'bg-[#0F213E] text-white' : 'bg-white text-slate-700 border border-stone-200 hover:bg-stone-100'}">Websites</button>
+        </div>
+        <div class="w-full sm:w-64">
+          <input type="text" placeholder="Search price list..." value="${escapeHtml(tariffSearchQuery)}" oninput="setTariffSearch(this.value)" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#1E7E34]" />
+        </div>
+      </div>
+
+      <div class="overflow-x-auto border border-stone-200 rounded-xl">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-[#FAF9F6] text-slate-600 font-semibold uppercase tracking-wider text-[11px] border-b border-stone-200">
+            <tr>
+              <th class="p-3.5">#</th>
+              <th class="p-3.5">Service</th>
+              <th class="p-3.5">Price (UGX)</th>
+              <th class="p-3.5">Notes</th>
+              <th class="p-3.5 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="tariff-table-tbody" class="divide-y divide-stone-200 text-slate-800">
+            ${filtered.map((item, idx) => `
+              <tr class="hover:bg-[#FAF9F6] transition">
+                <td class="p-3.5 text-slate-400 tabular-nums">${idx + 1}</td>
+                <td class="p-3.5 font-semibold text-slate-900">${escapeHtml(item.name)}</td>
+                <td class="p-3.5 font-bold text-[#1E7E34] tabular-nums whitespace-nowrap">UGX ${item.priceUGX.toLocaleString()}</td>
+                <td class="p-3.5 text-slate-600">${escapeHtml(item.note)}</td>
+                <td class="p-3.5 text-right">
+                  <button onclick="consultService('${escapeHtml(item.name)}')" class="text-[#0F213E] hover:underline font-semibold whitespace-nowrap">
+                    Inquire →
+                  </button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
 function renderPillarDetailContent() {
   switch (activeServicePillar) {
     case 'tariff-catalog':
@@ -2647,52 +1552,31 @@ function renderPillarDetailContent() {
     case 'graphic-design':
       return `
         <div class="space-y-6">
-          <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="border-b border-stone-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span class="text-xs font-black uppercase text-[#1E7E34]">Pillar 1</span>
-              <h2 class="text-2xl font-black text-slate-900">Graphic Design & Brand Identity</h2>
-              <p class="text-xs text-slate-500">Graphic designing, Phresh branding, minor, medium, and mega corporate branding solutions.</p>
+              <h2 class="text-2xl font-bold text-[#0F213E]">Graphic Design & Branding</h2>
+              <p class="text-sm text-slate-600">Logos, school badges, event posters, and printed stationery artwork.</p>
             </div>
-            <button onclick="navigateTo('contact')" class="bg-[#1E7E34] text-white font-bold text-xs px-5 py-3 rounded-xl shadow hover:bg-emerald-800 transition">
-              Start Branding Project →
+            <button onclick="navigateTo('contact')" class="bg-[#1E7E34] hover:bg-emerald-800 text-white font-semibold text-xs px-5 py-2.5 rounded-xl transition self-start sm:self-auto">
+              Start a Design Order →
             </button>
           </div>
-
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-            <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-              <span class="text-[10px] font-black uppercase bg-slate-200 text-slate-800 px-2.5 py-0.5 rounded-md">Minor</span>
-              <h3 class="text-base font-black text-slate-900">Minor Branding</h3>
-              <p class="text-slate-600">Quick logo touchups & basic badge formatting.</p>
-              <div class="pt-2 text-base font-black text-[#1E7E34] font-mono">UGX 5,000</div>
-            </div>
-
-            <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-              <span class="text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-md">Standard</span>
-              <h3 class="text-base font-black text-slate-900">Phresh Branding</h3>
-              <p class="text-slate-600">Corporate logo & avatar package.</p>
-              <div class="pt-2 text-base font-black text-[#1E7E34] font-mono">UGX 10,000</div>
-            </div>
-
-            <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-              <span class="text-[10px] font-black uppercase bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-md">Custom</span>
-              <h3 class="text-base font-black text-slate-900">Graphic Designing</h3>
-              <p class="text-slate-600">Custom poster, flyer or banner layout.</p>
-              <div class="pt-2 text-base font-black text-[#1E7E34] font-mono">UGX 15,000</div>
-            </div>
-
-            <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-              <span class="text-[10px] font-black uppercase bg-indigo-100 text-indigo-800 px-2.5 py-0.5 rounded-md">Medium</span>
-              <h3 class="text-base font-black text-slate-900">Medium Branding</h3>
-              <p class="text-slate-600">Complete flyer, social artwork & vector emblems.</p>
-              <div class="pt-2 text-base font-black text-[#1E7E34] font-mono">UGX 15,000</div>
-            </div>
-
-            <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-              <span class="text-[10px] font-black uppercase bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-md">Mega</span>
-              <h3 class="text-base font-black text-slate-900">Mega Branding</h3>
-              <p class="text-slate-600">Full institutional brand book, magazine layouts & stationery suite.</p>
-              <div class="pt-2 text-base font-black text-[#1E7E34] font-mono">UGX 25,000</div>
-            </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+            ${[
+              { title: 'Minor Branding', desc: 'Simple badge clean-up or quick artwork edit.', price: 'UGX 5,000' },
+              { title: 'Phresh Branding', desc: 'Logo and clean profile identity for a business or club.', price: 'UGX 10,000' },
+              { title: 'Graphic Designing', desc: 'Custom event poster, admission flyer, or banner layout.', price: 'UGX 15,000' },
+              { title: 'Medium Branding', desc: 'Flyer design, social artwork, and school emblem package.', price: 'UGX 15,000' },
+              { title: 'Mega Branding', desc: 'Full school or company brand pack and stationery layouts.', price: 'UGX 25,000' }
+            ].map(c => `
+              <div class="p-5 bg-[#FAF9F6] border border-stone-200 rounded-xl flex flex-col justify-between space-y-3">
+                <div>
+                  <h3 class="font-bold text-[#0F213E]">${c.title}</h3>
+                  <p class="text-xs text-slate-600 mt-1">${c.desc}</p>
+                </div>
+                <div class="text-sm font-bold text-[#1E7E34] tabular-nums">${c.price}</div>
+              </div>
+            `).join('')}
           </div>
         </div>
       `;
@@ -2700,31 +1584,29 @@ function renderPillarDetailContent() {
     case 'print-copy':
       return `
         <div class="space-y-6">
-          <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="border-b border-stone-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span class="text-xs font-black uppercase text-[#8B0000]">Pillar 2</span>
-              <h2 class="text-2xl font-black text-slate-900">Commercial Printing & Press</h2>
-              <p class="text-slate-500 text-xs">Serialized carbonless duplicate receipts, banner / sticker printing per sq m, PVC IDs.</p>
+              <h2 class="text-2xl font-bold text-[#0F213E]">Commercial Printing & Press</h2>
+              <p class="text-sm text-slate-600">Numbered duplicate receipt books, vinyl banners, stickers, and everyday copying in Kasenge.</p>
             </div>
-            <button onclick="navigateTo('contact')" class="bg-[#8B0000] text-white font-bold text-xs px-5 py-3 rounded-xl shadow hover:bg-red-800 transition">
-              Order Print Production →
+            <button onclick="navigateTo('contact')" class="bg-[#9B1C1C] hover:bg-red-800 text-white font-semibold text-xs px-5 py-2.5 rounded-xl transition self-start sm:self-auto">
+              Order Printing →
             </button>
           </div>
-
-          <div class="grid sm:grid-cols-2 gap-4 text-xs font-medium">
-            <div class="p-5 bg-red-50/50 border border-red-100 rounded-2xl flex justify-between items-center">
+          <div class="grid sm:grid-cols-2 gap-4 text-sm">
+            <div class="p-5 bg-[#FAF9F6] border border-stone-200 rounded-xl flex justify-between items-center gap-4">
               <div>
-                <span class="font-bold text-slate-900 block text-sm">Receipt Book (100 Leaves)</span>
-                <span class="text-slate-500">Serialized carbonless duplicate books for schools & businesses</span>
+                <h3 class="font-bold text-[#0F213E]">Receipt Book (100 Leaves)</h3>
+                <p class="text-xs text-slate-600 mt-1">Duplicate carbonless books numbered clearly for schools, churches, and shops.</p>
               </div>
-              <span class="font-mono font-bold text-[#8B0000] text-base">UGX 25,000</span>
+              <span class="font-bold text-[#9B1C1C] tabular-nums whitespace-nowrap">UGX 25,000</span>
             </div>
-            <div class="p-5 bg-red-50/50 border border-red-100 rounded-2xl flex justify-between items-center">
+            <div class="p-5 bg-[#FAF9F6] border border-stone-200 rounded-xl flex justify-between items-center gap-4">
               <div>
-                <span class="font-bold text-slate-900 block text-sm">Banner / Sticker Printing</span>
-                <span class="text-slate-500">High-resolution outdoor vinyl & stickers (Per square metre)</span>
+                <h3 class="font-bold text-[#0F213E]">Banner / Sticker Printing</h3>
+                <p class="text-xs text-slate-600 mt-1">Outdoor vinyl banners and stickers charged fairly per square metre.</p>
               </div>
-              <span class="font-mono font-bold text-[#8B0000] text-base">UGX 25,000</span>
+              <span class="font-bold text-[#9B1C1C] tabular-nums whitespace-nowrap">UGX 25,000</span>
             </div>
           </div>
         </div>
@@ -2733,116 +1615,38 @@ function renderPillarDetailContent() {
     case 'database-systems':
       return `
         <div class="space-y-6">
-          <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="border-b border-stone-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span class="text-xs font-black uppercase text-blue-800">Pillar 3</span>
-              <h2 class="text-2xl font-black text-slate-900">Custom Database Engineering & Software Systems</h2>
-              <p class="text-slate-500 text-xs">Official pricing for Phresh Rank Core, Eduledger, Rent Ledger, Church Systems & POS.</p>
+              <h2 class="text-2xl font-bold text-[#0F213E]">School & Business Tools</h2>
+              <p class="text-sm text-slate-600">Installed with full training for your staff and support whenever you need a hand.</p>
             </div>
-            <button onclick="navigateTo('contact')" class="bg-blue-800 text-white font-bold text-xs px-5 py-3 rounded-xl shadow hover:bg-blue-900 transition">
-              Schedule System Audit →
+            <button onclick="navigateTo('contact')" class="bg-[#0F213E] hover:bg-slate-800 text-white font-semibold text-xs px-5 py-2.5 rounded-xl transition self-start sm:self-auto">
+              Book a Demo →
             </button>
           </div>
-
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (Offline)</span>
-                <p class="text-slate-600">UNEB report cards, NCDC marksheet engine.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 350,000 (One time)</div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+            ${[
+              { name: 'Phresh Rank Core (Offline)', desc: 'Fast school report card program for teachers and DOS offices.', price: 'UGX 350,000' },
+              { name: 'Phresh Rank Core (New Customer)', desc: 'Includes first setup and 100k termly support.', price: 'UGX 400,000' },
+              { name: 'Phresh Rank Core (Online & Offline)', desc: 'Works both at school without internet and online.', price: 'UGX 300,000' },
+              { name: 'Phresh Eduledger', desc: 'School fees balances, bursaries, and parent receipts.', price: 'UGX 400,000' },
+              { name: 'Phresh Rent Ledger', desc: 'Track rental houses, shops, tenants, and monthly receipts.', price: 'UGX 400,000' },
+              { name: 'Church Management System', desc: 'Member records, tithes, offerings, and church schedules.', price: 'UGX 400,000' },
+              { name: 'Point of Sale (Offline)', desc: 'Shop counter billing and daily stock count.', price: 'UGX 400,000' },
+              { name: 'Point of Sale (Online)', desc: 'Check shop sales from your phone (120k/year renewal).', price: 'UGX 400,000' },
+              { name: 'Phresh Point of Sale (Online One Time)', desc: 'Full online shop manager with one-time license.', price: 'UGX 800,000' }
+            ].map(item => `
+              <div class="p-5 border border-stone-200 rounded-xl bg-[#FAF9F6] flex flex-col justify-between space-y-4">
+                <div>
+                  <h3 class="font-bold text-[#0F213E]">${item.name}</h3>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">${item.desc}</p>
+                </div>
+                <div class="flex items-center justify-between pt-3 border-t border-stone-200">
+                  <span class="font-bold text-[#1E7E34] tabular-nums">${item.price}</span>
+                  <button onclick="consultService('${item.name}')" class="text-xs font-semibold text-[#0F213E] hover:underline">Ask about this →</button>
+                </div>
               </div>
-              <button onclick="consultService('Phresh Rank Core (Offline)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
-
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (New Customer)</span>
-                <p class="text-slate-600">Includes 100k termly subscription.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
-              </div>
-              <button onclick="consultService('Phresh Rank Core (New Customer)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
-
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Phresh Rank Core (Dual)</span>
-                <p class="text-slate-600">Online & offline synchronized initial deposit.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 300,000</div>
-              </div>
-              <button onclick="consultService('Phresh Rank Core (Dual Online/Offline)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
-
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Phresh Eduledger</span>
-                <p class="text-slate-600">Bursary school fee management ERP.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
-              </div>
-              <button onclick="consultService('Phresh Eduledger Fee Management')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
-
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Phresh Rent Ledger</span>
-                <p class="text-slate-600">Property & tenant rental management.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
-              </div>
-              <button onclick="consultService('Phresh Rent Ledger System')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
-
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Church Management System</span>
-                <p class="text-slate-600">Tithe, membership & event tracking.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 400,000 (One time)</div>
-              </div>
-              <button onclick="consultService('Church Management System')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
-
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Point of Sale (Offline)</span>
-                <p class="text-slate-600">Desktop retail cashier inventory system.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
-              </div>
-              <button onclick="consultService('Point of Sale (Offline)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
-
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Point of Sale (Online)</span>
-                <p class="text-slate-600">Includes annual payment of 120,000.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 400,000</div>
-              </div>
-              <button onclick="consultService('Point of Sale (Online Annual)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
-
-            <div class="p-4 border border-slate-200 rounded-2xl space-y-2 bg-slate-50 flex flex-col justify-between">
-              <div class="space-y-1">
-                <span class="font-black text-slate-900 block text-sm">Phresh Point of Sale (Online One Time)</span>
-                <p class="text-slate-600">Permanent cloud POS license.</p>
-                <div class="font-mono font-bold text-blue-800">UGX 800,000</div>
-              </div>
-              <button onclick="consultService('Phresh Point of Sale (Online One Time)')" class="mt-2 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2 rounded-xl transition">
-                Request Consultation →
-              </button>
-            </div>
+            `).join('')}
           </div>
         </div>
       `;
@@ -2850,28 +1654,25 @@ function renderPillarDetailContent() {
     case 'web-development':
       return `
         <div class="space-y-6">
-          <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="border-b border-stone-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span class="text-xs font-black uppercase text-amber-700">Pillar 4</span>
-              <h2 class="text-2xl font-black text-slate-900">Web Design & Domain Purchases</h2>
-              <p class="text-slate-500 text-xs">Domain purchases and web portals.</p>
+              <h2 class="text-2xl font-bold text-[#0F213E]">Websites & Domain Names</h2>
+              <p class="text-sm text-slate-600">Welcoming websites for schools, churches, and businesses—we handle the domain name and keep your site online.</p>
             </div>
-            <button onclick="navigateTo('contact')" class="bg-amber-800 text-white font-bold text-xs px-5 py-3 rounded-xl shadow hover:bg-amber-900 transition">
-              Launch Your Website →
+            <button onclick="navigateTo('contact')" class="bg-[#0F213E] hover:bg-slate-800 text-white font-semibold text-xs px-5 py-2.5 rounded-xl transition self-start sm:self-auto">
+              Plan Your Website →
             </button>
           </div>
-
-          <div class="grid sm:grid-cols-2 gap-6 text-xs">
-            <div class="p-5 border border-slate-200 rounded-2xl space-y-3 bg-slate-50">
-              <span class="font-black text-slate-900 block text-base">Domain Purchases</span>
-              <p class="text-slate-600">Official domain registration & DNS configuration (.com, .ug, .org, .sc.ug).</p>
-              <div class="font-mono font-bold text-amber-800 text-sm">UGX 25,000</div>
+          <div class="grid sm:grid-cols-2 gap-4 text-sm">
+            <div class="p-5 border border-stone-200 rounded-xl bg-[#FAF9F6] space-y-2">
+              <h3 class="font-bold text-[#0F213E]">Website Domain Registration</h3>
+              <p class="text-xs text-slate-600">Register your school or business web name (.com, .ug, .org, .sc.ug).</p>
+              <div class="font-bold text-[#1E7E34] tabular-nums pt-1">UGX 25,000</div>
             </div>
-
-            <div class="p-5 border border-slate-200 rounded-2xl space-y-3 bg-slate-50">
-              <span class="font-black text-slate-900 block text-base">System Renewal</span>
-              <p class="text-slate-600">Annual domain renewal, cPanel SSD hosting maintenance & database backups.</p>
-              <div class="font-mono font-bold text-amber-800 text-sm">UGX 100,000</div>
+            <div class="p-5 border border-stone-200 rounded-xl bg-[#FAF9F6] space-y-2">
+              <h3 class="font-bold text-[#0F213E]">Annual Website & Email Care</h3>
+              <p class="text-xs text-slate-600">Yearly renewal and regular check-ups so your site stays online smoothly.</p>
+              <div class="font-bold text-[#1E7E34] tabular-nums pt-1">UGX 100,000</div>
             </div>
           </div>
         </div>
@@ -2880,34 +1681,30 @@ function renderPillarDetailContent() {
     case 'social-media':
       return `
         <div class="space-y-6">
-          <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="border-b border-stone-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span class="text-xs font-black uppercase text-purple-800">Pillar 5</span>
-              <h2 class="text-2xl font-black text-slate-900">Phresh Enterprise & Advanced Systems</h2>
-              <p class="text-slate-500 text-xs">Phresh-Nexus, E-Lesson Manager & Wholesale Systems.</p>
+              <h2 class="text-2xl font-bold text-[#0F213E]">Multi-Branch & Special Packages</h2>
+              <p class="text-sm text-slate-600">Built for larger schools, teaching groups, and organisations with multiple offices.</p>
             </div>
-            <button onclick="navigateTo('contact')" class="bg-purple-800 text-white font-bold text-xs px-5 py-3 rounded-xl shadow hover:bg-purple-900 transition">
-              Consult Enterprise →
+            <button onclick="navigateTo('contact')" class="bg-[#0F213E] hover:bg-slate-800 text-white font-semibold text-xs px-5 py-2.5 rounded-xl transition self-start sm:self-auto">
+              Request Quote →
             </button>
           </div>
-
-          <div class="grid sm:grid-cols-3 gap-6 text-xs">
-            <div class="p-5 border border-slate-200 rounded-2xl space-y-3 bg-slate-50">
-              <span class="font-black text-slate-900 block text-base">Phresh E-lesson Manager</span>
-              <p class="text-slate-600">E-learning & lesson plan management platform.</p>
-              <div class="font-mono font-bold text-purple-800 text-sm">UGX 600,000</div>
+          <div class="grid sm:grid-cols-3 gap-4 text-sm">
+            <div class="p-5 border border-stone-200 rounded-xl bg-[#FAF9F6] space-y-2">
+              <h3 class="font-bold text-[#0F213E]">Phresh E-lesson Manager</h3>
+              <p class="text-xs text-slate-600">Organise class notes, lesson plans, and student study packs.</p>
+              <div class="font-bold text-[#1E7E34] tabular-nums pt-1">UGX 600,000</div>
             </div>
-
-            <div class="p-5 border border-slate-200 rounded-2xl space-y-3 bg-slate-50">
-              <span class="font-black text-slate-900 block text-base">Phresh-Nexus</span>
-              <p class="text-slate-600">Central multi-branch data synchronization hub.</p>
-              <div class="font-mono font-bold text-purple-800 text-sm">UGX 850,000</div>
+            <div class="p-5 border border-stone-200 rounded-xl bg-[#FAF9F6] space-y-2">
+              <h3 class="font-bold text-[#0F213E]">Phresh-Nexus</h3>
+              <p class="text-xs text-slate-600">Connect multiple branches or campuses in one shared view.</p>
+              <div class="font-bold text-[#1E7E34] tabular-nums pt-1">UGX 850,000</div>
             </div>
-
-            <div class="p-5 border border-slate-200 rounded-2xl space-y-3 bg-slate-50">
-              <span class="font-black text-slate-900 block text-base">System Wholesale</span>
-              <p class="text-slate-600">Full institutional software source suite & re-seller bundle.</p>
-              <div class="font-mono font-bold text-purple-800 text-sm">UGX 1,500,000</div>
+            <div class="p-5 border border-stone-200 rounded-xl bg-[#FAF9F6] space-y-2">
+              <h3 class="font-bold text-[#0F213E]">Complete Wholesale Pack</h3>
+              <p class="text-xs text-slate-600">Full package for institutions needing several tools together.</p>
+              <div class="font-bold text-[#1E7E34] tabular-nums pt-1">UGX 1,500,000</div>
             </div>
           </div>
         </div>
@@ -2918,363 +1715,246 @@ function renderPillarDetailContent() {
   }
 }
 
-// ==========================================
-// HOME PAGE PRODUCT SHOWCASE GALLERY
-// ==========================================
-function renderHomeProductShowcase() {
-  return `
-    <section class="py-16 bg-white border-y border-slate-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <span class="text-xs font-black uppercase tracking-widest text-[#1E7E34]">Official Systems & Media Gallery</span>
-            <h2 class="text-3xl font-black text-slate-900 tracking-tight mt-1">Live Systems, Systems Suites & Press Gallery</h2>
-            <p class="text-slate-600 text-xs sm:text-sm max-w-2xl mt-1">
-              Explore authentic screenshots from Phresh Rank Core, EduLedger, Rent Ledger, BizTrack POS, Church Systems, and Commercial Printing Press in Kampala.
-            </p>
-          </div>
-          <button onclick="navigateTo('portfolio')" class="bg-[#0B1B3D] hover:bg-slate-800 text-white font-bold text-xs px-5 py-3 rounded-xl transition flex items-center gap-2 self-start md:self-auto shrink-0 shadow-sm">
-            <span>Explore Full 15-Item Portfolio</span>
-            <span>→</span>
-          </button>
-        </div>
+function renderServicesPage() {
+  const tabs = [
+    { id: 'tariff-catalog', label: 'Full Price List (21 Items)' },
+    { id: 'database-systems', label: 'School & Business Tools' },
+    { id: 'print-copy', label: 'Printing & Receipt Books' },
+    { id: 'graphic-design', label: 'Graphic Design & Logos' },
+    { id: 'web-development', label: 'Websites & Domains' },
+    { id: 'social-media', label: 'Multi-Branch Packs' }
+  ];
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          ${PRODUCT_SHOWCASE_GALLERY.slice(0, 8).map(item => `
-            <div class="bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all flex flex-col group">
-              <div class="h-56 bg-slate-900 relative overflow-hidden cursor-pointer" onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')">
-                <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-95" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 ${item.badgeBg || 'bg-[#0B1B3D]'} text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full z-10 shadow-sm">
-                  ${item.badge}
-                </span>
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-2">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                  <span>Click to Enlarge</span>
-                </div>
-              </div>
-              <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                <div class="space-y-1">
-                  <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wide block">${item.client}</span>
-                  <h3 class="font-black text-slate-900 text-sm leading-snug group-hover:text-[#1E7E34] transition-colors">${item.title}</h3>
-                  <p class="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">${item.subtitle}</p>
-                </div>
-                <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
-                  <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-[11px] flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
-                    <span>View Screenshot</span>
-                  </button>
-                  <button onclick="consultService('${item.title.replace(/'/g, "\\'")}')" class="text-[#8B0000] hover:text-red-800 font-black text-[11px]">
-                    Request Consultation →
-                  </button>
-                </div>
-              </div>
-            </div>
+  return `
+    <section id="services-catalog-section" class="border-b border-stone-200 bg-[#FAF9F6] py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto space-y-2">
+        <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Our Services</p>
+        <h1 class="text-3xl sm:text-5xl font-bold text-[#0F213E]">Services & Transparent Pricing</h1>
+        <p class="text-sm sm:text-base text-slate-600 max-w-2xl">
+          Honest prices with clear support from our team in Kasenge, Kampala.
+        </p>
+      </div>
+    </section>
+
+    <section class="py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto space-y-8">
+        <div class="flex flex-wrap gap-2 border-b border-stone-200 pb-4 text-xs font-semibold">
+          ${tabs.map(t => `
+            <button onclick="switchServicePillar('${t.id}')" class="px-4 py-2.5 rounded-xl transition ${activeServicePillar === t.id ? 'bg-[#0F213E] text-white' : 'bg-white text-slate-700 border border-stone-200 hover:bg-stone-50'}">
+              ${t.label}
+            </button>
           `).join('')}
         </div>
 
+        <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          ${renderPillarDetailContent()}
+        </div>
       </div>
     </section>
   `;
 }
 
 // ==========================================
-// 3. INTERACTIVE PORTFOLIO & CASE STUDIES
+// 3. OUR WORK GALLERY PAGE
 // ==========================================
 function renderPortfolioPage() {
-  const filteredGallery = activePortfolioCategory === 'all' 
-    ? PRODUCT_SHOWCASE_GALLERY 
-    : activePortfolioCategory === 'media' 
-      ? PRODUCT_SHOWCASE_GALLERY.filter(item => item.category === 'design' || item.category === 'print' || item.category === 'general')
+  const filteredGallery = activePortfolioCategory === 'all'
+    ? PRODUCT_SHOWCASE_GALLERY
+    : activePortfolioCategory === 'media'
+      ? PRODUCT_SHOWCASE_GALLERY.filter(item => item.category !== 'software')
       : PRODUCT_SHOWCASE_GALLERY.filter(item => item.category === 'software');
 
   return `
-    <div id="portfolio-section" class="bg-gradient-to-b from-[#0B1B3D] to-[#08132B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-      <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Proven Track Record</span>
-          <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mt-1">Portfolio & Systems Showcase</h1>
-          <p class="text-gray-300 text-sm max-w-2xl mt-2">
-            Explore authentic screenshots, commercial print press showcases, and custom database engineering projects across Uganda.
+    <section id="portfolio-section" class="border-b border-stone-200 bg-[#FAF9F6] py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div class="space-y-2">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Our Work</p>
+          <h1 class="text-3xl sm:text-5xl font-bold text-[#0F213E]">Selected Work & Workshop Gallery</h1>
+          <p class="text-sm sm:text-base text-slate-600 max-w-2xl">
+            Real screens, school banners, duplicate receipt books, and studio work produced in Kampala.
           </p>
         </div>
-        <div>
-          <a href="/api/contact/pdf-brief" onclick="alert('Downloading Phresh Tech Media Architecture Report PDF...'); return false;" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-6 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
-            <span>Download Case Study PDF Report</span>
-          </a>
-        </div>
+        <button onclick="navigateTo('contact')" class="bg-[#0F213E] hover:bg-slate-800 text-white text-xs font-semibold px-5 py-3 rounded-xl transition self-start md:self-auto shrink-0">
+          Discuss a Project →
+        </button>
       </div>
-    </div>
+    </section>
 
-    <section class="py-12 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        
-        <!-- Category Filter Buttons -->
-        <div class="flex items-center gap-2 border-b border-slate-200 pb-4 text-xs font-bold overflow-x-auto">
-          <button onclick="filterPortfolio('all')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'all' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            All Work Showcase (${PRODUCT_SHOWCASE_GALLERY.length})
+    <section class="py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto space-y-10">
+        <div class="flex items-center gap-2 border-b border-stone-200 pb-4 text-xs font-semibold overflow-x-auto">
+          <button onclick="filterPortfolio('all')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'all' ? 'bg-[#0F213E] text-white' : 'bg-white border border-stone-200 text-slate-700 hover:bg-stone-50'}">
+            All Work (${PRODUCT_SHOWCASE_GALLERY.length})
           </button>
-          <button onclick="filterPortfolio('engineering')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'engineering' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Software & Database Systems (${PRODUCT_SHOWCASE_GALLERY.filter(i=>i.category==='software').length})
+          <button onclick="filterPortfolio('engineering')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'engineering' ? 'bg-[#0F213E] text-white' : 'bg-white border border-stone-200 text-slate-700 hover:bg-stone-50'}">
+            School & Business Tools (${PRODUCT_SHOWCASE_GALLERY.filter(i => i.category === 'software').length})
           </button>
-          <button onclick="filterPortfolio('media')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'media' ? 'bg-[#0B1B3D] text-white shadow' : 'bg-white text-slate-700 hover:bg-slate-100'}">
-            Graphics, Banners & Print Press (${PRODUCT_SHOWCASE_GALLERY.filter(i=>i.category!=='software').length})
+          <button onclick="filterPortfolio('media')" class="px-4 py-2 rounded-xl transition shrink-0 ${activePortfolioCategory === 'media' ? 'bg-[#0F213E] text-white' : 'bg-white border border-stone-200 text-slate-700 hover:bg-stone-50'}">
+            Printing, Banners & Design (${PRODUCT_SHOWCASE_GALLERY.filter(i => i.category !== 'software').length})
           </button>
         </div>
 
-        <!-- Media & Systems Showcase Grid -->
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           ${filteredGallery.map(item => `
-            <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all flex flex-col group">
-              <div class="h-60 bg-slate-900 relative overflow-hidden cursor-pointer" onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')">
-                <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-95" referrerPolicy="no-referrer" />
-                <span class="absolute top-3 left-3 ${item.badgeBg || 'bg-[#0B1B3D]'} text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full z-10 shadow-sm">
-                  ${item.badge}
-                </span>
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-2">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                  <span>Click to Enlarge</span>
-                </div>
+            <article class="bg-white border border-stone-200 rounded-2xl overflow-hidden flex flex-col group">
+              <div class="h-56 bg-stone-100 overflow-hidden cursor-pointer" onclick="openImageModal('${item.img}', '${escapeHtml(item.title)}', '${escapeHtml(item.subtitle)}', '${escapeHtml(item.label)}')">
+                <img src="${item.img}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300" referrerPolicy="no-referrer" />
               </div>
               <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div class="space-y-1">
-                  <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wide block">${item.client}</span>
-                  <h3 class="font-black text-slate-900 text-sm leading-snug group-hover:text-[#1E7E34] transition-colors">${item.title}</h3>
-                  <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${item.subtitle}</p>
+                  <p class="text-xs font-medium text-slate-500">${escapeHtml(item.label)} · ${escapeHtml(item.client)}</p>
+                  <h3 class="font-bold text-[#0F213E] text-base leading-snug">${escapeHtml(item.title)}</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(item.subtitle)}</p>
                 </div>
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <button onclick="openImageModal('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.badge}')" class="text-slate-600 hover:text-slate-900 font-bold text-xs flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"></path></svg>
-                    <span>View Full Res</span>
-                  </button>
-                  <button onclick="navigateTo('contact')" class="text-[#8B0000] hover:text-red-800 font-black text-xs">
-                    Inquire Now →
-                  </button>
+                <div class="pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
+                  <button onclick="openImageModal('${item.img}', '${escapeHtml(item.title)}', '${escapeHtml(item.subtitle)}', '${escapeHtml(item.label)}')" class="text-slate-600 hover:text-slate-900 font-medium">View photo</button>
+                  <button onclick="consultService('${escapeHtml(item.title)}')" class="text-[#1E7E34] font-semibold hover:underline">Ask about this →</button>
                 </div>
               </div>
-            </div>
+            </article>
           `).join('')}
         </div>
 
-        <!-- Case Studies Module -->
-        <div class="space-y-6 pt-6">
-          <div class="border-b border-slate-200 pb-3">
-            <span class="text-xs font-black uppercase tracking-widest text-[#1E7E34]">Problem - Solution - Metrics</span>
-            <h2 class="text-2xl font-black text-slate-900 mt-1">Engineering Case Studies</h2>
+        <!-- Simple School Story -->
+        <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-200 pb-4">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">How Schools Use Phresh Rank Core</p>
+              <h2 class="text-2xl font-bold text-[#0F213E] mt-1">Saving Teachers Three Weeks Every End of Term</h2>
+            </div>
+            <button onclick="navigateTo('contact')" class="bg-[#0F213E] text-white text-xs font-semibold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition self-start md:self-auto">
+              Request a School Visit
+            </button>
           </div>
-
-          <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-6">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-              <div>
-                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-3 py-1 rounded-full">Phresh Rank Core Engine</span>
-                <h3 class="text-xl font-black text-slate-900 mt-2">Automating Competency-Based NCDC Marks & Report Cards</h3>
-              </div>
-              <button onclick="navigateTo('contact')" class="bg-[#0B1B3D] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition">
-                Request Technical Brief
-              </button>
+          <div class="grid md:grid-cols-2 gap-6 text-sm text-slate-600 leading-relaxed">
+            <div>
+              <h3 class="font-bold text-[#9B1C1C] mb-1">Before</h3>
+              <p>Schools spent weeks adding up marks by hand, checking grades, and fixing arithmetic mistakes while parents waited for report cards.</p>
             </div>
-
-            <div class="grid md:grid-cols-2 gap-6 text-xs leading-relaxed">
-              <div class="p-4 bg-red-50/50 border border-red-100 rounded-2xl">
-                <h4 class="font-black text-[#8B0000] uppercase tracking-wider mb-2">The Operational Challenge</h4>
-                <p class="text-slate-700">Schools spent 3+ weeks manually tabulating UNEB grades, average scores, and class ranks for thousands of students, causing reporting delays and calculation errors.</p>
-              </div>
-              <div class="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl">
-                <h4 class="font-black text-[#1E7E34] uppercase tracking-wider mb-2">Our Engineering Solution</h4>
-                <p class="text-slate-700">Engineered an offline-first high-speed desktop report engine running local SQLite/MySQL database systems. Automated descriptor evaluation, grade points, and batch PDF generation.</p>
-              </div>
-            </div>
-
-            <div class="grid sm:grid-cols-3 gap-4 pt-2 text-center text-xs">
-              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                <span class="block text-slate-400 font-bold uppercase text-[10px]">Time Saved</span>
-                <span class="text-base font-black text-slate-900 mt-0.5 block">95% Faster Processing</span>
-              </div>
-              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                <span class="block text-slate-400 font-bold uppercase text-[10px]">Error Rate</span>
-                <span class="text-base font-black text-slate-900 mt-0.5 block">0% Arithmetic Errors</span>
-              </div>
-              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                <span class="block text-slate-400 font-bold uppercase text-[10px]">Deployments</span>
-                <span class="text-base font-black text-slate-900 mt-0.5 block">50+ Secondary Schools</span>
-              </div>
+            <div>
+              <h3 class="font-bold text-[#1E7E34] mb-1">With Phresh Rank Core</h3>
+              <p>Teachers type in subject scores on the school computer—even with no internet—and neat printed report cards come out in minutes for every class.</p>
             </div>
           </div>
         </div>
-
       </div>
     </section>
   `;
 }
 
-window.filterPortfolio = function(cat) {
-  activePortfolioCategory = cat;
-  renderApp();
-};
-
 // ==========================================
-// 5. COMPANY PROFILE / ABOUT US
+// 4. ABOUT US PAGE
 // ==========================================
 function renderAboutPage() {
   return `
-    <div id="about-section" class="bg-gradient-to-b from-[#0B1B3D] to-[#08132B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-      <div class="max-w-7xl mx-auto space-y-3">
-        <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Kasenge - Nakawuka Road Headquarters</span>
-        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Company Profile & Technical Capabilities</h1>
-        <p class="text-gray-300 text-sm max-w-2xl">
-          Phresh Tech Media Services is a premier Ugandan technology firm specializing in full-stack database development, commercial printing press manufacturing, and institutional web design.
+    <section id="about-section" class="border-b border-stone-200 bg-[#FAF9F6] py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto space-y-2">
+        <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">About Us · Kasenge, Kampala</p>
+        <h1 class="text-3xl sm:text-5xl font-bold text-[#0F213E]">Meet the People Behind Phresh Tech Media</h1>
+        <p class="text-sm sm:text-base text-slate-600 max-w-2xl">
+          Founded in Kampala to give Ugandan schools, businesses, and churches reliable record tools and neat printing without unnecessary complexity.
         </p>
       </div>
-    </div>
+    </section>
 
-    <section class="py-12 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
-        <!-- Leadership Profiles -->
-        <div class="space-y-6">
-          <div class="border-b border-slate-200 pb-3">
-            <span class="text-xs font-black uppercase tracking-widest text-[#1E7E34]">Executive Leadership</span>
-            <h2 class="text-2xl font-black text-slate-900 mt-1">Directors & Engineering Leads</h2>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col sm:flex-row gap-6 items-center sm:items-start">
-              <div class="w-36 h-36 sm:w-48 sm:h-48 bg-slate-900 rounded-3xl overflow-hidden shadow-lg flex-shrink-0 flex items-center justify-center text-white font-black text-2xl border-2 border-slate-100">
-                <img src="/directors/ibrahim.png" alt="Mulindwa Ibrahim" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
-              </div>
-              <div class="space-y-2 text-xs text-center sm:text-left flex-1">
-                <span class="text-emerald-700 font-bold uppercase tracking-wider text-[10px]">Software Engineering Director</span>
-                <h3 class="text-xl font-black text-slate-900">Mulindwa Ibrahim (Ibra)</h3>
-                <p class="text-slate-600 leading-relaxed">
-                  Leads software architecture, enterprise cloud & database systems, Phresh Rank Core NCDC marks systems, and EduLedger ERP development.
-                </p>
-                <div class="pt-2 font-mono font-bold text-slate-900 flex flex-col gap-1">
-                  <a href="tel:+256702083515" class="hover:text-emerald-700">+256 702 083515</a>
-                  <a href="tel:+256747311209" class="hover:text-emerald-700">+256 747 311209</a>
-                  <span class="text-slate-500 font-sans text-[11px]">Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="hover:underline text-slate-700">phreshtechmediaservices@gmail.com</a></span>
-                </div>
+    <section class="py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto space-y-10">
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shrink-0 border border-stone-200 bg-stone-100">
+              <img src="/directors/ibrahim.png" alt="Mulindwa Ibrahim" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
+            </div>
+            <div class="space-y-2 text-center sm:text-left">
+              <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Software & School Systems Lead</p>
+              <h2 class="text-xl font-bold text-[#0F213E]">Mulindwa Ibrahim (Ibra)</h2>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Works closely with headteachers, bursars, landlords, and shop owners to set up Phresh Rank Core, EduLedger, and custom websites.
+              </p>
+              <div class="pt-2 text-xs font-semibold text-slate-800 space-y-1 tabular-nums">
+                <a href="tel:+256702083515" class="block hover:text-[#1E7E34]">+256 702 083515</a>
+                <a href="tel:+256747311209" class="block hover:text-[#1E7E34]">+256 747 311209</a>
+                <a href="mailto:phreshtechmediaservices@gmail.com" class="block text-slate-500 font-normal hover:underline">phreshtechmediaservices@gmail.com</a>
               </div>
             </div>
+          </div>
 
-            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col sm:flex-row gap-6 items-center sm:items-start">
-              <div class="w-36 h-36 sm:w-48 sm:h-48 bg-slate-900 rounded-3xl overflow-hidden shadow-lg flex-shrink-0 flex items-center justify-center text-white font-black text-2xl border-2 border-slate-100">
-                <img src="/directors/steve.png" alt="Steven Bagalana" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
-              </div>
-              <div class="space-y-2 text-xs text-center sm:text-left flex-1">
-                <span class="text-[#8B0000] font-bold uppercase tracking-wider text-[10px]">Operations & Print Director</span>
-                <h3 class="text-xl font-black text-slate-900">Steven Bagalana (Steve)</h3>
-                <p class="text-slate-600 leading-relaxed">
-                  Manages commercial printing press machinery, 3D vector graphic design teams, PVC identity card press, and customer service.
-                </p>
-                <div class="pt-2 font-mono font-bold text-slate-900 flex flex-col gap-1">
-                  <a href="tel:+256777139918" class="hover:text-[#8B0000]">+256 777 139918</a>
-                  <a href="tel:+256757848094" class="hover:text-[#8B0000]">+256 757 848094</a>
-                  <span class="text-slate-500 font-sans text-[11px]">Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="hover:underline text-slate-700">phreshtechmediaservices@gmail.com</a></span>
-                </div>
+          <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shrink-0 border border-stone-200 bg-stone-100">
+              <img src="/directors/steve.png" alt="Steven Bagalana" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
+            </div>
+            <div class="space-y-2 text-center sm:text-left">
+              <p class="text-xs font-semibold uppercase tracking-wider text-[#9B1C1C]">Operations & Printing Lead</p>
+              <h2 class="text-xl font-bold text-[#0F213E]">Steven Bagalana (Steve)</h2>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Heads our printing workshop, banner press, graphic design desk, receipt book production, and day-to-day client care in Kasenge.
+              </p>
+              <div class="pt-2 text-xs font-semibold text-slate-800 space-y-1 tabular-nums">
+                <a href="tel:+256777139918" class="block hover:text-[#9B1C1C]">+256 777 139918</a>
+                <a href="tel:+256757848094" class="block hover:text-[#9B1C1C]">+256 757 848094</a>
+                <a href="mailto:phreshtechmediaservices@gmail.com" class="block text-slate-500 font-normal hover:underline">phreshtechmediaservices@gmail.com</a>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Technical Capabilities & Location -->
-        <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-6">
-          <h3 class="text-xl font-black text-slate-900">Institutional Service Presence in Kampala</h3>
-          <p class="text-xs text-slate-600 leading-relaxed max-w-3xl">
-            Located along Kasenge - Nakawuka Road in Wakiso/Kampala, Uganda, Phresh Tech Media Services provides fast response times for on-site software installation, printer calibration, and staff training.
-          </p>
-          <div class="grid sm:grid-cols-3 gap-4 text-xs font-medium">
-            <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-              <strong class="text-slate-900 block font-bold mb-1">Physical Office</strong>
-              Kasenge - Nakawuka Road, Kampala, Uganda
+        <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8">
+          <div class="grid sm:grid-cols-3 gap-6 text-sm">
+            <div>
+              <h3 class="font-bold text-[#0F213E] mb-1">Visit Our Office</h3>
+              <p class="text-xs text-slate-600">Kasenge - Nakawuka Road, Wakiso / Kampala, Uganda</p>
             </div>
-            <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-              <strong class="text-slate-900 block font-bold mb-1">Working Hours</strong>
-              Monday - Saturday: 8:00 AM - 6:00 PM
+            <div>
+              <h3 class="font-bold text-[#0F213E] mb-1">Opening Hours</h3>
+              <p class="text-xs text-slate-600">Monday to Saturday, 8:00 AM – 6:00 PM</p>
             </div>
-            <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-              <strong class="text-slate-900 block font-bold mb-1">Office Desk & WhatsApp</strong>
-              <a href="tel:+256741145595" class="block font-mono font-bold text-slate-900 hover:underline">Office: +256 741 145595</a>
-              <a href="https://wa.me/256757848094" target="_blank" class="block text-emerald-700 font-bold hover:underline">WhatsApp: +256 757 848094</a>
+            <div>
+              <h3 class="font-bold text-[#0F213E] mb-1">Office Phone & WhatsApp</h3>
+              <p class="text-xs text-slate-600 tabular-nums">
+                Office: <a href="tel:+256741145595" class="font-semibold text-slate-800 hover:underline">+256 741 145595</a><br />
+                WhatsApp: <a href="https://wa.me/256757848094" target="_blank" class="font-semibold text-[#1E7E34] hover:underline">+256 757 848094</a>
+              </p>
             </div>
           </div>
         </div>
-
       </div>
     </section>
   `;
 }
 
 // ==========================================
-// 6. CONTACT PORTAL & SECURE CONTACT FORM
+// 5. CONTACT PAGE
 // ==========================================
-function renderSecureContactFormComponent() {
+function renderContactFormComponent() {
   const { name, email, subject, message, phone, isSubmitting, submittedSuccess, submittedData, errors } = contactFormState;
 
   if (submittedSuccess && submittedData) {
     return `
-      <div class="bg-white border-2 border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 animate-fade-in relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-5 animate-fade-in">
+        <div class="space-y-1 border-b border-stone-200 pb-4">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Message Sent · Ref ${escapeHtml(submittedData.refId)}</p>
+          <h3 class="text-2xl font-bold text-[#0F213E]">Thank You, ${escapeHtml(submittedData.name)}</h3>
+          <p class="text-sm text-slate-600">We have received your message and shared it with Mulindwa Ibrahim and Steven Bagalana.</p>
+        </div>
 
-        <!-- Success Badge -->
-        <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xl flex-shrink-0 shadow-inner">
-            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-            </svg>
+        <dl class="grid sm:grid-cols-2 gap-4 text-sm border-b border-stone-200 pb-4">
+          <div>
+            <dt class="text-xs text-slate-500">Email</dt>
+            <dd class="font-medium text-slate-900">${escapeHtml(submittedData.email)}</dd>
           </div>
           <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-300">
-                Transmission Verified
-              </span>
-              <span class="font-mono text-[11px] text-slate-400">Ref: ${submittedData.refId}</span>
-            </div>
-            <h3 class="text-xl font-black text-slate-900 mt-0.5">Inquiry Transmitted Successfully</h3>
+            <dt class="text-xs text-slate-500">Subject</dt>
+            <dd class="font-medium text-slate-900">${escapeHtml(submittedData.subject)}</dd>
           </div>
+        </dl>
+
+        <div class="text-sm text-slate-700 bg-[#FAF9F6] border border-stone-200 rounded-xl p-4">
+          "${escapeHtml(submittedData.message)}"
         </div>
 
-        <!-- Confirmation Card -->
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-xs space-y-3 font-sans">
-          <div class="flex items-center justify-between text-slate-500 border-b border-slate-200/60 pb-2">
-            <span><strong>Recipient:</strong> Phresh Tech Media Services (&lt;phreshtechmediaservices@gmail.com&gt;)</span>
-            <span class="font-mono">${submittedData.date}</span>
-          </div>
-
-          <div class="grid sm:grid-cols-2 gap-2 text-slate-700">
-            <div><strong>Sender Name:</strong> ${submittedData.name}</div>
-            <div><strong>Email Address:</strong> ${submittedData.email}</div>
-            ${submittedData.phone ? `<div><strong>Phone:</strong> ${submittedData.phone}</div>` : ''}
-            <div><strong>Subject:</strong> ${submittedData.subject}</div>
-          </div>
-
-          <div class="pt-2">
-            <strong class="text-slate-800 block mb-1">Message Content:</strong>
-            <p class="bg-white border border-slate-200 rounded-xl p-3 text-slate-600 leading-relaxed italic">
-              "${submittedData.message}"
-            </p>
-          </div>
-        </div>
-
-        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-xs text-emerald-900 space-y-1">
-          <div class="flex items-center gap-2 font-bold text-emerald-950">
-            <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 000-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-            </svg>
-            <span>Automated Receipt Email Dispatched</span>
-          </div>
-          <p class="text-emerald-800 text-[11px] leading-relaxed">
-            An official confirmation email has been dispatched to <strong>${submittedData.email}</strong>. Directors Mulindwa Ibrahim and Steven Bagalana have received your request.
-          </p>
-        </div>
-
-        <div class="pt-2 flex items-center justify-between">
-          <span class="text-[11px] text-slate-400 font-mono flex items-center gap-1">
-            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-            Encrypted & Saved to Database
-          </span>
-          <button onclick="resetContactForm()" class="bg-[#0B1B3D] hover:bg-slate-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow transition flex items-center gap-2">
-            <span>Send Another Inquiry</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        <div class="flex items-center justify-between pt-2">
+          <span class="text-xs text-slate-500">${escapeHtml(submittedData.date)}</span>
+          <button onclick="resetContactForm()" class="bg-[#0F213E] hover:bg-slate-800 text-white font-semibold text-xs px-5 py-2.5 rounded-xl transition">
+            Send Another Message
           </button>
         </div>
       </div>
@@ -3282,135 +1962,94 @@ function renderSecureContactFormComponent() {
   }
 
   return `
-    <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md space-y-6 relative overflow-hidden">
-      <!-- Top Branding Header -->
-      <div class="border-b border-slate-100 pb-5 flex items-start justify-between gap-4">
-        <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="bg-[#0B1B3D] text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
-              <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-              256-Bit Encrypted Intake Portal
-            </span>
-            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-              Phresh Tech Direct
-            </span>
-          </div>
-          <h3 class="text-2xl font-black text-[#0B1B3D]">Send an Inquiry or Service Request</h3>
-          <p class="text-xs text-slate-500 mt-0.5">
-            Directly routed to <span class="font-bold text-slate-700">phreshtechmediaservices@gmail.com</span> and saved to server database.
-          </p>
-        </div>
+    <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+      <div class="border-b border-stone-200 pb-4">
+        <h3 class="text-2xl font-bold text-[#0F213E]">Send Us a Message</h3>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+          Tell us what you need and our team will call or email you back promptly.
+        </p>
       </div>
 
-      <!-- Secure Contact Form -->
-      <form onsubmit="validateAndSubmitContactForm(event)" class="space-y-4 text-xs" novalidate>
-        <!-- Honeypot anti-spam (hidden) -->
-        <input type="text" name="website_url" value="${contactFormState.honeypot}" oninput="handleContactFieldChange('honeypot', this.value)" class="hidden" tabindex="-1" autocomplete="off" />
+      <form onsubmit="validateAndSubmitContactForm(event)" class="space-y-4 text-sm" novalidate>
+        <input type="text" name="website_url" value="${escapeHtml(contactFormState.honeypot)}" oninput="handleContactFieldChange('honeypot', this.value)" class="hidden" tabindex="-1" autocomplete="off" />
 
         <div class="grid sm:grid-cols-2 gap-4">
-          <!-- Full Name -->
           <div>
-            <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
-              <span>Full Name <span class="text-red-500">*</span></span>
-              <span id="contact-error-name" class="text-[10px] text-red-600 font-semibold ${errors.name ? '' : 'hidden'}">${errors.name || ''}</span>
+            <label class="block text-xs font-semibold text-slate-800 mb-1.5">
+              Your Full Name <span class="text-red-600">*</span>
+              <span id="contact-error-name" class="text-red-600 font-normal ml-2 ${errors.name ? '' : 'hidden'}">${escapeHtml(errors.name || '')}</span>
             </label>
-            <input 
-              type="text" 
-              value="${name}"
+            <input
+              type="text"
+              value="${escapeHtml(name)}"
               oninput="handleContactFieldChange('name', this.value)"
-              class="w-full bg-slate-50 border ${errors.name ? 'border-red-500 bg-red-50/30' : 'border-slate-200'} rounded-xl p-3 focus:outline-none focus:border-emerald-600 focus:bg-white transition text-slate-900 placeholder:text-slate-400" 
-              placeholder="e.g. Director Denis Mukasa" 
+              class="w-full bg-[#FAF9F6] border ${errors.name ? 'border-red-500' : 'border-stone-300'} rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+              placeholder="e.g. Denis Mukasa"
             />
           </div>
 
-          <!-- Email Address -->
           <div>
-            <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
-              <span>Email Address <span class="text-red-500">*</span></span>
-              <span id="contact-error-email" class="text-[10px] text-red-600 font-semibold ${errors.email ? '' : 'hidden'}">${errors.email || ''}</span>
+            <label class="block text-xs font-semibold text-slate-800 mb-1.5">
+              Email Address <span class="text-red-600">*</span>
+              <span id="contact-error-email" class="text-red-600 font-normal ml-2 ${errors.email ? '' : 'hidden'}">${escapeHtml(errors.email || '')}</span>
             </label>
-            <input 
-              type="email" 
-              value="${email}"
+            <input
+              type="email"
+              value="${escapeHtml(email)}"
               oninput="handleContactFieldChange('email', this.value)"
-              class="w-full bg-slate-50 border ${errors.email ? 'border-red-500 bg-red-50/30' : 'border-slate-200'} rounded-xl p-3 focus:outline-none focus:border-emerald-600 focus:bg-white transition text-slate-900 placeholder:text-slate-400" 
-              placeholder="e.g. denis@organization.org" 
+              class="w-full bg-[#FAF9F6] border ${errors.email ? 'border-red-500' : 'border-stone-300'} rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+              placeholder="name@example.com"
             />
           </div>
         </div>
 
         <div class="grid sm:grid-cols-2 gap-4">
-          <!-- Subject -->
           <div>
-            <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
-              <span>Inquiry Subject <span class="text-red-500">*</span></span>
-              <span id="contact-error-subject" class="text-[10px] text-red-600 font-semibold ${errors.subject ? '' : 'hidden'}">${errors.subject || ''}</span>
+            <label class="block text-xs font-semibold text-slate-800 mb-1.5">
+              What Is This About? <span class="text-red-600">*</span>
+              <span id="contact-error-subject" class="text-red-600 font-normal ml-2 ${errors.subject ? '' : 'hidden'}">${escapeHtml(errors.subject || '')}</span>
             </label>
-            <input 
-              type="text" 
-              value="${subject}"
+            <input
+              type="text"
+              value="${escapeHtml(subject)}"
               oninput="handleContactFieldChange('subject', this.value)"
-              class="w-full bg-slate-50 border ${errors.subject ? 'border-red-500 bg-red-50/30' : 'border-slate-200'} rounded-xl p-3 focus:outline-none focus:border-emerald-600 focus:bg-white transition text-slate-900 placeholder:text-slate-400" 
-              placeholder="e.g. Educational Software, Printing, or Hosting" 
+              class="w-full bg-[#FAF9F6] border ${errors.subject ? 'border-red-500' : 'border-stone-300'} rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+              placeholder="e.g. Report cards, Receipt books, Banner, Website"
             />
           </div>
 
-          <!-- Phone Number (Optional) -->
           <div>
-            <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
-              <span>Phone / WhatsApp <span class="text-slate-400 font-normal">(Optional)</span></span>
-            </label>
-            <input 
-              type="text" 
-              value="${phone}"
+            <label class="block text-xs font-semibold text-slate-800 mb-1.5">Phone / WhatsApp (Optional)</label>
+            <input
+              type="text"
+              value="${escapeHtml(phone)}"
               oninput="handleContactFieldChange('phone', this.value)"
-              class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-emerald-600 focus:bg-white transition text-slate-900 placeholder:text-slate-400" 
-              placeholder="e.g. +256 700 000 000" 
+              class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+              placeholder="+256 700 000 000"
             />
           </div>
         </div>
 
-        <!-- Message -->
         <div>
-          <label class="block font-bold text-slate-800 mb-1.5 flex items-center justify-between">
-            <span>Detailed Message & Requirements <span class="text-red-500">*</span></span>
-            <span id="contact-error-message" class="text-[10px] text-red-600 font-semibold ${errors.message ? '' : 'hidden'}">${errors.message || ''}</span>
+          <label class="block text-xs font-semibold text-slate-800 mb-1.5">
+            How Can We Help? <span class="text-red-600">*</span>
+            <span id="contact-error-message" class="text-red-600 font-normal ml-2 ${errors.message ? '' : 'hidden'}">${escapeHtml(errors.message || '')}</span>
           </label>
-          <textarea 
-            rows="5"
+          <textarea
+            rows="4"
             oninput="handleContactFieldChange('message', this.value)"
-            class="w-full bg-slate-50 border ${errors.message ? 'border-red-500 bg-red-50/30' : 'border-slate-200'} rounded-xl p-3 focus:outline-none focus:border-emerald-600 focus:bg-white transition text-slate-900 placeholder:text-slate-400" 
-            placeholder="Describe your software license requirements (Phresh Rank Core, EduLedger, Church Manager), commercial print run specifications, or graphic design project..."
-          >${message}</textarea>
+            class="w-full bg-[#FAF9F6] border ${errors.message ? 'border-red-500' : 'border-stone-300'} rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#1E7E34] focus:bg-white transition"
+            placeholder="Tell us about your school, shop, print run, or website idea..."
+          >${escapeHtml(message)}</textarea>
         </div>
 
-        <!-- Submit Button -->
-        <div class="pt-2 space-y-3">
-          <button 
-            type="submit" 
-            ${isSubmitting ? 'disabled' : ''}
-            class="w-full bg-[#8B0000] hover:bg-red-800 text-white font-black py-4 rounded-xl uppercase tracking-wider shadow-lg hover:shadow-red-900/30 transition disabled:opacity-50 flex items-center justify-center gap-2 text-xs"
-          >
-            ${isSubmitting ? `
-              <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <span>Transmitting Securely...</span>
-            ` : `
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-              <span>Transmit Secure Inquiry</span>
-            `}
-          </button>
-
-          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-100">
-            <span class="flex items-center gap-1">
-              <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-              Auto-ACK Confirmation Email Sent
-            </span>
-            <span>Phresh Tech HQ, Kasenge Kampala</span>
-          </div>
-        </div>
+        <button
+          type="submit"
+          ${isSubmitting ? 'disabled' : ''}
+          class="w-full bg-[#9B1C1C] hover:bg-red-800 text-white font-semibold py-3.5 rounded-xl transition disabled:opacity-50 text-sm"
+        >
+          ${isSubmitting ? 'Sending Message...' : 'Send Message'}
+        </button>
       </form>
     </div>
   `;
@@ -3418,69 +2057,323 @@ function renderSecureContactFormComponent() {
 
 function renderContactPage() {
   return `
-    <div id="contact-section" class="bg-gradient-to-b from-[#0B1B3D] to-[#08132B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-      <div class="max-w-7xl mx-auto space-y-3">
-        <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Direct Inquiries & Consultations</span>
-        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Contact Portal & Location</h1>
-        <p class="text-gray-300 text-sm max-w-2xl">
-          Get in touch with Directors Mulindwa Ibrahim (Ibra) and Steven Bagalana (Steve) or our Kasenge Office Desk for custom software installations, commercial print projects, or web hosting consultations.
+    <section id="contact-section" class="border-b border-stone-200 bg-[#FAF9F6] py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto space-y-2">
+        <p class="text-xs font-semibold uppercase tracking-wider text-[#1E7E34]">Get In Touch</p>
+        <h1 class="text-3xl sm:text-5xl font-bold text-[#0F213E]">Talk With Our Kasenge Team</h1>
+        <p class="text-sm sm:text-base text-slate-600 max-w-2xl">
+          Call, send a WhatsApp message, or drop us a note below. You can speak directly with Mulindwa Ibrahim, Steven Bagalana, or our office desk.
         </p>
       </div>
-    </div>
+    </section>
 
-    <section class="py-12 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-12 gap-8">
-          
-          <!-- Left Direct Contact Info -->
-          <div class="lg:col-span-5 space-y-6">
-            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4 text-xs">
-              <h3 class="text-base font-black text-slate-900">Direct Contact Triggers</h3>
-              
-              <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-2">
-                <span class="font-bold text-slate-900 block text-sm">Official WhatsApp Support</span>
-                <p class="text-slate-600">Fast project consultation & requirements discussion:</p>
-                <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-xs transition">
-                  ${WHATSAPP_ICON_SVG}
-                  <span>Message +256 757 848 094</span>
-                </a>
-              </div>
+    <section class="py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-5 bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6 text-sm">
+          <div>
+            <h2 class="text-lg font-bold text-[#0F213E]">Direct Phones & WhatsApp</h2>
+            <p class="text-xs text-slate-600 mt-1">Monday to Saturday, 8:00 AM – 6:00 PM</p>
+          </div>
 
-              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                <strong class="text-slate-900 block font-bold">Office Hotline (Kasenge HQ)</strong>
-                <span class="text-sky-700 text-[11px] font-semibold">General Customer Desk</span>
-                <a href="tel:+256741145595" class="block font-mono text-slate-900 font-bold mt-1 hover:underline">+256 741 145595</a>
-              </div>
+          <a href="https://wa.me/256757848094?text=Hello%20Phresh%20Tech%20Media" target="_blank" class="flex items-center justify-center gap-2 w-full bg-[#1E7E34] hover:bg-emerald-800 text-white font-semibold px-4 py-3 rounded-xl text-sm transition">
+            ${WHATSAPP_ICON_SVG}
+            <span>WhatsApp +256 757 848 094</span>
+          </a>
 
-              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                <strong class="text-slate-900 block font-bold">Mulindwa Ibrahim (Ibra)</strong>
-                <span class="text-emerald-700 text-[11px] font-semibold">Software Engineering Director</span>
-                <a href="tel:+256702083515" class="block font-mono text-slate-700 font-bold mt-1 hover:underline">+256 702 083515</a>
-                <a href="tel:+256747311209" class="block font-mono text-slate-700 font-bold hover:underline">+256 747 311209</a>
-              </div>
-
-              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                <strong class="text-slate-900 block font-bold">Steven Bagalana (Steve)</strong>
-                <span class="text-[#8B0000] text-[11px] font-semibold">Operations & Print Director</span>
-                <a href="tel:+256777139918" class="block font-mono text-slate-700 font-bold mt-1 hover:underline">+256 777 139918</a>
-                <a href="tel:+256757848094" class="block font-mono text-slate-700 font-bold hover:underline">+256 757 848094</a>
-              </div>
-
-              <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                <strong class="text-slate-900 block font-bold">Official Email & Location</strong>
-                <p class="text-slate-600">Email: <a href="mailto:phreshtechmediaservices@gmail.com" class="text-emerald-700 underline font-medium">phreshtechmediaservices@gmail.com</a></p>
-                <p class="text-slate-600">Location: Kasenge - Nakawuka Road, Kampala, Uganda</p>
-              </div>
+          <dl class="divide-y divide-stone-200 text-xs sm:text-sm">
+            <div class="py-3">
+              <dt class="font-bold text-[#0F213E]">Kasenge Office Desk</dt>
+              <dd class="text-slate-600 tabular-nums mt-0.5"><a href="tel:+256741145595" class="hover:underline">+256 741 145595</a></dd>
             </div>
-          </div>
+            <div class="py-3">
+              <dt class="font-bold text-[#0F213E]">Mulindwa Ibrahim (Ibra)</dt>
+              <dd class="text-slate-500 text-xs">School & Business Software</dd>
+              <dd class="text-slate-700 tabular-nums mt-1">
+                <a href="tel:+256702083515" class="hover:underline">+256 702 083515</a> · <a href="tel:+256747311209" class="hover:underline">+256 747 311209</a>
+              </dd>
+            </div>
+            <div class="py-3">
+              <dt class="font-bold text-[#0F213E]">Steven Bagalana (Steve)</dt>
+              <dd class="text-slate-500 text-xs">Printing Press & Design Studio</dd>
+              <dd class="text-slate-700 tabular-nums mt-1">
+                <a href="tel:+256777139918" class="hover:underline">+256 777 139918</a> · <a href="tel:+256757848094" class="hover:underline">+256 757 848094</a>
+              </dd>
+            </div>
+            <div class="pt-3">
+              <dt class="font-bold text-[#0F213E]">Email & Location</dt>
+              <dd class="text-slate-600 mt-0.5">
+                <a href="mailto:phreshtechmediaservices@gmail.com" class="text-[#1E7E34] underline">phreshtechmediaservices@gmail.com</a><br />
+                Kasenge - Nakawuka Road, Kampala, Uganda
+              </dd>
+            </div>
+          </dl>
+        </div>
 
-          <!-- Right Intake Form Component -->
-          <div class="lg:col-span-7">
-            ${renderSecureContactFormComponent()}
-          </div>
-
+        <div class="lg:col-span-7">
+          ${renderContactFormComponent()}
         </div>
       </div>
     </section>
   `;
+}
+
+// ==========================================
+// LIGHTBOX, WHATSAPP HELPER, TOAST & HEADER
+// ==========================================
+function renderImagePreviewModal() {
+  if (!activeImagePreviewModal) return '';
+  return `
+    <div class="fixed inset-0 z-[110] bg-slate-950/85 flex items-center justify-center p-4 sm:p-8 animate-fade-in" onclick="closeImageModal()">
+      <div class="max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-xl" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-stone-200">
+          <div>
+            <p class="text-xs font-medium text-[#1E7E34]">${escapeHtml(activeImagePreviewModal.label || 'Work Sample')}</p>
+            <h3 class="text-lg font-bold text-[#0F213E]">${escapeHtml(activeImagePreviewModal.title)}</h3>
+          </div>
+          <button onclick="closeImageModal()" class="w-9 h-9 rounded-lg bg-stone-100 hover:bg-stone-200 text-slate-700 flex items-center justify-center font-bold">✕</button>
+        </div>
+        <div class="bg-stone-900 flex items-center justify-center max-h-[70vh]">
+          <img src="${activeImagePreviewModal.img}" alt="${escapeHtml(activeImagePreviewModal.title)}" class="max-h-[68vh] w-auto max-w-full object-contain" referrerPolicy="no-referrer" />
+        </div>
+        ${activeImagePreviewModal.subtitle ? `
+          <div class="px-5 py-4 border-t border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-600">
+            <p>${escapeHtml(activeImagePreviewModal.subtitle)}</p>
+            <button onclick="closeImageModal(); navigateTo('contact');" class="bg-[#1E7E34] hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-lg shrink-0 transition">
+              Ask About This →
+            </button>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderFloatingWhatsAppWidget() {
+  return `
+    <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end gap-2.5 pointer-events-none">
+      ${isWhatsAppWidgetOpen ? `
+        <div class="pointer-events-auto w-80 bg-white border border-stone-200 rounded-2xl shadow-xl overflow-hidden animate-fade-in">
+          <div class="bg-[#0F213E] px-4 py-3.5 flex items-center justify-between text-white">
+            <div>
+              <h4 class="font-bold text-sm">Chat With Phresh Tech</h4>
+              <p class="text-xs text-slate-300">+256 757 848 094 · Kasenge Studio</p>
+            </div>
+            <button onclick="toggleWhatsAppWidget()" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs font-bold">✕</button>
+          </div>
+          <div class="p-4 space-y-3 text-xs">
+            <p class="text-slate-600 leading-relaxed">Hello. Choose a topic below or write your question to open WhatsApp directly.</p>
+            <div class="space-y-1.5">
+              <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I would like to ask about Phresh Rank Core report cards.')" class="w-full text-left bg-[#FAF9F6] hover:bg-stone-100 border border-stone-200 text-slate-800 px-3 py-2 rounded-lg font-medium transition">
+                School Report Cards (Phresh Rank Core) →
+              </button>
+              <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I would like to ask about receipt books or banner printing.')" class="w-full text-left bg-[#FAF9F6] hover:bg-stone-100 border border-stone-200 text-slate-800 px-3 py-2 rounded-lg font-medium transition">
+                Receipt Books, Banners & Printing →
+              </button>
+              <button onclick="sendWhatsAppInquiry('Hello Phresh Tech Media, I need a website or logo design.')" class="w-full text-left bg-[#FAF9F6] hover:bg-stone-100 border border-stone-200 text-slate-800 px-3 py-2 rounded-lg font-medium transition">
+                Logos, Flyers & Websites →
+              </button>
+            </div>
+            <form onsubmit="sendCustomWhatsAppMsg(event)" class="pt-2 border-t border-stone-200 flex items-center gap-2">
+              <input id="whatsapp-floating-input" type="text" placeholder="Write a message..." class="flex-1 bg-[#FAF9F6] border border-stone-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#1E7E34]" />
+              <button type="submit" class="bg-[#1E7E34] hover:bg-emerald-800 text-white font-semibold px-3 py-2 rounded-lg text-xs">Send</button>
+            </form>
+          </div>
+        </div>
+      ` : ''}
+
+      <button onclick="toggleWhatsAppWidget()" title="Chat on WhatsApp" class="pointer-events-auto bg-[#1E7E34] hover:bg-emerald-800 text-white px-4 py-2.5 rounded-full shadow-md flex items-center gap-2 text-xs font-semibold transition">
+        ${WHATSAPP_ICON_SVG}
+        <span class="whitespace-nowrap">${isWhatsAppWidgetOpen ? 'Close' : 'WhatsApp Us'}</span>
+      </button>
+    </div>
+  `;
+}
+
+function renderToastNotification() {
+  if (!toastMessage) return '';
+  return `
+    <div class="fixed top-20 right-4 sm:right-6 z-[100] bg-[#0F213E] text-white px-4 py-3 rounded-xl shadow-lg text-xs font-medium animate-fade-in">
+      ${escapeHtml(toastMessage)}
+    </div>
+  `;
+}
+
+function renderAuthModal() {
+  if (!isAuthModalOpen) return '';
+  return `
+    <div class="fixed inset-0 z-[95] bg-slate-900/75 flex items-center justify-center p-4 animate-fade-in" onclick="closeAuthModal()">
+      <div class="bg-white rounded-2xl shadow-xl border border-stone-200 w-full max-w-md overflow-hidden" onclick="event.stopPropagation()">
+        <div class="bg-[#0F213E] px-6 py-5 text-white flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-lg">Client Sign In</h3>
+            <p class="text-xs text-slate-300">Keep your details handy for future inquiries</p>
+          </div>
+          <button onclick="closeAuthModal()" class="text-slate-300 hover:text-white font-bold">✕</button>
+        </div>
+        <form onsubmit="handleClientAuthSubmit(event)" class="p-6 space-y-4 text-sm">
+          <div>
+            <label class="block text-xs font-semibold text-slate-800 mb-1">Full Name *</label>
+            <input type="text" id="auth-client-name" required value="${escapeHtml(currentUser?.name || '')}" class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3 py-2.5 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-800 mb-1">Email Address *</label>
+            <input type="email" id="auth-client-email" required value="${escapeHtml(currentUser?.email || '')}" class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3 py-2.5 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-800 mb-1">Phone (Optional)</label>
+            <input type="tel" id="auth-client-phone" value="${escapeHtml(currentUser?.phone || '')}" class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3 py-2.5 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-800 mb-1">School / Business Name</label>
+            <input type="text" id="auth-client-org" value="${escapeHtml(currentUser?.organization || '')}" class="w-full bg-[#FAF9F6] border border-stone-300 rounded-xl px-3 py-2.5 text-sm" />
+          </div>
+          <button type="submit" class="w-full bg-[#1E7E34] hover:bg-emerald-800 text-white font-semibold py-3 rounded-xl text-sm transition">
+            Continue
+          </button>
+        </form>
+      </div>
+    </div>
+  `;
+}
+
+function renderActivePage() {
+  switch (currentPage) {
+    case 'home': return renderHomePage();
+    case 'services': return renderServicesPage();
+    case 'portfolio': return renderPortfolioPage();
+    case 'about': return renderAboutPage();
+    case 'contact': return renderContactPage();
+    case 'payment':
+    case 'pay': return renderDedicatedPaymentPage();
+    default: return renderHomePage();
+  }
+}
+
+// Clean 3-Zone Top Bar & Grounded Footer
+function renderApp() {
+  const root = document.getElementById('root');
+  if (!root) return;
+
+  const isPayPage = currentPage === 'pay' || currentPage === 'payment';
+
+  root.innerHTML = `
+    <div class="min-h-screen flex flex-col bg-[#FAF9F6]">
+      <!-- 3-Zone Top Navigation -->
+      <header id="main-header" class="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-stone-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+          
+          <!-- Zone 1: Brand Wordmark -->
+          <a href="#home" onclick="navigateTo('home')" class="flex items-center gap-2.5 shrink-0 focus:outline-none">
+            <img src="/logo.svg" alt="Phresh Tech Media" class="h-9 w-auto object-contain" referrerPolicy="no-referrer" />
+            <span class="font-bold text-base tracking-tight text-[#0F213E] whitespace-nowrap">Phresh Tech Media</span>
+          </a>
+
+          <!-- Zone 2: Clean Inline Navigation (5 concise items) -->
+          <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+            <button onclick="navigateTo('home')" class="whitespace-nowrap transition py-1 border-b-2 ${currentPage === 'home' ? 'border-[#1E7E34] text-[#0F213E] font-semibold' : 'border-transparent hover:text-[#0F213E]'}">Home</button>
+            <button onclick="navigateTo('services')" class="whitespace-nowrap transition py-1 border-b-2 ${currentPage === 'services' ? 'border-[#1E7E34] text-[#0F213E] font-semibold' : 'border-transparent hover:text-[#0F213E]'}">Services</button>
+            <button onclick="navigateTo('portfolio')" class="whitespace-nowrap transition py-1 border-b-2 ${currentPage === 'portfolio' ? 'border-[#1E7E34] text-[#0F213E] font-semibold' : 'border-transparent hover:text-[#0F213E]'}">Our Work</button>
+            <button onclick="navigateTo('about')" class="whitespace-nowrap transition py-1 border-b-2 ${currentPage === 'about' ? 'border-[#1E7E34] text-[#0F213E] font-semibold' : 'border-transparent hover:text-[#0F213E]'}">About</button>
+            <button onclick="navigateTo('pay')" class="whitespace-nowrap transition py-1 border-b-2 ${isPayPage ? 'border-[#1E7E34] text-[#1E7E34] font-semibold' : 'border-transparent hover:text-[#0F213E]'}">Pay Online</button>
+          </nav>
+
+          <!-- Zone 3: Single Primary Action -->
+          <div class="hidden md:flex items-center shrink-0">
+            <button onclick="navigateTo('contact')" class="bg-[#0F213E] hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2.5 rounded-xl whitespace-nowrap transition">
+              Get in Touch
+            </button>
+          </div>
+
+          <!-- Mobile Hamburger -->
+          <button onclick="toggleMobileMenu()" aria-label="Open menu" class="md:hidden p-2 text-slate-700 rounded-lg hover:bg-stone-100 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isMobileMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}"></path>
+            </svg>
+          </button>
+        </div>
+
+        ${isMobileMenuOpen ? `
+          <div class="md:hidden border-t border-stone-200 bg-white px-4 py-3 space-y-1 text-sm font-medium">
+            <button onclick="navigateTo('home')" class="block w-full text-left px-3 py-2.5 rounded-lg hover:bg-stone-50 text-slate-800">Home</button>
+            <button onclick="navigateTo('services')" class="block w-full text-left px-3 py-2.5 rounded-lg hover:bg-stone-50 text-slate-800">Services & Prices</button>
+            <button onclick="navigateTo('portfolio')" class="block w-full text-left px-3 py-2.5 rounded-lg hover:bg-stone-50 text-slate-800">Our Work</button>
+            <button onclick="navigateTo('about')" class="block w-full text-left px-3 py-2.5 rounded-lg hover:bg-stone-50 text-slate-800">About Us</button>
+            <button onclick="navigateTo('pay')" class="block w-full text-left px-3 py-2.5 rounded-lg hover:bg-stone-50 text-[#1E7E34] font-semibold">Pay Online</button>
+            <button onclick="navigateTo('contact')" class="block w-full text-center bg-[#0F213E] text-white font-semibold py-2.5 rounded-xl mt-2">Get in Touch</button>
+          </div>
+        ` : ''}
+      </header>
+
+      <!-- Main Body -->
+      <main class="flex-1">
+        ${renderActivePage()}
+      </main>
+
+      <!-- Footer -->
+      <footer class="bg-[#0F213E] text-white py-12 px-4 sm:px-6 lg:px-8 border-t border-stone-800">
+        <div class="max-w-6xl mx-auto space-y-10">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-xs">
+            <div class="space-y-3">
+              <div class="flex items-center gap-2.5">
+                <img src="/logo.svg" alt="Phresh Tech Media Services" class="h-9 w-auto bg-white p-1 rounded-lg" referrerPolicy="no-referrer" />
+                <span class="font-bold text-base">Phresh Tech Media</span>
+              </div>
+              <p class="text-slate-300 leading-relaxed">
+                School report card software, fees & shop records, commercial printing, graphic design, and websites in Kampala.
+              </p>
+              <p class="text-emerald-300 font-medium">Kasenge - Nakawuka Road, Kampala</p>
+            </div>
+
+            <div class="space-y-2.5">
+              <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Services</h4>
+              <ul class="space-y-2 text-slate-300">
+                <li><button onclick="navigateTo('services', 'database-systems')" class="hover:text-white transition">School & Business Tools</button></li>
+                <li><button onclick="navigateTo('services', 'print-copy')" class="hover:text-white transition">Printing & Receipt Books</button></li>
+                <li><button onclick="navigateTo('services', 'graphic-design')" class="hover:text-white transition">Logos & Graphic Design</button></li>
+                <li><button onclick="navigateTo('services', 'web-development')" class="hover:text-white transition">Websites & Domains</button></li>
+                <li><button onclick="navigateTo('services', 'tariff-catalog')" class="hover:text-white transition">Complete Price List</button></li>
+              </ul>
+            </div>
+
+            <div class="space-y-2.5">
+              <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">People to Call</h4>
+              <div class="space-y-2 text-slate-300 tabular-nums">
+                <p><strong class="text-white block">Mulindwa Ibrahim (Ibra)</strong><a href="tel:+256702083515" class="hover:underline">+256 702 083515</a> / <a href="tel:+256747311209" class="hover:underline">+256 747 311209</a></p>
+                <p><strong class="text-white block">Steven Bagalana (Steve)</strong><a href="tel:+256777139918" class="hover:underline">+256 777 139918</a> / <a href="tel:+256757848094" class="hover:underline">+256 757 848094</a></p>
+                <p><strong class="text-white block">Office Desk</strong><a href="tel:+256741145595" class="hover:underline">+256 741 145595</a></p>
+              </div>
+            </div>
+
+            <div class="space-y-2.5">
+              <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Quick Links</h4>
+              <div class="space-y-2 text-slate-300">
+                <p><a href="https://wa.me/256757848094" target="_blank" class="text-emerald-300 hover:underline font-medium">Message on WhatsApp</a></p>
+                <p><a href="mailto:phreshtechmediaservices@gmail.com" class="hover:underline">phreshtechmediaservices@gmail.com</a></p>
+                <p><button onclick="navigateTo('pay')" class="text-emerald-300 hover:underline font-semibold">Pay Online (Mobile Money)</button></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-6 border-t border-white/10 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>© ${new Date().getFullYear()} Phresh Tech Media Services. All rights reserved.</p>
+            <div class="flex items-center gap-5">
+              <button onclick="navigateTo('services')" class="hover:text-white">Services</button>
+              <button onclick="navigateTo('portfolio')" class="hover:text-white">Our Work</button>
+              <button onclick="navigateTo('contact')" class="hover:text-white">Contact</button>
+              <button onclick="navigateTo('pay')" class="text-emerald-300 hover:text-white">Pay Online</button>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      ${renderFloatingWhatsAppWidget()}
+      ${renderToastNotification()}
+      ${renderAuthModal()}
+      ${renderImagePreviewModal()}
+    </div>
+  `;
+
+  if (currentPage === 'home') {
+    renderHeroHighlight();
+  }
 }
